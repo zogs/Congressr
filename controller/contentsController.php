@@ -34,11 +34,12 @@ class ContentsController extends Controller {
 			}
 							
 			if($id){
-				$d['content'] = $this->Contents->findFirst(array('conditions'=>array('id'=>$id)));
-				$d['content'] = $this->Contents->i18n($d['content'],array('lang'=>$lang));
-					
+				$c = $this->Contents->getContent($id);
+				$c = $this->Contents->JOIN_i18n($c,$lang);
+				
 				$d['id'] = $id;
-				$this->request->data = $d['content'];
+				$d['content'] = $c;
+				$this->request->data = $c;
 			}
 
 			
@@ -54,7 +55,7 @@ class ContentsController extends Controller {
 
 				Session::setFlash("Page supprimé","success");
 
-				$i18ns = $this->Contents->findi18nContents($id);
+				$i18ns = $this->Contents->findi18nContent($id);
 				if($this->Contents->deletei18nContents($i18ns)){
 					Session::setFlash("Traductions supprimés","success");
 				}

@@ -81,10 +81,10 @@ class PagesController extends Controller {
 
 			$lang = $this->getLang();
 
-			$pages = $this->Contents->find(array('conditions'=>array('type'=>'page')));
-			$pages = $this->Contents->i18n($pages,array('lang'=>$lang));
+			$pages = $this->Contents->findPages();
+			$pages = $this->Contents->JOINS_i18n($pages,$lang,'strict');			
 				
-			
+
 			if(empty($pages)) $pages = array();
 
 			$d['pages'] = $pages;

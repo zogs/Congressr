@@ -18,18 +18,10 @@ class ContentsModel extends Model {
 
 	);
 
-	public function findContentById( $id , $lang = '', $fields = ''){
 
-		if(isset($id) && is_numeric($id)){
+	public function getContent($id){
 
-			$c = $this->findFirst(array('conditions'=>'id='.$id));
-			if(empty($c)) {
-				return i18nContents( $c , $lang, $fields);
-			}
-			else return $c;
-		}
-		else throw new zException('id must be numeric in findCOntentById', 1);
-		
+		return $this->findFirst(array('conditions'=>array('id'=>$id)));
 	}
 
 	public function findContents($conditions, $lang, $fields = ''){
@@ -62,11 +54,9 @@ class ContentsModel extends Model {
 		return $c;
 	}
 
-	public function findPages($lang, $fields = ''){
+	public function findPages(){
 
-		$pages = $this->find(array('conditions'=>array('type'=>'page')));		
-		$pages = $this->i18nContents($pages, $lang, $fields);
-		return $pages;
+		return $this->find(array('conditions'=>array('type'=>'page')));				
 	}
 
 	public function countContent( $type , $lang){
@@ -74,11 +64,23 @@ class ContentsModel extends Model {
 		return $this->findCount('type="'.$type.'"');
 	}
 
-	public function i18nContents( $contents, $lang = '' , $fields = ''){
+	public function JOIN_i18n( $content, $lang = '', $method = 'strict' ){
+				
+		if( $this->i18nExist($content->id,$lang) || $method='left') return $this->JOIN($this->table_i18n,'',array('content_id'=>':id','lang'=>$lang),$content);		
 
-		if(empty($contents)) return false;
-		if(empty($lang)) $lang = Conf::$languageDefault;	
-		return $this->JOIN($this->table_i18n,'',array('content_id'=>':id','lang'=>$lang),$contents);
+		return $content;			
+	}
+
+	public function JOINS_i18n($contents,$lang,$method='strict'){
+
+		if(empty($contents)) return array();
+		if(!is_array($contents)) $contents = array($contents);
+
+		foreach ($contents as $k => $c) {			
+			$contents[$k] = $this->JOIN_i18n($c,$lang,$method);
+		}
+
+		return $contents;	
 	}
 
 	public function i18n($contents, $params){
@@ -91,12 +93,13 @@ class ContentsModel extends Model {
 	}
 	public function i18nExist( $content_id , $lang){
 
-		$c = $this->findFirst(array('table'=>$this->table_i18n,'fields'=>'id','conditions'=>array('content_id'=>$content_id,'lang'=>$lang)));
-		if(!empty($c)) return true;
+		$c = $this->findFirst(array('table'=>$this->table_i18n,'fields'=>'id_i18n as id','conditions'=>array('content_id'=>$content_id,'lang'=>$lang)));
+		
+		if(!empty($c)) return $c->id;
 		else return false;
 	}
 
-	public function findi18nContents($content_id,$options = array()){
+	public function findi18nContent($content_id,$options = array()){
 
 		$conditions = array('content_id'=>$content_id);
 		$conditions = array_merge($conditions,$options);

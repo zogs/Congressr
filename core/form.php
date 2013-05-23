@@ -108,6 +108,9 @@ class Form{
 			$value = $this->request->data->$id;
 		}
 
+		debug($label.' '.$value);
+		debug($this->request->data->$id);
+
 		//return if submit button
 		if($label=='submit'){
 
