@@ -1,0 +1,484 @@
+/*@charset "utf-8";*/
+/* CSS base code */
+/* Don't touch ! */
+
+
+/*Rebase css tips =======================================*/
+/* calcul size of a box */
+*, *:before, *:after {-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;}
+/* clearfix floated el */
+.clearfix:before,.clearfix:after {content: " ";display: table;}
+.clearfix:after {clear: both;}
+/* IE6/7 support */
+.clearfix {*zoom: 1;}
+/* disallow breaking line of text */
+.break {-ms-word-break: break-all;word-break: break-all;word-break: break-word;-webkit-hyphens: auto;-moz-hyphens: auto;hyphens: auto;}
+/* Create ... for long text */
+.ellipsis {width: 250px;white-space: nowrap;overflow: hidden;-ms-text-overflow: ellipsis; /* Required for IE8 */-o-text-overflow: ellipsis; /* Required for Opera */text-overflow: ellipsis;}
+/*=======================================================*/
+
+body { 
+font-family: Tahoma,verdana,arial,serif;
+height:100%;
+background: -moz-linear-gradient(top,  rgba(5,1,1,0.14) 0%, rgba(0,0,0,0.07) 38%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(5,1,1,0.14)), color-stop(38%,rgba(0,0,0,0.07))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(5,1,1,0.14) 0%,rgba(0,0,0,0.07) 38%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(5,1,1,0.14) 0%,rgba(0,0,0,0.07) 38%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(5,1,1,0.14) 0%,rgba(0,0,0,0.07) 38%); /* IE10+ */
+background: linear-gradient(top,  rgba(5,1,1,0.14) 0%,rgba(0,0,0,0.07) 38%); /* W3C */ background-attachment:fixed !important;
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#24050101', endColorstr='#12000000',GradientType=0 ); /* IE6-9 */
+}
+input { height:auto; }
+
+
+
+/*=========
+MAIN SECTION
+==========*/
+.mainContainer {margin-top:42px; padding-top:5px; min-height: 800px;}
+
+
+/*
+Nav bar
+*/
+.navbar { position:fixed; visibility: visible;}
+.navbar .brand {padding-top:10px;}
+.nav-logo { height: 30px; }
+.nav-login { text-transform:capitalize; font-weight:bold;}
+.nav-avatar { display:inline; margin-top:-6px; margin-right:5px; height: 30px;}
+.nav-search { width:170px;}
+
+/*
+Heading
+*/
+.modal h1 { padding:0; width:100%; color:#303030; text-align:center; font:250% Impact; }
+.modal h1:after { display:block; margin:10px 0; width:100%; height:1px; box-shadow:0 0 5px rgba(0,0,0,0.5); content:" "; }
+
+
+/*
+Bootstrap
+*/
+.btn { border-radius: 0; -moz-border-radius:0; -webkit-border-radius:0; }
+
+/*
+Top bar login
+*/
+form.loginForm { margin:0; padding:5px 0 0 0; display:inline-block; float:right; text-align:right; color:white;}
+form.loginForm input { padding-left: 5px; background:#626262; border:1px solid #151515; }
+form.loginForm input[name=login] { width:100px; }
+form.loginForm input[name=password] { width:70px; }
+form.loginForm input:focus, form.loginForm input:hover {  background-color:#EBEBEB; }
+form.loginForm input[type=submit] { width:auto; padding-left:6px; padding-right:6px; background-color:rgba(255,255,255,0.6); border:1px solid #555 }
+form.loginForm input[type=submit]:hover { background-color:#EBEBEB;}
+
+
+
+
+/*
+Geo select
+*/
+div.geo-select { margin-bottom:8px;}
+div.geo-select .select2-choice { padding:4px 5px; width:100%; height:auto; outline:none; border:0; border-radius:0; border:1px solid #CCC; border-radius:3px ; background-color:white; background-image:none; text-align:left; line-height:inherit; }
+div.geo-select .select2-choice:focus { outline:none;}
+div.geo-select .select2-choice span { margin-right:16px; color:#999;}
+div.geo-select .select2-choice div { border:0; background:white; background-image:none;}
+div.geo-select .select2-choice div b { background-position:0 -2px;}
+div.geo-select .select2-drop { left:0; margin-top: 0; padding:5px 0 2px 5px; }
+div.geo-select .select2-results { max-height:300px; text-align:left; }
+div.geo-select .select2-result { padding:5px 0; }
+
+
+.ajaxLoader { padding:0 10px; background-image:url('../img/ajax-loader.gif'); background-repeat: no-repeat; }
+
+
+.pagination ul li a { margin:0 4px; box-shadow:inset 0 0 15px #E1E1E1, 0 0 2px rgba(0,0,0,0.2);}
+
+
+/*SlabText PLugin*/
+.slabtexted .slabtext{display:-moz-inline-box;display:inline-block;white-space:nowrap;}.slabtextinactive .slabtext{display:inline;white-space:normal;word-spacing:inherit !important;letter-spacing:inherit !important;font-size:1em !important;*letter-spacing:0 !important;*word-spacing:0 !important;}.slabtextdone .slabtext{display:block;}
+/*end*/
+
+
+/*
+ Homepage
+*/
+.homepage { }
+.formular { width:60%;}
+/*
+User registration page
+*/
+.register h1 { text-align:center; margin-bottom:10px;}
+.register p { overflow:hidden;width:100%;}
+.form { margin-top:10px; margin-bottom: 50px; padding:30px 30px; border:1px solid #DDDDDD; border-radius:3px; background: #eee;}
+.form:after{ content: "."; display: block; height: 0; font-size:0; clear: both; visibility:hidden; }
+.form .control-group { float:left; margin-bottom:5px; width:100%;}
+.form .control-group .control-label { float:left; width:20%; min-height:20px; display:block; text-align:left; font-weight: normal ;font-size:95%; color:#AAA}
+.form .control-group .controls { float:left; width:60%; }
+.form .control-group .controls i.icon-form { position:absolute; display:block; margin-top:7px; margin-left:7px;}
+.form .control-group .controls input,select { height:auto; padding-left:30px; width:100%;}
+.form .control-group .controls textarea { width:100%;}
+.form .control-group .controls input[type=radio] { display:inline; clear:none; margin-right:5px ; width:auto;}
+.form .control-group .controls input[type=checkbox] { display:inline-block; width:auto; clear:left; float:left;}
+.form .control-group .controls label.checkbox { float:left;}
+.form .control-group .controls label.radio { padding-left:5px; margin-right:20px; display: inline; font-size:80%; color:#888;}
+.form .control-group .controls p.help-inline { width: 100%; padding-left:0; margin-top:0px ;font-size:80%; color:#AAA; }
+.form .control-group .controls p.help-error { color:#820200;}
+.form .control-error .control-label { color: #820200; }
+.form .control-error .controls input,
+.form .control-error .controls select,
+.form .control-error .controls textarea { border-color: #820200;}
+.form .control-error .controls p.help-inline { color:#820200;}
+.form .control-error .controls p.help-inline strong { font-style: italic; text-transform: capitalize;}
+.form-row .control-group .control-label { float:none; width:100%;}
+.form-row .control-group .controls { float:none; width:100%;}
+
+
+.form input[type=submit] { margin-top:20px; margin-bottom:50px; float:left;}
+
+.w80pc { width:80%;}
+.w70pc { width:70%;}
+.w60pc { width:60%;}
+.w50pc { width:50%;}
+.w40pc { width:40%;}
+.w30pc { width:30%;}
+.form-center { margin-left:auto; margin-right:auto;}
+
+.register #click_me { float:left; display:block;  display:none; margin-top:10px; padding:5px 0; width:100%; color:#444; text-align:center; font-weight:bold; }
+.register #click_me:hover { color:rgb(153,0,0); text-decoration:none; cursor:pointer;}
+.register #show_me { display:none; }
+.register .actions { float:left; margin:10px 0; width:100%; text-align:right;}
+.register .actions p { margin:10px 0; color:#AAA; text-align:right; font-weight:bold; font-size:10px;}
+
+/*
+    Autocompletion
+*/
+
+.autocomplete-w1 { position: absolute; top: 0px; left: 0px; }
+.autocomplete { border: 1px solid #999; background: #FFF; cursor: default; text-align: left; max-height: 350px; overflow: auto; /* IE6 specific: */ _height: 350px; _margin: 0; _overflow-x: hidden; }
+    .autocomplete .selected { background: #F0F0F0; }
+    .autocomplete div { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+    .autocomplete strong { font-weight: normal; color: #3399FF; }
+
+/*
+User account page
+*/
+#account { margin-top:20px;}
+.account-form {width:550px; float:right; }
+#account-form { padding-left: 50px; padding-right: 50px;}
+#changeavatar { float:left; width:230px; }
+#changeavatar .avatar { margin-bottom:10px; width:100%; text-align:left;}
+#changeavatar .avatar img { width:120px; height:120px; }
+#changeavatar input[type=file] { overflow:hidden; border:1px solid #CCC; background:#FFF; box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075); }
+#changepassword { float:left; width:230px; }
+#delete { float:left; width:230px; }
+
+.dashboard { width:302px; float:left;}
+.module { overflow:hidden; margin:5px 0 15px 0; padding:15px; border:1px solid #CCC; border-radius:10px; background:#F2F2F2; box-shadow:0 0 4px 4px rgba(100,100,100,0.1); }
+.module-header { margin-bottom:25px; border-bottom:1px solid #DDD; }
+.module-header h2 { color:#444 }
+.module-header p.subheader { color:#AAA;}
+.mini-profile b { margin-left:10px; text-transform: capitalize; }
+
+
+.size16 {width:16px; height:16px;}
+.size32 { width:32px; height:32px;}
+.fleft { float:left;}
+.fright { float:right;}
+
+/*==========
+FOOTER
+===========*/
+.footer { width: 100%; height: 200px; background:transparent;}
+
+
+/*=========
+ADMIN
+========*/
+.submitAsLink { background: 0; border:0; box-shadow: 0 0 0 #000; padding:0; margin:0; color:#0088cc; cursor:pointer; margin-bottom: 1px;}
+.submitAsLink:hover { text-decoration: underline; color:#005580;}
+
+
+
+/*
+Boite Modal
+*/
+.modal {width:auto;}
+.modal form { margin:0;}
+.modal-header { overflow:hidden; }
+.modal.fade.in {
+top: 40%;
+}
+
+/*===============
+    ERROR
+================*/
+.error_page { margin:60px 0%; width:100%; height:400px;}
+.bubble { position:relative;  margin-left:350px; padding:50px 50px; width:400px; border:2px solid #AAA; border-radius:15px; background:#FFF; color:#AAA; text-align:center; font-weight:bold; font-size:26px; line-height:1.5em; }!DOCTYPE
+.sign { position:absolute; margin:0 auto; width:400px;}
+.oups { position:relative; margin:0 auto; margin-bottom:-155px; margin-left:55px; width:250px; height:150px; }
+.oups table { width:100%; height:100%; }
+.oups table tr td { vertical-align: middle; text-align:center; font:350% Impact,'Arial Black'; }
+
+
+/*==============
+    FLAGS
+    // code from flag-sprites.com modified to fit database country id... dont change !!
+===============*/
+.flag {
+    display:inline-block;
+    margin-right:3px;
+    width: 16px;
+    height: 11px;
+    background: url(../img/flags/flags.png) no-repeat;
+
+}
+.flag.flag- { background:url(../img/flags/globe.png) no-repeat; height:13px; margin-right:9px;}
+.flag.flag-ad {background-position: -16px 0;}
+.flag.flag-ae {background-position: -32px 0;}
+.flag.flag-af {background-position: -48px 0;}
+.flag.flag-ag {background-position: -64px 0;}
+.flag.flag-av {background-position: -80px 0;}
+.flag.flag-al {background-position: -96px 0;}
+.flag.flag-am {background-position: -112px 0;}
+.flag.flag-nt {background-position: -128px 0;}
+.flag.flag-ao {background-position: -144px 0;}
+.flag.flag-ar {background-position: -160px 0;}
+.flag.flag-aq {background-position: -176px 0;}
+.flag.flag-at {background-position: -192px 0;}
+.flag.flag-au {background-position: -208px 0;}
+.flag.flag-aa {background-position: -224px 0;}
+.flag.flag-aj {background-position: -240px 0;}
+.flag.flag-bk {background-position: 0 -11px;}
+.flag.flag-ac {background-position: -16px -11px;}
+.flag.flag-bd {background-position: -32px -11px;}
+.flag.flag-be {background-position: -48px -11px;}
+.flag.flag-uv {background-position: -64px -11px;}
+.flag.flag-bu {background-position: -80px -11px;}
+.flag.flag-bh {background-position: -96px -11px;}
+.flag.flag-bi {background-position: -112px -11px;}
+.flag.flag-bj {background-position: -128px -11px;}
+.flag.flag-bm {background-position: -144px -11px;}
+.flag.flag-bx {background-position: -160px -11px;}
+.flag.flag-bl {background-position: -176px -11px;}
+.flag.flag-br {background-position: -192px -11px;}
+.flag.flag-bs {background-position: -208px -11px;}
+.flag.flag-bt {background-position: -224px -11px;}
+.flag.flag-bv {background-position: -240px -11px;}
+.flag.flag-bc {background-position: 0 -22px;}
+.flag.flag-by {background-position: -16px -22px;}
+.flag.flag-bz {background-position: -32px -22px;}
+.flag.flag-ca {background-position: -48px -22px;}
+.flag.flag-catalonia {background-position: -64px -22px;}
+.flag.flag-cg {background-position: -80px -22px;}
+.flag.flag-ct {background-position: -96px -22px;}
+.flag.flag-cf {background-position: -112px -22px;}
+.flag.flag-sz {background-position: -128px -22px;}
+.flag.flag-iv {background-position: -144px -22px;}
+.flag.flag-ck {background-position: -160px -22px;}
+.flag.flag-cl {background-position: -176px -22px;}
+.flag.flag-cm {background-position: -192px -22px;}
+.flag.flag-cn {background-position: -208px -22px;}
+.flag.flag-co {background-position: -224px -22px;}
+.flag.flag-cs {background-position: -240px -22px;}
+.flag.flag-cu {background-position: 0 -33px;}
+.flag.flag-cv {background-position: -16px -33px;}
+.flag.flag-cw {background-position: -32px -33px;}
+.flag.flag-cy {background-position: -48px -33px;}
+.flag.flag-ez {background-position: -64px -33px;}
+.flag.flag-de {background-position: -80px -33px;}
+.flag.flag-dj {background-position: -96px -33px;}
+.flag.flag-da {background-position: -112px -33px;}
+.flag.flag-dm {background-position: -128px -33px;}
+.flag.flag-dr {background-position: -144px -33px;}
+.flag.flag-dz {background-position: -160px -33px;}
+.flag.flag-ec {background-position: -176px -33px;}
+.flag.flag-en {background-position: -192px -33px;}
+.flag.flag-eg {background-position: -208px -33px;}
+.flag.flag-eh {background-position: -224px -33px;}
+.flag.flag-england {background-position: -240px -33px;}
+.flag.flag-er {background-position: 0 -44px;}
+.flag.flag-sp {background-position: -16px -44px;}
+.flag.flag-et {background-position: -32px -44px;}
+.flag.flag-eu {background-position: -48px -44px;}
+.flag.flag-fi {background-position: -64px -44px;}
+.flag.flag-fj {background-position: -80px -44px;}
+.flag.flag-fk {background-position: -96px -44px;}
+.flag.flag-fm {background-position: -112px -44px;}
+.flag.flag-fo {background-position: -128px -44px;}
+.flag.flag-fr {background-position: -144px -44px;}
+.flag.flag-gb {background-position: -160px -44px;}
+.flag.flag-gj {background-position: -192px -44px;}
+.flag.flag-gg {background-position: -208px -44px;}
+.flag.flag-fg {background-position: -224px -44px;}
+.flag.flag-gk {background-position: -240px -44px;}
+.flag.flag-gh {background-position: 0 -55px;}
+.flag.flag-gi {background-position: -16px -55px;}
+.flag.flag-gl {background-position: -32px -55px;}
+.flag.flag-gm {background-position: -48px -55px;}
+.flag.flag-gv {background-position: -64px -55px;}
+.flag.flag-gp {background-position: -80px -55px;}
+.flag.flag-ek {background-position: -96px -55px;}
+.flag.flag-gr {background-position: -112px -55px;}
+.flag.flag-gs {background-position: -128px -55px;}
+.flag.flag-gt {background-position: -144px -55px;}
+.flag.flag-gq {background-position: -160px -55px;}
+.flag.flag-pu {background-position: -176px -55px;}
+.flag.flag-gy {background-position: -192px -55px;}
+.flag.flag-hk {background-position: -208px -55px;}
+.flag.flag-hm {background-position: -224px -55px;}
+.flag.flag-ho {background-position: -240px -55px;}
+.flag.flag-hr {background-position: 0 -66px;}
+.flag.flag-ha {background-position: -16px -66px;}
+.flag.flag-hu {background-position: -32px -66px;}
+.flag.flag-id {background-position: -48px -66px;}
+.flag.flag-ei {background-position: -64px -66px;}
+.flag.flag-is {background-position: -80px -66px;}
+.flag.flag-im {background-position: -96px -66px;}
+.flag.flag-in {background-position: -112px -66px;}
+.flag.flag-io {background-position: -128px -66px;}
+.flag.flag-iz {background-position: -144px -66px;}
+.flag.flag-ir {background-position: -160px -66px;}
+.flag.flag-ic {background-position: -176px -66px;}
+.flag.flag-it {background-position: -192px -66px;}
+.flag.flag-je {background-position: -208px -66px;}
+.flag.flag-jm {background-position: -224px -66px;}
+.flag.flag-jo {background-position: -240px -66px;}
+.flag.flag-ja {background-position: 0 -77px;}
+.flag.flag-ke {background-position: -16px -77px;}
+.flag.flag-kg {background-position: -32px -77px;}
+.flag.flag-cb {background-position: -48px -77px;}
+.flag.flag-ki {background-position: -64px -77px;}
+.flag.flag-km {background-position: -80px -77px;}
+.flag.flag-sc {background-position: -96px -77px;}
+.flag.flag-ks {background-position: -112px -77px;}
+.flag.flag-kr {background-position: -128px -77px;}
+.flag.flag-kurdistan {background-position: -144px -77px;}
+.flag.flag-ku {background-position: -160px -77px;}
+.flag.flag-cj {background-position: -176px -77px;}
+.flag.flag-kz {background-position: -192px -77px;}
+.flag.flag-la {background-position: -208px -77px;}
+.flag.flag-le {background-position: -224px -77px;}
+.flag.flag-st {background-position: -240px -77px;}
+.flag.flag-li {background-position: 0 -88px;}
+.flag.flag-ce {background-position: -16px -88px;}
+.flag.flag-lr {background-position: -32px -88px;}
+.flag.flag-ls {background-position: -48px -88px;}
+.flag.flag-lh {background-position: -64px -88px;}
+.flag.flag-lu {background-position: -80px -88px;}
+.flag.flag-lg {background-position: -96px -88px;}
+.flag.flag-ly {background-position: -112px -88px;}
+.flag.flag-ma {background-position: -128px -88px;}
+.flag.flag-mc {background-position: -144px -88px;}
+.flag.flag-md {background-position: -160px -88px;}
+.flag.flag-mj {background-position: -176px -88px;}
+.flag.flag-mg {background-position: -192px -88px;}
+.flag.flag-rm {background-position: -208px -88px;}
+.flag.flag-mk {background-position: -224px -88px;}
+.flag.flag-ml {background-position: -240px -88px;}
+.flag.flag-mm {background-position: 0 -99px;}
+.flag.flag-mn {background-position: -16px -99px;}
+.flag.flag-mo {background-position: -32px -99px;}
+.flag.flag-cq {background-position: -48px -99px;}
+.flag.flag-mb {background-position: -64px -99px;}
+.flag.flag-mr {background-position: -80px -99px;}
+.flag.flag-mh {background-position: -96px -99px;}
+.flag.flag-mt {background-position: -112px -99px;}
+.flag.flag-mu {background-position: -128px -99px;}
+.flag.flag-mv {background-position: -144px -99px;}
+.flag.flag-mi {background-position: -160px -99px;}
+.flag.flag-mx {background-position: -176px -99px;}
+.flag.flag-my {background-position: -192px -99px;}
+.flag.flag-mz {background-position: -208px -99px;}
+.flag.flag-wa {background-position: -224px -99px;}
+.flag.flag-nc {background-position: -240px -99px;}
+.flag.flag-ne {background-position: 0 -110px;}
+.flag.flag-nf {background-position: -16px -110px;}
+.flag.flag-ng {background-position: -32px -110px;}
+.flag.flag-ni {background-position: -48px -110px;}
+.flag.flag-nl {background-position: -64px -110px;}
+.flag.flag-no {background-position: -80px -110px;}
+.flag.flag-np {background-position: -96px -110px;}
+.flag.flag-nr {background-position: -112px -110px;}
+.flag.flag-nu {background-position: -128px -110px;}
+.flag.flag-nz {background-position: -144px -110px;}
+.flag.flag-om {background-position: -160px -110px;}
+.flag.flag-pa {background-position: -176px -110px;}
+.flag.flag-pe {background-position: -192px -110px;}
+.flag.flag-fp {background-position: -208px -110px;}
+.flag.flag-pp {background-position: -224px -110px;}
+.flag.flag-rp {background-position: -240px -110px;}
+.flag.flag-pk {background-position: 0 -121px;}
+.flag.flag-pl {background-position: -16px -121px;}
+.flag.flag-bp {background-position: -32px -121px;}
+.flag.flag-pc {background-position: -48px -121px;}
+.flag.flag-rq {background-position: -64px -121px;}
+.flag.flag-ps {background-position: -80px -121px;}
+.flag.flag-po {background-position: -96px -121px;}
+.flag.flag-lq {background-position: -112px -121px;}
+.flag.flag-py {background-position: -128px -121px;}
+.flag.flag-qa {background-position: -144px -121px;}
+.flag.flag-re {background-position: -160px -121px;}
+.flag.flag-ro {background-position: -176px -121px;}
+.flag.flag-rb {background-position: -192px -121px;}
+.flag.flag-rs {background-position: -208px -121px;}
+.flag.flag-rw {background-position: -224px -121px;}
+.flag.flag-sa {background-position: -240px -121px;}
+.flag.flag-sb {background-position: 0 -132px;}
+.flag.flag-se {background-position: -16px -132px;}
+.flag.flag-scotland {background-position: -32px -132px;}
+.flag.flag-su {background-position: -48px -132px;}
+.flag.flag-sw {background-position: -64px -132px;}
+.flag.flag-sg {background-position: -80px -132px;}
+.flag.flag-sh {background-position: -96px -132px;}
+.flag.flag-si {background-position: -112px -132px;}
+.flag.flag-lo {background-position: -128px -132px;}
+.flag.flag-sl {background-position: -144px -132px;}
+.flag.flag-sm {background-position: -160px -132px;}
+.flag.flag-sn {background-position: -176px -132px;}
+.flag.flag-so {background-position: -192px -132px;}
+.flag.flag-somaliland {background-position: -208px -132px;}
+.flag.flag-ns {background-position: -224px -132px;}
+.flag.flag-ss {background-position: -240px -132px;}
+.flag.flag-tp {background-position: 0 -143px;}
+.flag.flag-sv {background-position: -16px -143px;}
+.flag.flag-sy {background-position: -32px -143px;}
+.flag.flag-wz {background-position: -48px -143px;}
+.flag.flag-tc {background-position: -64px -143px;}
+.flag.flag-td {background-position: -80px -143px;}
+.flag.flag-tf {background-position: -96px -143px;}
+.flag.flag-to {background-position: -112px -143px;}
+.flag.flag-th {background-position: -128px -143px;}
+.flag.flag-ti {background-position: -144px -143px;}
+.flag.flag-tk {background-position: -160px -143px;}
+.flag.flag-tl {background-position: -176px -143px;}
+.flag.flag-tx {background-position: -192px -143px;}
+.flag.flag-ts {background-position: -208px -143px;}
+.flag.flag-tn {background-position: -224px -143px;}
+.flag.flag-tu {background-position: -240px -143px;}
+.flag.flag-tt {background-position: 0 -154px;}
+.flag.flag-tv {background-position: -16px -154px;}
+.flag.flag-tw {background-position: -32px -154px;}
+.flag.flag-tz {background-position: -48px -154px;}
+.flag.flag-up {background-position: -64px -154px;}
+.flag.flag-ug {background-position: -80px -154px;}
+.flag.flag-um {background-position: -96px -154px;}
+.flag.flag-us {background-position: -112px -154px;}
+.flag.flag-uk {background-position: -176px -44px;}
+.flag.flag-uy {background-position: -128px -154px;}
+.flag.flag-uz {background-position: -144px -154px;}
+.flag.flag-vt {background-position: -160px -154px;}
+.flag.flag-vc {background-position: -176px -154px;}
+.flag.flag-ve {background-position: -192px -154px;}
+.flag.flag-vg {background-position: -208px -154px;}
+.flag.flag-vi {background-position: -224px -154px;}
+.flag.flag-vm {background-position: -240px -154px;}
+.flag.flag-nh {background-position: 0 -165px;}
+.flag.flag-wales {background-position: -16px -165px;}
+.flag.flag-wf {background-position: -32px -165px;}
+.flag.flag-ws {background-position: -48px -165px;}
+.flag.flag-ym {background-position: -64px -165px;}
+.flag.flag-mf {background-position: -80px -165px;}
+.flag.flag-sf {background-position: -96px -165px;}
+.flag.flag-zanzibar {background-position: -112px -165px;}
+.flag.flag-za {background-position: -128px -165px;}
+.flag.flag-zi {background-position: -144px -165px;}
