@@ -10,7 +10,7 @@ class WorldsModel extends Model
 		parent::__construct();
 
 		//Cache for location system
- 		$this->cacheLocation = new Cache(Conf::$cacheLocation,Conf::$cacheLocationDuration);
+ 		$this->cacheLocation = new Cache(Conf::getCachePath().'/location',1000);
 
 
 	}

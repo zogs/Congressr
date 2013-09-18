@@ -21,29 +21,30 @@
 				
 				<?php
 
-				
-				//Recuperation du Menu
-				//Appel de ma methode getMenu du controlleur Pages
-				
-				$pagesMenu = $this->call('Pages','getMenu');
-				debug($pagesMenu);
-				foreach ($pagesMenu as $v) : ?>				
-					<li><a href='<?php echo Router::url("pages/view/$v->id/$v->slug");?>' ><?php echo $v->title; ?></a></li>
+				if(Session::user()->getRole()=='visitor'){
+					//Recuperation du Menu
+					//Appel de ma methode getMenu du controlleur Pages				
+					$pagesMenu = $this->call('Pages','getMenu',array('main'));				
+					foreach ($pagesMenu as $v) : 
+				?>				
+					<li><a href='<?php echo Router::url("$v->slug");?>' ><?php echo $v->title; ?></a></li>
 				<?php 
-				endforeach;
+				
+					endforeach;
 				?>
-
+					<li><a href="<?php echo Router::url('users/register');?>" >Inscription des auteurs</a></li>
 				<?php
-
+				}
 				//Admin section button
-				if(Session::user()->getRole()=='admin'):?>
-				<li><a href="<?php echo Router::url('admin/pages/index');?>">Admin.</a></li>
+				if(Session::user()->getRole()=='admin' || Session::user()->getRole()=='chairman'):?>
+				<li><a href="<?php echo Router::url('admin/pages/index');?>">Administration</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='reviewer'):?>
 				<li><a href="<?php echo Router::url('reviewer/board');?>">Reviewer.</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='redactor'):?>
-				<li><a href="<?php echo Router::url('redactor/board');?>">Redactor.</a></li>
+				<li><a href="<?php echo Router::url('redactor/board');?>">Mes articles</a></li>
+				<li><a href="<?php echo Router::url('articles/resume');?>">Déposer un resumé</a></li>
 				<?php endif;
 				
 				?>
@@ -82,7 +83,7 @@
 						<input type="submit" value="OK" />
 					</form>
 					<li><a href="<?php echo Router::url('users/login');?>">Login</a></li>	
-					<li><a href="<?php echo Router::url('users/register');?>" >Inscription</a></li>
+					
 
 
 				<?php endif ?>
@@ -100,62 +101,12 @@
 
 	<div class="modal fade" id="myModal"></div>
 
-	<footer id="footer">
-		<div id="foo-one"></div>
-		<div id="foo-sign"><img src="<?php echo Router::webroot('img/sign.png');?>" alt=""></div>
-		<div id="foo-two">
-			<div class="container foo-content">				
-				<div class="fright">YouProtest</div>
-			</div>
-		</div>
-	</footer>
-
-	<style>
-		#footer { position:fixed; bottom:-120px; height:150px; z-index:20;width:100%; background-color: rgba(0,0,0,0.1);}
-		#foo-one { position:absolute; top:30px; height:120px;  z-index:-20; width:100%; background-color: rgba(0,0,0,0.5);}
-		#foo-two { position:absolute; top:30px; z-index:-10; width:100%; background-color: rgba(0,0,0,1);}
-		#foo-sign {position:absolute; top:30px; height: 250px; left:30%; z-index:-15;}
-		#foo-sign img {height:200px;}
-
-		.foo-content{ padding:10px 0;}
-	</style>
-
 </body>
 
 
 
  <script type="text/javascript">
 
- 	$(document).ready(function(){
-
-
- 		var timeout;
- 		var opened = false;
- 		$("#footer").hover(
-			function () {
-
-				timeout = setTimeout(function(){ 
-
-					if(opened==false){
-						$('#foo-two').animate({top:'-='+$('#foo-two').height()}, 200, 'linear');
-						$('#foo-one').delay(100).animate({top:'-='+$('#foo-one').height()}, 200, 'linear');
-						$('#foo-sign').delay(200).animate({top:'-='+$('#foo-sign').height()}, 300, 'linear',function(){ opened = true; });
-					}
-				},500);
-			},
-			function () {
-
-				clearTimeout(timeout);
-				if(opened==true){
-					
-					$('#foo-two').animate({top:'+='+$('#foo-two').height()}, 500);
-					$('#foo-one').animate({top:'+='+$('#foo-one').height()}, 400);
-					$('#foo-sign').animate({top:'+='+$('#foo-sign').height()}, 800, 'linear',function(){ opened=false });
-				}
-			}
-			);
-
- 	});
 
  	/*===========================================================
  		Set security token

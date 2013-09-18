@@ -19,7 +19,7 @@ class UsersController extends Controller{
 			else
 				$field = 'login';
 			
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'fields'=> 'user_id,login,avatar,hash,salt,lang,role',
 				'conditions' => array($field=>$login))
 			);
@@ -44,7 +44,7 @@ class UsersController extends Controller{
 					$user = new User( $user );
 					Session::write('user', $user);
 					Session::setToken();				
-					Session::setFlash('Vous êtes maintenant connecté');
+					Session::setFlash('Vous êtes maintenant connecté en tant que '.$user->role);
 					
 					//redirection
 					if($user->role=='redactor')
@@ -113,7 +113,9 @@ class UsersController extends Controller{
 
 						} else {
 
-							if($user_id = $this->create($data)){
+							if($user_id = $this->createUser($data)){
+
+								$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$user_id)));
 
 								if(isset($user->status) && $user->status!='group')
 									Session::setFlash("<strong>Welcome</strong>","success");
@@ -151,7 +153,7 @@ class UsersController extends Controller{
 		$this->set($d);
 	}
 
-	protected function create( $data ){
+	protected function createUser( $data ){
 
 		$this->loadModel('Users');
 		//user object
@@ -191,7 +193,7 @@ class UsersController extends Controller{
 			$user_id   = urldecode($get->u);			
 			$code_url = urldecode($get->c);
 
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'fields'=>array('login','codeactiv'),
 				'conditions'=>array('user_id'=>$user_id)
 				));
@@ -205,7 +207,7 @@ class UsersController extends Controller{
 					$data->valid = 1;
 					$this->Users->save($data);
 
-					Session::setFlash('<strong>Bonjour </strong> '.$user->login.' ! Vosu avez validé votre inscription','success');
+					Session::setFlash('<strong>Bonjour </strong> '.$user->login.' ! Vous avez validé votre inscription','success');
 					Session::setFlash('Vous pouvez vous <strong>connecter</strong> dés maintenant!','info');
 									
 
@@ -252,7 +254,7 @@ class UsersController extends Controller{
 
 	    			if($this->Users->validates($data,'account_info')){
 
-						$user = $this->Users->findFirst(array('fields'=>'login, email','conditions'=>array('user_id'=>$this->request->post('user_id'))));
+						$user = $this->Users->findFirstUser(array('fields'=>'login, email','conditions'=>array('user_id'=>$this->request->post('user_id'))));
 																
 						//If it's the not same user name
 						if($user->login != $this->request->post('login'))
@@ -363,7 +365,7 @@ class UsersController extends Controller{
 	    			
 	    			if($data = $this->Users->validates($data,'account_password')){
 
-		    				$db = $this->Users->findFirst(array(
+		    				$db = $this->Users->findFirstUser(array(
 		    					'fields' => 'user_id,salt,hash',
 		    					'conditions'=> array('user_id'=>$user_id)
 		    					));
@@ -391,7 +393,7 @@ class UsersController extends Controller{
 
 	    			if($this->Users->validates($data,'account_delete')){
 
-	    				$db = $this->Users->findFirst(array(
+	    				$db = $this->Users->findFirstUser(array(
 	    					'fields'=>'hash,salt',
 	    					'conditions'=>array('user_id'=>$user_id)
 	    					));
@@ -417,7 +419,7 @@ class UsersController extends Controller{
 		    }
 
 		    //get account info
-	    	$user = $this->Users->findFirst(array(
+	    	$user = $this->Users->findFirstUser(array(
 					'conditions' => array('user_id'=>$user_id))
 				);	    	    	
 	    	// /!\ request->data used by Form class
@@ -451,14 +453,14 @@ class UsersController extends Controller{
 			
 			//find that user 
 			$user_id = base64_decode(urldecode($this->request->get('u')));
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'fields'=>array('user_id','salt'),
 				'conditions'=>array('user_id'=>$user_id)));
 			
 			//check the recovery code
 			$code = base64_decode(urldecode($this->request->get('c')));
 			$hash = md5($code.$user->salt);
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'table'=>T_USER_RECOVERY,
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$hash.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
@@ -491,13 +493,13 @@ class UsersController extends Controller{
 			
 			//find that user
 			$user_id = $data->user;
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'fields'=>array('user_id','salt'),
 				'conditions'=>array('user_id'=>$user_id)));
 
 			//check the recovery code
 			$code = md5($data->code.$user->salt);
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'table'=>T_USER_RECOVERY,
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$code.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
@@ -519,7 +521,7 @@ class UsersController extends Controller{
 					if($this->Users->save($new)){
 
 						//find the recovery data 
-						$rec = $this->Users->findFirst(array(
+						$rec = $this->Users->findFirstUser(array(
 							'table'=>T_USER_RECOVERY,
 							'fields'=>array('id'),
 							'conditions'=>array('user_id'=>$user_id,'code'=>$code)));
@@ -565,7 +567,7 @@ class UsersController extends Controller{
 			$action = 'show_form_email';
 
 			//check his email
-			$user = $this->Users->findFirst(array(
+			$user = $this->Users->findFirstUser(array(
 				'fields'=>array('user_id','email','login','salt'),
 				'conditions'=>array('email'=>$this->request->post('email')),				
 			));
@@ -670,7 +672,7 @@ class UsersController extends Controller{
 			//if no error check existing
 			if(empty($d['error'])){
 
-				$user = $this->Users->findFirst(array('fields'=> $type,'conditions' => array($type=>$value)));
+				$user = $this->Users->findFirstUser(array('fields'=> $type,'conditions' => array($type=>$value)));
 
 					if(!empty($user)) {
 						$d['error'] = '<strong>'.$value."</strong> is already in use!";
@@ -765,103 +767,6 @@ class UsersController extends Controller{
     	
     }
 
-    /**
-    *    
-	*	User Thread
-	*
-    */ 
-    public function thread(){
-
-    	$this->view = 'users/thread';
-    	$this->loadModel('Users');
-    	$this->loadModel('Manifs');
-    	$this->loadModel('Comments');
-
-    	//if user is logged
-    	if(Session::user()){
-
-    		//if user is numeric
-    		if(is_numeric(Session::user()->getID())){
-
-    			//if user is a group, redirect to group page
-    			if(Session::user()->getRole()=='group'){
-
-    				$group = $this->Users->findFirst(array(
-    					'table'=>'groups',
-    					'fields'=>'group_id as id, slug',
-    					'conditions'=>array('user_id'=>Session::user()->getID())
-    				));
-
-    				$this->redirect('groups/view/'.$group->id.'/'.$group->slug);
-    			} 
-    				
-    			//set $user_id
-    			$user_id = Session::user()->getID();
-
-    			//User
-    			$d['user'] = $this->Users->findUsers(array('fields'=>'user_id,login,avatar,bonhom', 'conditions'=>array('user_id'=>$user_id)));
-    			$d['user'] = $d['user'][0];
-    			//$d['user']->context = 'userThread';
-    			//$d['user']->context_id = $user_id;
-    			//Participations
-    			$d['protests'] = $this->Users->findParticipations('P.id,P.manif_id,M.logo,D.nommanif',array($user_id));
-
-	    		/*	
-    			//Timeline
-    			$timing = $this->Users->findUserThread($user_id);
-    			$thread = array();
-    			//Fill the timeline
-    			foreach($timing as $t){
-
-					$a          = array();
-					$a['TYPE']  = $t->TYPE;
-					$a['DATE']  = $t->date;
-					$a['RNAME'] = $t->relatedName;
-					$a['RID']   = $t->relatedID;
-					$a['RSLUG'] = $t->relatedSlug;
-					$a['RLOGO'] = $t->relatedLogo;
-
-    				if( $t->TYPE == 'PROTEST'){
-
-    					$a['OBJ'] = $this->Manifs->findProtesters(array(
-    						'fields'=>array('P.id as pid','U.user_id','U.login','P.date','M.logo','M.manif_id','D.name','D.slug'),
-    						'conditions'=>array('P.id'=>$t->id)
-    						));
-    				}
-    				elseif( $t->TYPE == 'COMMENT'){
-
-    					$a['OBJ'] = $this->Comments->findComments(array(
-    						'fields'=>array('*'),
-    						'comment_id'=> $t->id
-    						));
-
-    				}
-    				elseif( $t->TYPE == 'NEWS'){
-
-    					$a['OBJ'] = $this->Comments->findComments(array(
-    						'fields'=>array('*'),
-    						'comment_id'=> $t->id
-    						));
-    				}
-
-    				$thread[] = $a;
-    			}
-				*/
-
-    			
-
-    		}
-    	}
-    	else {
-    		$this->redirect('/');
-    	}
-
-
-    	$this->set($d);
-
-    }  
-
-
     public function admin_index(){
 
 
@@ -877,7 +782,7 @@ class UsersController extends Controller{
     		}
     	}
 
-    	$users = $this->Users->findUsers();
+    	$users = $this->Users->findUsers(array('order'=>'role ASC'));
     	$users = $this->Worlds->JOIN_GEO($users);
     	$d['users'] = $users;
 
@@ -914,7 +819,7 @@ class UsersController extends Controller{
     		}
     	}
 
-    	$user = $this->Users->findFirst(array('conditions'=>array('user_id'=>$user_id)));
+    	$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$user_id)));
     	$d['user'] = $user;
 
     	$this->set($d);

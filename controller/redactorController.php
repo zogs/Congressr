@@ -8,11 +8,11 @@ class redactorController extends usersController {
 
 		$this->loadModel('Articles');
 
-		$d['resumes'] = $this->Articles->findResumes(array('conditions'=>array('user_id'=>Session::user()->getID())));
+		$res = $this->Articles->findResumes(array('conditions'=>array('user_id'=>Session::user()->getID())));
 
-		$d['articles'] = $this->Articles->findArticles(array('conditions'=>array('user_id'=>Session::user()->getID())));
-		
+		if(empty($res)) Session::setFlash('Pas encore de résumés déposés...','warning');
 
+		$d['resumes'] = $res;
 		$this->set($d);
 
 	}

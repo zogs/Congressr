@@ -12,19 +12,22 @@
  ?>
 
 
-<h2>All <?php echo $type;?></h2>
+
+
+<?php if(!empty($resumes)): ?>
+<h2>Tous les resumés déposés</h2>
 <table class="table table-striped table-condensed table-hover">
 	<thead>
 		<th>Title</th>
+		<th>1st Author</th>
 		<th>Mots Clefs</th>
 		<th>Comm.</th>
-		<th>Status</th>
 		<th>Note</th>	
-		<th>Reviewer</th>
+		<th>Status</th>
 	</thead>
 	<tbody>
-		 <?php foreach ($articles as $a): ?>
-
+		 <?php foreach ($resumes as $a): ?>
+			
 			<form class="form-table " action="<?php echo Router::url('admin/articles/index/'.$type);?>" method="POST">
 		 	<tr class="<?php 
 		 			if(isset($a->status) && $a->status=='pending') echo 'warning';
@@ -33,14 +36,15 @@
 		 			if(isset($a->status) && $a->status=='refused') echo 'error';
 		 			?>">
 	 			<td><a href="<?php echo Router::url('admin/articles/view/resume/'.$a->id);?>"><?php echo $a->title; ?></a></td>
+	 			<td><span  style="text-transform:uppercase"><?php echo $a->authors[0]->lastname;?></span>&nbsp;<?php echo $a->authors[0]->firstname;?></td>
 	 			<td><?php echo $a->tags; ?></td>
-	 			<td><?php echo $a->prefer; ?></td>
-		 		<td><?php echo $a->status;?></td>				
+	 			<td><?php echo $a->getCommPrefered(); ?></td>
 				<td><?php echo $a->getAverageNote(); ?></td>	 			
-				<td>
-					<?php echo $this->Form->_select('reviewer',$reviewers,array("default"=>$a->reviewer_id,'style'=>'width:auto;padding-left:0;')) ;?>
-					<input type="Submit"  class="submitAsLink" value="Envoyer" name="assignResume"/>
-				</td>	 		
+		 		<td>
+		 			<?php echo $a->status;?>
+		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
+		 		</td>				
+					
 		 	</tr>
 
 		 	<?php echo $this->Form->input('id','hidden',array('value'=>$a->id)) ;?>
@@ -49,3 +53,44 @@
 		 <?php endforeach ?>
 	</tbody>
 </table>
+<?php endif; ?>
+
+<?php if(!empty($deposed)): ?>
+<h2>Tous les articles déposés</h2>
+<table class="table table-striped table-condensed table-hover">
+	<thead>
+		<th>Title</th>
+		<th>1st Author</th>
+		<th>Comm. wanted</th>
+		<th>Average Note</th>
+		<th>Current status</th>
+	</thead>
+	<tbody>
+		<?php foreach ($deposed as $a):?>
+			
+			<form class="form-table" action="<?php echo Router::url('admin/articles/index/deposed');?>" method="POST">
+			<tr class="<?php 
+		 			if(isset($a->status) && $a->status=='pending') echo 'warning';
+		 			if(isset($a->status) && $a->status=='reviewed') echo 'info';
+		 			if(isset($a->status) && $a->status=='accepted') echo 'success';
+		 			if(isset($a->status) && $a->status=='refused') echo 'error';
+		 			?>">
+	 			<td><a href="<?php echo Router::url('admin/articles/view/deposed/'.$a->resume_id);?>"><?php echo $a->title; ?></a></td>
+	 			<td><span  style="text-transform:uppercase"><?php echo $a->authors[0]->lastname;?></span>&nbsp;<?php echo $a->authors[0]->firstname;?></td>
+	 			<td><?php echo $a->getCommPrefered(); ?></td>
+	 			<td><?php echo $a->getAverageNote();?></td>	 			
+		 		<td>
+		 			<?php echo $a->status;?>
+		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
+		 		</td>				
+					
+		 	</tr>
+
+		 	<?php echo $this->Form->input('id','hidden',array('value'=>$a->id)) ;?>
+		 	<?php echo $this->Form->input('resume_id','hidden',array('value'=>$a->resume_id)) ;?>
+		 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
+			</form>
+		<?php endforeach;?>
+	</tbody>
+</table>
+<?php endif; ?>

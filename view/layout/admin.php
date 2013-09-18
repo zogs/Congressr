@@ -17,11 +17,13 @@
                                 Admin.
                         </a>                       
 
-                        <ul class="nav">
-                                <li><a href="<?php echo Router::url('/'); ?>">Voir le site</a></li>                               
+                        <ul class="nav">                                                
                                 <li><a href="<?php echo Router::url('admin/pages/index'); ?>">Pages</a></li>
                                  <li><a href="<?php echo Router::url('admin/users/index'); ?>">Users</a></li>
-                                 <li><a href="<?php echo Router::url('admin/articles/index/resume');?>">Resume</a></li>
+                                 <li><a href="<?php echo Router::url('admin/articles/index/resume');?>">Resumés</a></li>
+                                 <li><a href="<?php echo Router::url('admin/articles/index/deposed');?>">Articles</a></li>
+                                 <li><a href="<?php echo Router::url('admin/articles/mailing');?>">Mailing</a></li>
+                                  <li><a href="<?php echo Router::url('/'); ?>">Voir le site</a></li>            
                                 <li><a href="<?php echo Router::url('admin/logout'); ?>">Deconnexion</a></li>
                                 
                         </ul>
@@ -88,9 +90,9 @@ tinyMCE.init({
         skin_variant : "silver",
 
         // Absolute URL
-        relative_urls : false,
-        remove_script_host : false,
-        document_base_url : "http://climatologie.u-bourgogne.fr/ecole/",
+        //relative_urls : false,
+        //remove_script_host : false,
+       // document_base_url : "http://climatologie.u-bourgogne.fr/ecole/",
 
         // Example content CSS (should be your site CSS)
         content_css : "css/example.css",

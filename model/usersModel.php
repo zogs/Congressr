@@ -13,12 +13,16 @@ class UsersModel extends Model{
 				'rule' => 'email',
 				'message' => "L'adresse email n'est pas valide"
 				),
+			'confirmEmail' => array(
+				'rule' => 'confirmEmail',
+				'message' => "Vos adresses ne sont pas identiques"
+				),
 			'password' => array(
 				'rule' => 'regex',
 				'regex'=> '.{5,20}',
 				'message' => "Votre mot de passe doit etre entre 5 et 20 caracteres"
 				),
-			'confirm' => array(
+			'confirmPassword' => array(
 				'rule' => 'confirmPassword',
 				'message' => "Vos mots de passe ne sont pas identiques"
 				),
@@ -181,7 +185,7 @@ class UsersModel extends Model{
 			$sql .= ' LIMIT '.$req['limit'];
  		}
 
- 		 //debug($sql);
+ 		 // debug($sql);
  		
  		$results = $this->query($sql);
 
@@ -197,7 +201,7 @@ class UsersModel extends Model{
 	}
 
 
-	public function findFirst($req){
+	public function findFirstUser($req){
 
 		return current($this->findUsers($req));
 	}

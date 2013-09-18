@@ -63,10 +63,10 @@ Bootstrap
 /*
 Top bar login
 */
-form.loginForm { margin:0; padding:5px 0 0 0; display:inline-block; float:right; text-align:right; color:white;}
+form.loginForm { margin:0; padding:0; display:inline-block; float:right; text-align:right; color:white;}
 form.loginForm input { padding-left: 5px; background:#626262; border:1px solid #151515; }
 form.loginForm input[name=login] { width:100px; }
-form.loginForm input[name=password] { width:70px; }
+form.loginForm input[name=password] { width:80px; border-radius:0; margin-top:6px; padding:5px; height:23px;}
 form.loginForm input:focus, form.loginForm input:hover {  background-color:#EBEBEB; }
 form.loginForm input[type=submit] { width:auto; padding-left:6px; padding-right:6px; background-color:rgba(255,255,255,0.6); border:1px solid #555 }
 form.loginForm input[type=submit]:hover { background-color:#EBEBEB;}

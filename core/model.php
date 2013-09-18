@@ -151,7 +151,7 @@
 
  		}
  		
- 		// debug($sql);
+ 		//debug($sql);
  		$pre = $this->db->prepare($sql);
  		$pre->execute();
 

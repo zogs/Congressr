@@ -1,14 +1,13 @@
-<a class="btn fright" href="<?php echo Router::url('admin/reviewer/create');?>">Create reviewer</a>
 
 
-<h2>All users</h2>
+
+<h2>All users <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Create reviewer</a></h2>
 <table class="table table-striped table-hover">
 	<thead>
 		<th>Login</th>
 		<th>Role</th>
 		<th>Prenom</th>
 		<th>Nom</th>				
-		<th>Date</th>
 		<th>Pays</th>
 		<th>Action</th>
 	</thead>
@@ -28,7 +27,6 @@
 	 			</td>
 		 		<td><?php echo $user->prenom; ?></td>
 		 		<td><?php echo $user->nom;?></td>				
-				<td><?php echo $user->date_signin; ?></td>
 				<td><?php echo $user->CC1;?></td>		 		
 		 		<td>
 					<?php echo $this->Form->_select('role',array('redactor'=>'redactor','reviewer'=>'reviewer','chairman'=>'chairman','admin'=>'admin'),array('default'=>$user->getRole(),'style'=>"display:inline;width:auto;") );?>

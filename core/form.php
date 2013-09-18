@@ -8,6 +8,7 @@ class Form{
 	public function __construct($controller){
 
 		$this->controller = $controller;
+		$this->request = $controller->request;
 
 	}
 
@@ -101,15 +102,12 @@ class Form{
 		if(isset($options['value']) && $options['value']!=''){
 			$value = $options['value'];
 		}
-		elseif(!isset($this->request->data->$id)){ //Si le champ n'a pas de valeur pré-rempli
+		elseif(!isset($this->controller->request->data->$id)){ //Si le champ n'a pas de valeur pré-rempli
 			$value='';
 		}
 		else{ //Sinon on recupere la valeur dans les données passé en post dans l'objet request
-			$value = $this->request->data->$id;
+			$value = $this->controller->request->data->$id;
 		}
-
-		debug($label.' '.$value);
-		debug($this->request->data->$id);
 
 		//return if submit button
 		if($label=='submit'){
@@ -153,12 +151,12 @@ class Form{
 			$html .= '<input type="hidden" name="'.$id.'" value="0"><input type="checkbox" name="'.$id.'" value="1" '.(!empty($value)? 'checked' : '').' '.$attr.' />';
 		}
 		elseif($options['type']=='file'){
-			$html .= '<input type="file" class="input-file" id="input'.$id.'" name="'.$id.'" '.$attr.'>';
-
 			if( !empty($options['src']) && $options['src']!=''){
 
 				$html .= '<div class="input-file-thumbnail"><img src="'.$options['src'].'" /></div>';
 			}
+			$html .= '<input type="file" class="input-file" id="input'.$id.'" name="'.$id.'" '.$attr.'>';
+
 		}
 		elseif($options['type']=='password'){
 			$html .= '<input type="password" id="input'.$id.'" name="'.$id.'" value="'.$value.'" '.$attr.'>';

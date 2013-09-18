@@ -150,8 +150,10 @@ class Router{
 	static function addLang($url){
 
 		if(isset($_GET['lang'])){
-			if(strpos($url,'?'))
-				$url .= '&lang='.$_GET['lang'];
+			if(strpos($url,'?')){
+				if(!strpos($url,'lang')) $url .= '&lang='.$_GET['lang'];
+
+			}
 			else
 				$url .= '?lang='.$_GET['lang'];
 

@@ -267,6 +267,15 @@ class Controller {
 		}
 	}
 
+	
+	public function getFlagLang( $lang = null){
+
+		if(!$lang) $lang = $this->getLang();
+		$array = array('en'=>'uk');		
+		if(isset($array[$lang])) return $array[$lang];
+		else return $lang;
+	}
+
 	public function getLang(){		
 		
 

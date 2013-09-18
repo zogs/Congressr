@@ -75,8 +75,11 @@ $(document).ready(function(){
 		GEO LOCATE
 	============================================================*/
 
-    $(".geo-select").select2();
-    $("#CC1").select2({ formatResult: addCountryFlagToSelectState, formatSelection: addCountryFlagToSelectState});
+	if($('.geo-select').length!=0)
+    		$(".geo-select").select2();
+
+    	if($('#CC1').length!=0)
+    		$("#CC1").select2({ formatResult: addCountryFlagToSelectState, formatSelection: addCountryFlagToSelectState});
 
 
 	/*===========================================================
