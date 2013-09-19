@@ -123,7 +123,7 @@ class reviewerController extends usersController {
 			$user = $this->request->post();
 			$mail = clone $user;
 			$password = $user->password;
-			
+
 			unset($user->mailcontent);
 
 			if($id = $this->createUser($user)){
@@ -132,7 +132,9 @@ class reviewerController extends usersController {
 
 				$user = $this->Users->findFirst(array('conditions'=>array('user_id'=>$id)));
 
-				if($this->mail_invitation( $user, $password, $mail->mailcontent )){
+				$subject = "AIC Dijon 2014 : Invitation à participation au Comité Scientifique ";
+
+				if($this->mail_invitation( $user, $password, $mail->mailcontent, $subject )){
 
 					Session::setFlash("Your invitation have been sended to ".$mail->email);
 				}
@@ -144,7 +146,7 @@ class reviewerController extends usersController {
 		}
 	}
 
-	private function mail_invitation( $user, $password, $content ) {
+	private function mail_invitation( $user, $password, $content, $subject ) {
 
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
 
@@ -162,7 +164,7 @@ class reviewerController extends usersController {
 
 
 		$message = Swift_Message::newInstance()
-		->setSubject('Invitation for reviewer')
+		->setSubject($subject)
 		->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
 		->setTo($user->email)
 		->setBody($content, 'text/html', 'utf-8');
