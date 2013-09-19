@@ -48,7 +48,7 @@ require ROOT.'/lib/SwiftMailer/swift_required.php';//Swift mailer
 
 //define routes for the router
 new Routes();
-
+echo 'dispatcher';
 //launch the dispacher
 new Dispatcher();
 
