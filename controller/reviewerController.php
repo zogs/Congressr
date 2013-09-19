@@ -122,7 +122,8 @@ class reviewerController extends usersController {
 
 			$user = $this->request->post();
 			$mail = clone $user;
-
+			$password = $user->password;
+			
 			unset($user->mailcontent);
 
 			if($id = $this->createUser($user)){
@@ -131,7 +132,7 @@ class reviewerController extends usersController {
 
 				$user = $this->Users->findFirst(array('conditions'=>array('user_id'=>$id)));
 
-				if($this->mail_invitation( $user, 'Invitation for reviewer', $mail->mailcontent )){
+				if($this->mail_invitation( $user, $password, $mail->mailcontent )){
 
 					Session::setFlash("Your invitation have been sended to ".$mail->email);
 				}
@@ -143,6 +144,38 @@ class reviewerController extends usersController {
 		}
 	}
 
+	private function mail_invitation( $user, $password, $content ) {
+
+		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
+
+		$link = Conf::getSiteUrl()."/users/validate?c=".urlencode($user->codeactiv)."&u=".urlencode($user->user_id);
+		$link =  '<a href="'.$link.'" target="_blank">'.$link.'</a>';
+	
+		//insére le lien de validation
+		$content = preg_replace("~{link}~i",$link,$content);
+		$content = preg_replace("~{login}~i",$user->login,$content);
+		$content = preg_replace("~{password}~i",$password,$content);
+		
+
+		//insére le lien de validation en bas du mail
+		$content .= '<p>&nbsp;</p><p><small>N\'oubliez pas de cliquer sur le lien d\'activation : '.$link.'<br />Remeber to click to activation link: '.$link.'</small></p>';
+
+
+		$message = Swift_Message::newInstance()
+		->setSubject('Invitation for reviewer')
+		->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		->setTo($user->email)
+		->setBody($content, 'text/html', 'utf-8');
+
+		if(!$mailer->send($message, $failures)){
+
+			debug($failures);
+		}
+		else
+			return true;
+		
+
+	}
 
 	public function requestChange($type,$id){
 
@@ -212,34 +245,6 @@ class reviewerController extends usersController {
 		}
 	}
 
-	private function mail_invitation( $user, $subject, $content ) {
-
-		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
-
-		$link = Conf::getSiteUrl()."/users/validate?c=".urlencode($user->codeactiv)."&u=".urlencode($user->user_id);
-		$link =  '<a href="'.$link.'" target="_blank">'.$link.'</a>';
-	
-		//insére le lien de validation
-		$content = preg_replace("~{link}~i",$link,$content);
-		//insére le lien de validation en bas du mail
-		$content .= '<p><small>N\'oubliez pas de cliquer sur le lien d\'activation : '.$link.'<br />Remeber to click to activation link: '.$link.'</small></p>';
-
-
-		$message = Swift_Message::newInstance()
-		->setSubject($subject)
-		->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
-		->setTo($user->email)
-		->setBody($content, 'text/html', 'utf-8');
-
-		if(!$mailer->send($message, $failures)){
-
-			debug($failures);
-		}
-		else
-			return true;
-		
-
-	}
 
 } 
 

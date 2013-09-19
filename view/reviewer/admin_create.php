@@ -2,7 +2,7 @@
 <p class="small em">
 	A email will be send to the reviewer with his connexion information. <br />He will be able to log in Congressr and start reviewing articles he will be asked by the chairman.
 </p>
-<div class="span8">
+
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('admin/reviewer/create'); ?>" method="post">
 
 			<?php echo $this->Form->input('login','',array('icon'=>'icon-user','required'=>'required','placeholder'=>"login",'data-url'=>Router::url('users/check'))) ?>
@@ -29,7 +29,36 @@
 				</div>
 			</div>	
 
-			<?php echo $this->Form->input('mailcontent','',array('type'=>'textarea','class'=>'','placeholder'=>"Contenu du mail d'invitation ( Mentionner de cliquer le lien d'activation, pour insérer le lien, entrer {link} dans votre texte ) ",'rows'=>5)) ;?>
+			<?php echo $this->Form->input('mailcontent','',array('type'=>'textarea','class'=>'','value'=>"
+<p>Cher(e) Collègue,</p>
+
+<p><strong>Le 27ème Colloque de l’Association  Internationale de Climatologie</strong> (AIC 2014) se tiendra à Dijon du 2 au 5 juillet 2014 (www.aic2014.com). Organisé par le Centre de Recherches de Climatologie / Biogéosciences (UMR 6282 CNRS / université de Bourgogne), il aura pour thème <strong>« Climat : système & interactions »</strong> avec les 5 sous-thèmes suivants :</p>
+
+<ul>
+<li>Interactions et changement d’échelles</li>
+<li>États de surface</li>
+<li>Changement climatique</li>
+<li>Impacts du climat</li>
+<li>Variabilité et aléas climatiques</li>
+</ul>
+
+<p>Nous vous sollicitons pour faire partie du comité scientifique de ce colloque. Si vous l'acceptez, vous serez contacté en mars-avril pour sélectionner et expertiser des communications scientifiques (résumés étendus) soumises à ce colloque. </p>
+
+<p>Nous vous remercions de bien vouloir indiquer :<br/>
+- d'ici à <strong>jeudi 26 septembre</strong> ;<br/>
+- via le <strong>lien ci-dessous </strong>;<br/>
+si vous acceptez de faire partie de ce comité.
+</p> 
+
+<p>Bien cordialement,</p>
+
+<p>Yves Richard & Pierre Camberlin</p>
+
+Pour activer votre compte cliquer sur ce lien : {link} <br/>
+<strong>Login</strong> : {login}<br/>
+<strong>Password</strong> : {password}<br/>
+
+						",'rows'=>10)) ;?>
 			
 			<div class="actions">
 				<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
@@ -39,4 +68,3 @@
 			</div>
 
 	</form>		
-</div>
