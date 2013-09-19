@@ -124,7 +124,7 @@
 
 	 					//On escape les valeurs
 		 				if(!is_numeric($v)){ 
-		 					$v = '"'.mysql_escape_string($v).'"';	 					
+		 					$v = '"'.mysql_real_escape_string($v).'"';	 					
 		 				}
 	 				
 		 				//On incremente le tableau avec les conditions
