@@ -31,10 +31,10 @@ class Conf {
 			'login'    => 'root',
 			'password' => ''
 			),
-		'online_url' => array(
+		'www.aic2014.com' => array(
 			'host'=> 'localhost',
 			'database'=> 'congressr',
-			'login'=>'admin',
+			'login'=>'root',
 			'password'=>''
 			)
 		);

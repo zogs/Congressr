@@ -34,7 +34,7 @@
 			if(isset(Conf::$databases[$host]))
 			$conf = Conf::$databases[$host];
 			else
-			throw new zException("Missing databases connexion for '".$host." '", 1);
+			throw new zException("Missing databases connexion for '".$host."'", 1);
 
 		  }
 		 

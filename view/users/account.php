@@ -14,8 +14,7 @@
 				<?php
 					$links = array(
 									'profil'=>'Profil',
-									'account'=>'Account',
-									'avatar'=>'Avatar',									
+									'account'=>'Account',									
 									'password'=>'Password',
 									'delete'=>'Delete'
 								);
@@ -53,7 +52,9 @@
 				
 				<?php echo $this->Form->input('prenom','Prenom',array('icon'=>'icon-user','placeholder'=>'Prenom')); ?>
 				<?php echo $this->Form->input('nom','Nom',array('icon'=>'icon-user','placeholder'=>'Nom')); ?>					
-				<?php echo $this->Form->SelectNumber('age','Birth year',2006,1950,array('default'=>$user->getBirthYear(),'icon'=>'icon-gift','placeholder'=>"( Your birth year )")) ;?>	
+				<?php echo $this->Form->input('job','Institution',array('icon'=>'icon-home','placeholder'=>'Institution')); ?>
+				<?php echo $this->Form->input('address','Adresse',array('icon'=>'icon-map','placeholder'=>'Adresse')); ?>
+				<?php echo $this->Form->input('tel','Téléphone',array('icon'=>'icon-phone','placeholder'=>'Téléphone')); ?>	
 
 				<div class="control-group">	
 					<label for="CC1" class="control-label">Localisation</label>			

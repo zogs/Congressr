@@ -373,12 +373,15 @@ class UsersController extends Controller{
 		    				if($db->hash == md5($db->salt.$this->request->post('oldpassword'))){
 
 		    					$data = new stdClass();
-		    					$data->hash = md5($db->salt.$this->request->post('oldpassword'));
+		    					$data->hash = md5($db->salt.$this->request->post('password'));
 		    					$data->user_id = $user_id;
 		    					
-		    					$this->Users->save($data);
-		    					Session::setFlash('Your password have been changed !');
-
+		    					if($this->Users->save($data)){
+		    						Session::setFlash('Your password have been changed !');		    						
+		    					}
+		    					else {
+		    						Session::setFlash('Error while saving your password...','error');
+		    					}
 		    				}
 		    				else Session::setFlash('Your old password is not correct','error');
 		    		}
@@ -576,7 +579,7 @@ class UsersController extends Controller{
 
 				//check if existant recovery data
 				$recov = $this->Users->find(array(
-					'table'=>T_USER_RECOVERY,
+					'table'=>'users_mail_recovery',
 					'fields'=>array('id'),
 					'conditions'=>array('user_id'=>$user->user_id)
 					));
@@ -585,8 +588,8 @@ class UsersController extends Controller{
 				if(!empty($recov)){
 
 					$del = new stdClass();
-					$del->table = T_USER_RECOVERY;
-					$del->key = K_USER_RECOVERY;
+					$del->table = 'users_mail_recovery';
+					$del->key = 'id';
 					$del->id = $recov[0]->id;
 					$this->Users->delete($del);
 				}
@@ -598,8 +601,8 @@ class UsersController extends Controller{
 				$rec->user_id = $user->user_id;
 				$rec->code = md5($code.$user->salt);
 				$rec->date_limit = unixToMySQL(time() + (2 * 24 * 60 * 60));
-				$rec->table = T_USER_RECOVERY;
-				$rec->key = K_USER_RECOVERY;
+				$rec->table = 'users_mail_recovery';
+				$rec->key = 'id';
 
 				//save it
 				if($this->Users->save($rec)){
@@ -705,11 +708,11 @@ class UsersController extends Controller{
 
 		//Création du mail
 		$message = Swift_Message::newInstance()
-		  ->setSubject("Change ton mot de passe")
+		  ->setSubject("Change your password")
 		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
 		  ->setTo($dest, $user)
 		  ->setBody($body, 'text/html', 'utf-8')
-		  ->addPart("Hey {$user}, copy this link ".$lien." in your browser to change your password. Don't stop the Protest.", 'text/plain');
+		  ->addPart("Hey {$user}, copy this link ".$lien." in your browser to change your password.", 'text/plain');
 
 		//Envoi du message et affichage des erreurs éventuelles
 		if (!$mailer->send($message, $failures))

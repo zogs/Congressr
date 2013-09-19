@@ -59,7 +59,7 @@
 				<li><a href="?lang=en"><i class="flag flag-uk"></i></a></li>
 
 				<?php if (Session::user()->isLog()): ?>
-					<li><a href="<?php echo Router::url('pages/home');?>">
+					<li><a href="<?php echo Router::url('users/account');?>">
 							<img class="nav-avatar" src="<?php echo Router::webroot(Session::user()->getAvatar()); ?>" />	
 							<span class="nav-login"><?php echo Session::user()->getLogin(); ?></span>
 					</a></li>
