@@ -1,3 +1,6 @@
+#disabled cache gandi
+Header add Cache-Control "max-age=1"
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
