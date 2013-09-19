@@ -24,7 +24,7 @@
 				if(Session::user()->getRole()=='visitor'){
 					//Recuperation du Menu
 					//Appel de ma methode getMenu du controlleur Pages				
-					$pagesMenu = $this->call('Pages','getMenu',array('main'));				
+					$pagesMenu = $this->call('pages','getMenu',array('main'));				
 					foreach ($pagesMenu as $v) : 
 				?>				
 					<li><a href='<?php echo Router::url("$v->slug");?>' ><?php echo $v->title; ?></a></li>
