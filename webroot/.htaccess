@@ -1,8 +1,13 @@
 #disabled cache gandi
 Header add Cache-Control "max-age=1"
 
+<IfModule mod_rewrite.c>
+        Options +FollowSymLinks
+        RewriteEngine On
+</IfModule>
+
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule (.*) index.php/$1 [L,QSA]
+RewriteRule ^(.*)$ index.php/$1 [L,QSA]
 
