@@ -48,6 +48,7 @@ class Conf {
 	//Cache
 	static $cachePath = array(
 		'localhost' => 'D:/wamp/www/congressr/webroot/cache',
+		'www.aic2014.com' => WEBROOT.'/cache';
 		);
 
 
