@@ -1,6 +1,6 @@
 <?php 
 
-class reviewerController extends usersController {
+class ReviewerController extends usersController {
 
 
 	public function board(){

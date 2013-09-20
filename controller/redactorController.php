@@ -1,6 +1,6 @@
 <?php 
 
-class redactorController extends usersController {
+class RedactorController extends usersController {
 
 	public function board(){
 

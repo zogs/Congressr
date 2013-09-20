@@ -1,6 +1,6 @@
 <?php 
 
-class articlesController extends Controller {
+class ArticlesController extends Controller {
 
 	public function index( $type ){
 

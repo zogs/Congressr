@@ -1,5 +1,5 @@
 <?php
-class chairmanController extends usersController {
+class ChairmanController extends usersController {
 
 
 }
