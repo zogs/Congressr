@@ -1,5 +1,5 @@
 <?php 
-class redactorModel extends Model {
+class RedactorModel extends Model {
 
 }
 
