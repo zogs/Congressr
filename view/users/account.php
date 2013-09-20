@@ -74,7 +74,7 @@
 
 				<div class="module-header">
 					<h2>Account</h2>
-					<p class="subheader">User name and contact email</p>
+			
 				</div>
 
 				<?php echo $this->Form->input('login','Login',array('icon'=>'icon-user','required'=>'required','data-url'=>Router::url('users/check'))); ?>
@@ -93,7 +93,7 @@
 
 				<div class="module-header">
 					<h2>Avatar</h2>
-					<p class="subheader">Votre image bla bla</p>
+					
 				</div>
 
 				<div class='avatar'>
@@ -113,7 +113,7 @@
 
 				<div class="module-header">
 					<h2>Mot de passe</h2>
-					<p class="subheader">Changer votre mot de passe</p>
+				
 				</div>
 
 
