@@ -46,7 +46,7 @@
 
 				<div class="module-header">
 					<h2>Profil</h2>
-					<p class="subheader">Ces informations n'apparaissent pas blabla...</p>
+			
 				</div>
 								
 				
