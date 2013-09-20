@@ -1,6 +1,7 @@
 <h2>Create Reviewer</h2>
 <p class="small em">
 	A email will be send to the reviewer with his connexion information. <br />He will be able to log in Congressr and start reviewing articles he will be asked by the chairman.
+
 </p>
 
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('admin/reviewer/create'); ?>" method="post">
@@ -64,8 +65,10 @@ Pour <strong>activer votre compte</strong> cliquer sur ce lien : {link} <br/>
 			<div class="actions">
 				<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
 				<?php echo $this->Form->input('role','hidden',array('value'=>'reviewer')) ;?>			
-				<input class="pull-right btn btn-large btn-primary" type="submit" value="Create reviewer and Send email" />
-				
+				<input class="pull-right btn btn-large btn-primary" type="submit" value="Envoyer l'invitation" style="margin-bottom:0"/>
+				<div class="clearfix"></div>
+				<br/><a href="<?php echo Router::url('cockpit/reviewer/create');?>" >Créer un nouveau reviewer</a>
 			</div>
-
 	</form>		
+				
+
