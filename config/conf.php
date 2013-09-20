@@ -100,6 +100,10 @@ class Conf {
     		->setUsername('si3804gu')
     		->setPassword('f4tb0ysl/m');
 
+    		
+	$transport = Swift_SmtpTransport::newInstance('mail.gandi.net',465,"ssl")
+		->setUsername('contact@aic2014.com')
+		->setPassword('climato21...');
 		//PHP mail() function
 		// $transport = Swift_SendmailTransport::newInstance(); 
 
