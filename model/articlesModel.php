@@ -1,5 +1,5 @@
 <?php 
-class articlesModel extends Model {
+class ArticlesModel extends Model {
 
 	public $validates = array(
 		'resume'=> array(
