@@ -1,6 +1,3 @@
-#disabled cache gandi
-Header add Cache-Control "max-age=1"
-
 RewriteEngine On
-RewriteRule (.*) webroot/$1 [L,QSA]
+RewriteRule (.*) webroot/$1 [L]
 

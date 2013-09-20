@@ -16,6 +16,7 @@ class Request{
 		
 
 		$this->url = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
+		debug($this->url);
 		//$this->url = str_replace(BASE_URL."/", "", 
 		//$_SERVER['REQUEST_URI']); //Recuperation du PATH_INFO 
 
