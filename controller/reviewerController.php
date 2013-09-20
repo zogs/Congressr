@@ -172,7 +172,7 @@ class ReviewerController extends usersController {
 
 		$message = Swift_Message::newInstance()
 		->setSubject($subject)
-		->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		->setTo($user->email)
 		->setBody($content, 'text/html', 'utf-8');
 
@@ -241,7 +241,7 @@ class ReviewerController extends usersController {
 
 		$message = Swift_Message::newInstance()
 		->setSubject($subject)
-		->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		->setTo($authorEmail)
 		->setBody($body,'text/html','utf-8');
 

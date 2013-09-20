@@ -618,7 +618,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($resume->email, $resume->nom)
 		  ->setBody($body, 'text/html', 'utf-8');
 
@@ -653,7 +653,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($resume->email, $resume->nom)
 		  ->setBody($body, 'text/html', 'utf-8');
 
@@ -688,7 +688,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		  ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($resume->email, $resume->nom)
 		  ->setBody($body, 'text/html', 'utf-8');
 
@@ -723,7 +723,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($article->email, $article->nom)
 		  ->setBody($body, 'text/html', 'utf-8');
 
@@ -758,7 +758,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		  ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($article->email, $article->nom)
 		  ->setBody($body, 'text/html', 'utf-8');
 

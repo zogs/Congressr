@@ -709,7 +709,7 @@ class UsersController extends Controller{
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject("Change your password")
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($dest, $user)
 		  ->setBody($body, 'text/html', 'utf-8')
 		  ->addPart("Hey {$user}, copy this link ".$lien." in your browser to change your password.", 'text/plain');
@@ -741,7 +741,7 @@ class UsersController extends Controller{
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject("Validation de l'inscription à ".Conf::$website)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		  ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($dest, $user)
 		  ->setBody($body, 'text/html', 'utf-8')
 		  ->addPart("Hey {$user}, copy this link ".$lien." in your browser. Welcome on the Protest.", 'text/plain');
