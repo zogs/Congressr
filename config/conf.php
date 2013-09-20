@@ -95,11 +95,11 @@ class Conf {
     public static function getTransportSwiftMailer(){
 
     	//SMTP configuration
-    	$transport = Swift_SmtpTransport::newInstance()
-    		->setHost('smtp.u-bourgogne.fr')
-    		->setPort(25)
-    		->setUsername('si3804gu')
-    		->setPassword('f4tb0ysl/m');
+    	//$transport = Swift_SmtpTransport::newInstance()
+    	//	->setHost('smtp.u-bourgogne.fr')
+    	//	->setPort(25)
+    	//	->setUsername('si3804gu')
+    	//	->setPassword('f4tb0ysl/m');
 
     		
 	$transport = Swift_SmtpTransport::newInstance('mail.gandi.net',465,"ssl")
