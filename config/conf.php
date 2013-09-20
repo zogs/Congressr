@@ -97,7 +97,7 @@ class Conf {
     	//SMTP configuration
     	$transport = Swift_SmtpTransport::newInstance()
     		->setHost('mail.gandi.net')
-    		->setPort(25)
+    		->setPort(587)
     		->setUsername('contact@aic2014.com')
     		->setPassword('climato21...');
 
