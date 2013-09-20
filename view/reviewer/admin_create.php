@@ -6,17 +6,17 @@
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('admin/reviewer/create'); ?>" method="post">
 
 			<?php //echo $this->Form->input('login','',array('icon'=>'icon-user','required'=>'required','placeholder'=>"login",'data-url'=>Router::url('users/check'))) ?>
-			<?php echo $this->Form->input('email',"",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"email",'data-url'=>Router::url('users/check'))) ?>
+			<?php echo $this->Form->input('email',"Email",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"email",'data-url'=>Router::url('users/check'))) ?>
 			<?php //echo $this->Form->input('password','',array('type'=>"password",'icon'=>'icon-lock','required'=>'required','placeholder'=>'mot de passe')) ?>
 			<?php //echo $this->Form->input('confirm','', array('type'=>'password','icon'=>'icon-lock','required'=>'required','placeholder'=>'Confirmer')) ?>		
-			<?php echo $this->Form->input('prenom',"",array('icon'=>'icon-user','placeholder'=>'Prénom')) ?>
-			<?php echo $this->Form->input('nom',"",array('icon'=>'icon-user','placeholder'=>'Nom ')) ;?>
-			<?php echo $this->Form->input('job','',array('icon'=>'icon-bookmark','placeholder'=>'Organisme')) ;?>
-			<?php echo $this->Form->input('address','',array('icon'=>'icon-map-marker','placeholder'=>'Adresse postale')) ;?>
-			<?php echo $this->Form->input('tel','',array('icon'=>'icon-info-sign','placeholder'=>'Téléphone')) ;?>
+			<?php echo $this->Form->input('prenom',"Prénom",array('icon'=>'icon-user','placeholder'=>'Prénom')) ?>
+			<?php echo $this->Form->input('nom',"Nom",array('icon'=>'icon-user','placeholder'=>'Nom ')) ;?>
+			<?php echo $this->Form->input('job','Institution',array('icon'=>'icon-bookmark','placeholder'=>'Organisme')) ;?>
+			<?php echo $this->Form->input('address','Adresse',array('icon'=>'icon-map-marker','placeholder'=>'Adresse postale')) ;?>
+			<?php echo $this->Form->input('tel','Téléphone',array('icon'=>'icon-info-sign','placeholder'=>'Téléphone')) ;?>
 
 			<div class="control-group">
-				<label for="pays" class="control-label"></label>
+				<label for="pays" class="control-label">Pays / Region</label>
 				<div class="controls">
 				
 						<?php 
@@ -29,7 +29,7 @@
 				</div>
 			</div>	
 
-			<?php echo $this->Form->input('mailcontent','',array('type'=>'textarea','class'=>'','value'=>"
+			<?php echo $this->Form->input('mailcontent','Contenu du mail d\'invitation',array('type'=>'textarea','class'=>'','value'=>"
 <p>Cher(e) Collègue,</p>
 
 <p><strong>Le 27ème Colloque de l’Association  Internationale de Climatologie</strong> (AIC 2014) se tiendra à Dijon du 2 au 5 juillet 2014 (www.aic2014.com). Organisé par le Centre de Recherches de Climatologie / Biogéosciences (UMR 6282 CNRS / université de Bourgogne), il aura pour thème <strong>« Climat : système & interactions »</strong> avec les 5 sous-thèmes suivants :</p>

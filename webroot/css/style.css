@@ -2,32 +2,6 @@
 /* Add CSS code here */
 
 
-.figures {
-	float:left;
-	width:100%;
-	margin:50px 0;
-}
-.figure {
-	width:80%;
-	margin: 20px 0 0 0;
-	padding:10px;
-	overflow:hidden;
-
-}
-.form .figure .control-group label.control-label{
-	font-weight:bold;
-	color:black;
-	font-size:12px;
-}
-.figure .input-file-thumbnail img {
-	width:50%;
-}
-.btnAddFigure {
-	width:100%;
-	display: block;
-	float:left;
-
-}
 .hero-unit{
 	font-size:12px;
 	line-height: 150%;
