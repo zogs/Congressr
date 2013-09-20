@@ -500,7 +500,7 @@ class Resume extends Article {
 	public $title  = '';
 	public $text   = '';
 	public $tags   = '';
-	public $prefer = '';
+	public $comm_type = 'oral';
 	public $note = 0;
 	public $comment = '';
 
@@ -578,22 +578,6 @@ class Article {
 	public function getCommPrefered(){
 		if(!empty($this->comm_type)) return $this->comm_type;
 		return '';
-	}
-}
-class Extended extends Article {
-	public $id = '';
-	public $resume_id ='';
-	public $content = '';
-	public $date = '';
-	public $comment='';
-	public $note = 0;
-
-	public function __construct( $fields = array() ){
-
-		if(empty($fields)) return;
-		foreach ($fields as $key => $value) {
-			$this->$key = $value;
-		}
 	}
 }
 
