@@ -423,7 +423,7 @@ class ArticlesModel extends Model {
 			}
 
 			// if ID is given, do an update
-			if(isset($author->id)&&$author_id!=0) $author->key = 'id'; 
+			if(isset($author->id)&&$author->id!=0) $author->key = 'id'; 
 				
 			//Save author			
 			$author_id = $this->save( $author );
