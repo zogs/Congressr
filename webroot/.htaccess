@@ -2,5 +2,5 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_URI} !=/favicon.ico
-RewriteRule ^(.*)$ index.php/$1 [L,QSA]   # /!\ the ? is VERY important in Gandi Simple Hosting
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]   # /!\ the ? is VERY important in Gandi Simple Hosting
 
