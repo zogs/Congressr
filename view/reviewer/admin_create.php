@@ -5,10 +5,10 @@
 
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('admin/reviewer/create'); ?>" method="post">
 
-			<?php echo $this->Form->input('login','',array('icon'=>'icon-user','required'=>'required','placeholder'=>"login",'data-url'=>Router::url('users/check'))) ?>
+			<?php //echo $this->Form->input('login','',array('icon'=>'icon-user','required'=>'required','placeholder'=>"login",'data-url'=>Router::url('users/check'))) ?>
 			<?php echo $this->Form->input('email',"",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"email",'data-url'=>Router::url('users/check'))) ?>
-			<?php echo $this->Form->input('password','',array('type'=>"password",'icon'=>'icon-lock','required'=>'required','placeholder'=>'mot de passe')) ?>
-			<?php echo $this->Form->input('confirm','', array('type'=>'password','icon'=>'icon-lock','required'=>'required','placeholder'=>'Confirmer')) ?>		
+			<?php //echo $this->Form->input('password','',array('type'=>"password",'icon'=>'icon-lock','required'=>'required','placeholder'=>'mot de passe')) ?>
+			<?php //echo $this->Form->input('confirm','', array('type'=>'password','icon'=>'icon-lock','required'=>'required','placeholder'=>'Confirmer')) ?>		
 			<?php echo $this->Form->input('prenom',"",array('icon'=>'icon-user','placeholder'=>'Prénom')) ?>
 			<?php echo $this->Form->input('nom',"",array('icon'=>'icon-user','placeholder'=>'Nom ')) ;?>
 			<?php echo $this->Form->input('job','',array('icon'=>'icon-bookmark','placeholder'=>'Organisme')) ;?>
@@ -54,9 +54,10 @@ si vous acceptez de faire partie de ce comité.
 
 <p>Yves Richard & Pierre Camberlin</p>
 
-Pour activer votre compte cliquer sur ce lien : {link} <br/>
+Pour <strong>activer votre compte</strong> cliquer sur ce lien : {link} <br/>
 <strong>Login</strong> : {login}<br/>
 <strong>Password</strong> : {password}<br/>
+<small>Vous pouvez modifier ces informations en vous connectant à votre compte</small>
 
 						",'rows'=>10)) ;?>
 			

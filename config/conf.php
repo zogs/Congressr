@@ -99,7 +99,10 @@ class Conf {
 	->setUsername('contact@aic2014.com')
 	->setPassword('climato21...');
 
-    		
+	//Local SMTP Config
+    	//$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 25)
+	//->setUsername('si3804gu')
+	//->setPassword('f4tb0ysl/m');
 		//PHP mail() function
 		// $transport = Swift_SendmailTransport::newInstance(); 
 
