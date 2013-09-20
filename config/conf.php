@@ -95,13 +95,13 @@ class Conf {
     public static function getTransportSwiftMailer(){
 
     	//SMTP configuration
-    	//$transport = Swift_SmtpTransport::newInstance('mail.gandi.net', 587, 'ssl')
-	//->setUsername('contact@aic2014.com')
-	//->setPassword('climato21...');
+    	$transport = Swift_SmtpTransport::newInstance('smtp1.dc0.gpaas.net', 25)
+	->setUsername('contact@aic2014.com')
+	->setPassword('climato21...');
 
     		
 		//PHP mail() function
-		 $transport = Swift_SendmailTransport::newInstance(); 
+		// $transport = Swift_SendmailTransport::newInstance(); 
 
     	return $transport;
     }
