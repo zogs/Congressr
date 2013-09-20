@@ -157,7 +157,7 @@ class ReviewerController extends usersController {
 
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
 
-		$link = Conf::getSiteUrl()."/users/validate?c=".urlencode($user->codeactiv)."&u=".urlencode($user->user_id);
+		$link = Conf::getSiteUrl()."/users/validate/?c=".urlencode($user->codeactiv)."&u=".urlencode($user->user_id);
 		$link =  '<a href="'.$link.'" target="_blank">'.$link.'</a>';
 	
 		//insére le lien de validation
