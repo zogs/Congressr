@@ -15,6 +15,7 @@ class Conf {
 	static $websiteURLs = array(
 		'localhost'=>'http://localhost/congressr',
 		'default' => 'http://localhost/congressr'
+		'www.aic2014.com' => 'www.aic2014.com/congressr';
 		);
 	static $websiteDOT = 'congressr.com';
 	static $lang = 'fr';
