@@ -463,7 +463,7 @@ class UsersController extends Controller{
 			//check the recovery code
 			$code = base64_decode(urldecode($this->request->get('c')));
 			$hash = md5($code.$user->salt);
-			$user = $this->Users->findFirstUser(array(
+			$user = $this->Users->findFirst(array(
 				'table'=>'users_mail_recovery',
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$hash.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
@@ -502,7 +502,7 @@ class UsersController extends Controller{
 
 			//check the recovery code
 			$code = md5($data->code.$user->salt);
-			$user = $this->Users->findFirstUser(array(
+			$user = $this->Users->findFirst(array(
 				'table'=>'users_mail_recovery',
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$code.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
@@ -524,7 +524,7 @@ class UsersController extends Controller{
 					if($this->Users->save($new)){
 
 						//find the recovery data 
-						$rec = $this->Users->findFirstUser(array(
+						$rec = $this->Users->findFirst(array(
 							'table'=>'users_mail_recovery',
 							'fields'=>array('id'),
 							'conditions'=>array('user_id'=>$user_id,'code'=>$code)));
