@@ -18,7 +18,8 @@
 	 			<td><?php echo $user->login ?></td>
 	 			<td>
 	 				<span class="label <?php 
-	 								if($user->getRole()=="admin") echo "label-inverse";
+	 								if($user->valid==0) echo '';
+	 								elseif($user->getRole()=="admin") echo "label-inverse";
 	 								elseif($user->getRole()=="chairman") echo "label-primary";
 	 								elseif($user->getRole()=="reviewer") echo "label-info";
 	 								elseif($user->getRole()=="redactor") echo "label-success";
