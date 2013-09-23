@@ -165,9 +165,7 @@ class ReviewerController extends usersController {
 		$content = preg_replace("~{login}~i",$user->login,$content);
 		$content = preg_replace("~{password}~i",$password,$content);
 		
-
-		//insére le lien de validation en bas du mail
-		$content .= '<p>&nbsp;</p><p><small>N\'oubliez pas de cliquer sur le lien d\'activation : '.$link.'<br />Remeber to click to activation link: '.$link.'</small></p>';
+		
 
 
 		$message = Swift_Message::newInstance()

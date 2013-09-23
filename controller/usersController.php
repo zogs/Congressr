@@ -785,7 +785,7 @@ class UsersController extends Controller{
     		}
     	}
 
-    	$users = $this->Users->findUsers(array('order'=>'role ASC'));
+    	$users = $this->Users->findUsers(array('order'=>'role ASC, login ASC'));
     	$users = $this->Worlds->JOIN_GEO($users);
     	$d['users'] = $users;
 

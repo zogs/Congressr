@@ -55,10 +55,12 @@ si vous acceptez de faire partie de ce comité.
 
 <p>Yves Richard & Pierre Camberlin</p>
 
-Pour <strong>activer votre compte</strong> cliquer sur ce lien : {link} <br/>
+<strong>Si vous acceptez de faire partie du comité scientifique AIC 2014</strong>, activez votre compte en cliquant sur ce lien : {link} <br/>
 <strong>Login</strong> : {login}<br/>
 <strong>Password</strong> : {password}<br/>
 <small>Vous pouvez modifier ces informations en vous connectant à votre compte</small>
+<strong>Merci de conserver ces informations de connexion pour accéder ultérieurement à votre compte</strong>
+
 
 						",'rows'=>10)) ;?>
 			
