@@ -464,7 +464,7 @@ class UsersController extends Controller{
 			$code = base64_decode(urldecode($this->request->get('c')));
 			$hash = md5($code.$user->salt);
 			$user = $this->Users->findFirstUser(array(
-				'table'=>T_USER_RECOVERY,
+				'table'=>'users_mail_recovery',
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$hash.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
 
@@ -503,7 +503,7 @@ class UsersController extends Controller{
 			//check the recovery code
 			$code = md5($data->code.$user->salt);
 			$user = $this->Users->findFirstUser(array(
-				'table'=>T_USER_RECOVERY,
+				'table'=>'users_mail_recovery',
 				'fields'=>'user_id',
 				'conditions'=>'user_id='.$user_id.' AND code="'.$code.'" AND date_limit >= "'.unixToMySQL(time()).'"'));
 
@@ -525,14 +525,14 @@ class UsersController extends Controller{
 
 						//find the recovery data 
 						$rec = $this->Users->findFirstUser(array(
-							'table'=>T_USER_RECOVERY,
+							'table'=>'users_mail_recovery',
 							'fields'=>array('id'),
 							'conditions'=>array('user_id'=>$user_id,'code'=>$code)));
 
 						//supress recovery data
 						$del = new stdClass();
-						$del->table = T_USER_RECOVERY;
-						$del->key = K_USER_RECOVERY;
+						$del->table = 'users_mail_recovery';
+						$del->key = 'id';
 						$del->id = $rec->id;
 						$this->Users->delete($del);
 
