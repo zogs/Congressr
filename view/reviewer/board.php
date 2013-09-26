@@ -1,9 +1,6 @@
 <?php echo Session::flash(); ?>
 
-<h3>Bienvenue <?php echo Session::user()->getLogin();?> !</h3>
-
-
-<h4>Liste des resumés à reviewer</h4>
+<h3>Liste des resumés à reviewer</h3>
 <table class="table table-striped table-condensed table-hover">
 	<?php if(count($resumes)==0): ?>
 			<tbody><tr class="warning"><td>No articles to review for the moment. Please come back later</td></tr></tbody>

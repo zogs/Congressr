@@ -1,8 +1,8 @@
 <?php 
 
 	if(!empty($resume->status)){
-		if($resume->status=='pending') Session::setFlash('This article can be modified until it has been reviewed','info');
-		else Session::setFlash('This article has been reviewed, it can\t be modified','warning');
+		if($resume->status=='pending') Session::setFlash("Cet article peut être modifié tant qu'il n'a pas été évalué.",'info');
+		else Session::setFlash("Cet article a été évalué, il ne peut plus être modifié.",'warning');
 	}
  ?>
 

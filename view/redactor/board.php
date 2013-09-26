@@ -1,9 +1,9 @@
-<h1>Bienvenue <?php echo Session::user()->getLogin();?> !</h1>
+
 
 <?php echo Session::flash(); ?>
 
 <?php if(!empty($resumes)): ?>
-<h4>Liste des résumés déposés</h4>
+<h3>Liste des résumés déposés</h3>
 <table class="table table-condensed table-hover">
 	<thead>
 		<th>Title</th>

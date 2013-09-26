@@ -125,7 +125,7 @@ class ReviewerController extends usersController {
 			//$password = $user->password;
 
 			//create login from name
-			$user->login = strtolower(substr($user->prenom,0,1).substr(str_replace(array("-","'"," "),'',$user->nom),0,10));
+			$user->login = String::slugify(substr($user->prenom,0,1).substr(str_replace(array("-","'"," "),'',$user->nom),0,10));
 			$user->password = $user->login.rand(100,999);
 			$user->confirm = $user->password;
 			$password = $user->password;

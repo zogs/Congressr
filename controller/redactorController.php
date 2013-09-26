@@ -4,13 +4,13 @@ class RedactorController extends usersController {
 
 	public function board(){
 
-		if(Session::user()->getRole()!='redactor') $this->redirect('users/login');
+		if(Session::user()->getRole()!='redactor' && Session::user()->getRole()!='reviewer') $this->redirect('users/login');
 
 		$this->loadModel('Articles');
 
 		$res = $this->Articles->findResumes(array('conditions'=>array('user_id'=>Session::user()->getID())));
 
-		if(empty($res)) Session::setFlash('Pas encore de résumés déposés...','warning');
+		if(empty($res)) Session::setFlash("Vous n'avez pas encore déposé de résumés... <a href='".Router::url('articles/resume')."'>Déposer un résumé</a>",'warning');
 
 		$d['resumes'] = $res;
 		$this->set($d);

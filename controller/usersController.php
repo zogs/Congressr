@@ -44,7 +44,7 @@ class UsersController extends Controller{
 					$user = new User( $user );
 					Session::write('user', $user);
 					Session::setToken();				
-					Session::setFlash('Vous êtes maintenant connecté en tant que '.$user->role);
+					Session::setFlash('<strong>Bienvenue '.$user->getLogin().' !</strong> Vous êtes connecté en tant que <strong>'.$user->role.'</strong>');
 					
 					//redirection
 					if($user->role=='redactor')
@@ -785,7 +785,7 @@ class UsersController extends Controller{
     		}
     	}
 
-    	$users = $this->Users->findUsers(array('order'=>'role ASC, login ASC'));
+    	$users = $this->Users->findUsers(array('order'=>'role ASC, nom ASC'));
     	$users = $this->Worlds->JOIN_GEO($users);
     	$d['users'] = $users;
 
