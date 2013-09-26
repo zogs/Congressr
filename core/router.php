@@ -155,7 +155,7 @@ class Router{
 
 			}
 			else
-				$url .= '?lang='.$_GET['lang'];
+				$url .= '/?lang='.$_GET['lang'];
 
 		}
 		return $url;

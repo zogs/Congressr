@@ -34,7 +34,7 @@
 				<form class="form " action="<?php echo Router::url('admin/pages/index');?>" method="POST">
 			 	<tr>
 		 			<td>
-		 				<a href="<?php echo Router::url('admin/pages/edit/'.$v->id.'?lang='.$lang); ?>" >
+		 				<a href="<?php echo Router::url('admin/pages/edit/'.$v->id.'/?lang='.$lang); ?>" >
 		 					<?php echo $v->getTitle(); ?>
 						</a>
 	 				</td>

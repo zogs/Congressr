@@ -156,7 +156,7 @@ class PagesController extends Controller {
 						if($this->Pages->saveTraduction($new,$page_id)){
 
 							Session::setFlash('Contenu modifié');
-							$this->redirect('admin/pages/edit/'.$page_id.'?lang='.$lang);
+							$this->redirect('admin/pages/edit/'.$page_id.'/?lang='.$lang);
 						}
 					}
 				}
