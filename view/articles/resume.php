@@ -9,7 +9,7 @@
 
 <?php echo Session::flash(); ?>
 <form class="form form-center w70pc" action="<?php echo Router::url('articles/resume');?>" method="POST">
-
+	<div class="form-header">Déposer un résumé</div>
 	<?php echo $this->Form->input('id','hidden',array('value'=>$resume->id)) ;?>
 	<?php echo $this->Form->input('user_id','hidden',array('value'=>Session::user()->getID())) ;?>
 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
