@@ -1,8 +1,8 @@
 <div class="page-header">
 	<h1>Editer un utilisateur</h1>
 </div>
-
-<form class="form-horizontal" action="<?php echo Router::url('admin/users/edit/'.$user->getID()); ?>" method="post">
+<a href="<?php echo Router::url('admin/users/index');?>">Revenir à la liste</a>
+<form class="form form-horizontal" action="<?php echo Router::url('admin/users/edit/'.$user->getID()); ?>" method="post">
 
 		
 <table class="table table-striped">
@@ -21,6 +21,6 @@
 <?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
 
 <div class="actions">
-	<input type="submit" class="btn btn-primary" value="Envoyer" />
+	<input type="submit" class="btn btn-large btn-warning" value="Sauvergarder les changements" />
 </div>
 </form>

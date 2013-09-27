@@ -63,7 +63,7 @@
 
 <?php endif; ?>	
 
-<form class="form form-row w30pc fright" name="review" action="<?php echo Router::url('reviewer/review/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
+<form class="form form-row w30pc fright label-left" name="review" action="<?php echo Router::url('reviewer/review/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 	
 	<h4>Evaluation</h4>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>

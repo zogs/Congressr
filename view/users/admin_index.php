@@ -1,7 +1,7 @@
 
 
 
-<h2>All users <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Create reviewer</a></h2>
+<h2>Utilisateurs <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Créer un reviewer</a></h2>
 <table class="table table-striped table-hover">
 	<thead>
 		<th>Login</th>

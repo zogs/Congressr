@@ -3,7 +3,7 @@
 <?php echo Session::flash();?>
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('users/register'); ?>" method="post" <?php echo (isset($Success))? 'class="hide"':''; ?>>
 		<h1>Inscription</h1>
-		
+		<p>Pour devenir auteur et proposer des articles, veuillez remplir le formulaire suivant.</p>
 		<?php echo $this->Form->input('login','Login',array('icon'=>'icon-user','required'=>'required','placeholder'=>"Choisissez votre login de connexion",'data-url'=>Router::url('users/check'))) ?>
 		<?php echo $this->Form->input('email',"Email",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Entrer votre email de contact",'data-url'=>Router::url('users/check'))) ?>
 		<?php echo $this->Form->input('confirmEmail',"Confirmer",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Confirmer votre email")); ?>
@@ -34,6 +34,7 @@
 			<div class="controls">
 				<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>			
 				<?php echo $this->Form->input('accept','hidden',array('value'=>1)); ?>
+				<p> Un email vous sera envoyé pour valider votre inscription.<br/> Vous pourrez ensuite accéder à votre espace et déposer des articles.</p>
 				<input class="pull-right btn btn-large btn-primary" type="submit" value="Envoyer l'inscription" />
 			</div>				
 		</div>

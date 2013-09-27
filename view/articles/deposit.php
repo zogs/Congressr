@@ -23,7 +23,7 @@
 	</label>
 
 	
-	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large",'value'=>"Envoyer le fichier")); ?>
+	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large btn-inverse",'value'=>"Envoyer le fichier")); ?>
 
 </form>
 

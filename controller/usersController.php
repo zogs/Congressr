@@ -51,6 +51,8 @@ class UsersController extends Controller{
 						$this->redirect('redactor/board');			
 					if($user->role=='reviewer')
 						$this->redirect('reviewer/board');
+					if($user->role=='admin')
+						$this->redirect('admin/users/index');
 
 				}
 				else {

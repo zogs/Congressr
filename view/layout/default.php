@@ -56,10 +56,13 @@
 		
 
 			<ul class="nav pull-right">
-
+				
+				<?php /* ?>
 				<li><a href="?lang=fr"><i class="flag flag-fr"></i></a></li>
 				<li><a href="?lang=en"><i class="flag flag-uk"></i></a></li>
-
+				*/ ?>
+			
+			
 				<?php if (Session::user()->isLog()): ?>
 					<li><a href="<?php echo Router::url('users/account');?>">
 							<img class="nav-avatar" src="<?php echo Router::webroot(Session::user()->getAvatar()); ?>" />	

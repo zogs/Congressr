@@ -15,7 +15,7 @@
 
 
 <?php if(!empty($resumes)): ?>
-<h2>Tous les resumés déposés</h2>
+<h2>Resumés déposés</h2>
 <table class="table table-striped table-condensed table-hover">
 	<thead>
 		<th>Title</th>
@@ -41,7 +41,7 @@
 	 			<td><?php echo $a->getCommPrefered(); ?></td>
 				<td><?php echo $a->getAverageNote(); ?></td>	 			
 		 		<td>
-		 			<?php echo $a->status;?>
+		 			<strong><?php echo $a->status;?></strong>
 		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
 		 		</td>				
 					
@@ -56,7 +56,7 @@
 <?php endif; ?>
 
 <?php if(!empty($deposed)): ?>
-<h2>Tous les articles déposés</h2>
+<h2>Articles étendus déposés</h2>
 <table class="table table-striped table-condensed table-hover">
 	<thead>
 		<th>Title</th>
