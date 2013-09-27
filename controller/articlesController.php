@@ -322,7 +322,7 @@ class ArticlesController extends Controller {
 	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$type){
 
 
-		$link = 'http://localhost/congressr/reviewer/review/'.$type.'/'.$articleId.'?lang='.$userLang;
+		$link = Conf::getSiteUrl().'/reviewer/review/'.$type.'/'.$articleId.'?lang='.$userLang;
 
 		//Création d'une instance de swift mailer
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
@@ -337,7 +337,7 @@ class ArticlesController extends Controller {
 		//Création du mail
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		  ->setFrom('noreply@'.Conf::$websiteDOT, Conf::$website)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($userEmail, $userLogin)
 		  ->setBody($body, 'text/html', 'utf-8');
 
