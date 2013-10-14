@@ -549,10 +549,10 @@ public function validates($data, $rules = null, $field = null){
 	 					if($file['error'] == 'UPLOAD_ERR_OK'){
 	 						
 		 					//Si il y a des regles définies
-		 					if($validates[$key]['params']){
+		 					if(isset($validates[$key]['params'])){
 
 			 					//Si il y a une limite de poids 
-			 					if($validates[$key]['params']['max_size']) {
+			 					if(isset($validates[$key]['params']['max_size'])) {
 
 			 						//Si le fichier est trop gros
 			 						if($file['size']>$validates[$key]['params']['max_size']){
@@ -561,7 +561,7 @@ public function validates($data, $rules = null, $field = null){
 			 						}
 			 					}
 			 					//Si il y a des extentions spécifiquement authorisées
-	 							if($validates[$key]['params']['extentions']){
+	 							if(isset($validates[$key]['params']['extentions'])){
 	 								
 	 								$extention = substr(strrchr($file['name'], '.'),1);
 		 							$extentions = $validates[$key]['params']['extentions'];
@@ -572,7 +572,7 @@ public function validates($data, $rules = null, $field = null){
 	 							}
 
 	 							//If Prevent hidden php code
-	 							if($validates[$key]['params']['ban_php_code'] && $validates[$key]['params']['ban_php_code'] == true){
+	 							if(isset($validates[$key]['params']['ban_php_code']) && $validates[$key]['params']['ban_php_code'] == true){
 		 							//Vérifie qu'il n'y a pas de code php caché dans l'image				 							
 		 							if(strpos(file_get_contents($file['tmp_name']),'<?php')){
 

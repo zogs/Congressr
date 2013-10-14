@@ -81,6 +81,22 @@
 			</a>
 			
 		</form>
+
+		<form class="form form-row" name="request" action="<?php echo Router::url('reviewer/requestChange/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
+			<div class="form-header">Demande de modification</div>			
+			<p>
+				<strong>Envoyer une demande de modification à l'auteur de l'article. </strong>
+				<br>
+				<small>
+					L'auteur de l'article recevra un email avec votre demande. Il devra alors obligatoirement déposer une nouvelle version de son article, qui sera ré-évaluer par les reviewers.
+					<br>L'auteur peut répondre à l'email, vous recevrez sa réponse directement dans votre boite mail, et pourrez alors engager une discussion concernant les modifications demandées
+				</small>
+
+			</p>
+			<?php echo $this->Form->input('textEmail','Texte du mail',array('type'=>'textarea','rows'=>6,'style'=>"width:100%;",'placeholder'=>'Rédiger ici votre demande de modification'));?>
+			<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>	
+			<input type="submit" name="review" value="Envoyer la demande" class="btn btn-primary">
+		</form>
 		
 	<?php endif; ?>
 

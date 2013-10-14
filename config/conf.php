@@ -22,6 +22,7 @@ class Conf {
 	static $pays = 'FR';
 
 	static $congressName = 'Congres de test';
+	static $congressContactEmail = 'contact@aic2014.com';
 
 	//Database connexion
 	static $databases = array(
@@ -94,17 +95,26 @@ class Conf {
 	 */
     public static function getTransportSwiftMailer(){
 
-    	//SMTP configuration
-    	$transport = Swift_SmtpTransport::newInstance('smtp1.dc0.gpaas.net', 25)
-	->setUsername('contact@aic2014.com')
-	->setPassword('climato21...');
+    	$host = self::getHost();
 
-	//Local SMTP Config
-    	//$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 25)
-	//->setUsername('si3804gu')
-	//->setPassword('f4tb0ysl/m');
-		//PHP mail() function
-		// $transport = Swift_SendmailTransport::newInstance(); 
+    	if($host=='www.aic2014.com'){
+
+	    	//SMTP configuration
+	    	$transport = Swift_SmtpTransport::newInstance('smtp1.dc0.gpaas.net', 25)
+		->setUsername('contact@aic2014.com')
+		->setPassword('climato21...');
+	}
+
+	if($host=='localhost'){
+
+		//Local SMTP Config
+	    	$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 25)
+		->setUsername('si3804gu')
+		->setPassword('f4tb0ysl/m');
+	}
+
+	//PHP mail() function
+	// $transport = Swift_SendmailTransport::newInstance(); 
 
     	return $transport;
     }

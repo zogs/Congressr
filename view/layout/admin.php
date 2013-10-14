@@ -22,7 +22,7 @@
                                  <li><a href="<?php echo Router::url('admin/users/index'); ?>">Users</a></li>
                                  <li><a href="<?php echo Router::url('admin/articles/index/resume');?>">Resumés</a></li>
                                  <li><a href="<?php echo Router::url('admin/articles/index/deposed');?>">Articles</a></li>
-                                 <li><a href="<?php echo Router::url('admin/articles/mailing');?>">Mailing</a></li>
+                                 <li><a href="<?php echo Router::url('admin/mailing/index');?>">Mailing</a></li>
                                   <li><a href="<?php echo Router::url('/'); ?>">Voir le site</a></li>            
                                 <li><a href="<?php echo Router::url('admin/logout'); ?>">Deconnexion</a></li>
                                 
