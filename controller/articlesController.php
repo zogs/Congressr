@@ -218,7 +218,11 @@ class ArticlesController extends Controller {
 
 					}
 
-					if($this->Articles->save($s)){
+					if($id = $this->Articles->save($s)){
+
+						$this->loadModel('Users');
+						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));		
+						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$data->title);
 						Session::setFlash("Votre document a été enregistré ! Vous recevrez un email quand il aura été évalué par le comité scientifique");
 		
 					}
@@ -234,51 +238,10 @@ class ArticlesController extends Controller {
 		$this->set($d);
 	}
 
-	public function extended($resume_id){
-		
-		$this->loadModel('Articles');
-		$this->loadJS = 'js/jquery/tiny_mce/tiny_mce.js';
-
-		if(!Session::user()->canSeeResume())  throw new zException("user can not see reume", 1);
-
-		if($data = $this->request->post()){
-
-			if($resume_id = $this->Articles->saveExtended($data)){
-
-				Session::setFlash("Merci, votre résumé étendu a bien été enregistré ! ","success");
-				//$this->redirect('articles/extended/'.$resume_id);			
-			}
-			else
-				Session::setFlash("Error while saving resume","error");
-		}
-
-		if(!empty($resume_id)){
-			$resume = $this->Articles->findFirst(array('table'=>'resume','conditions'=>array('id'=>$resume_id)));
-			$resume = new Resume($resume);
-			$extended = $this->Articles->findFirst(array('table'=>'extended','conditions'=>array('resume_id'=>$resume_id)));
-			$extended = new Extended($extended);
-			$figures = $this->Articles->find(array('table'=>'figures','conditions'=>array('resume_id'=>$resume_id),'order'=>'number ASC'));
-			foreach ($figures as $key => $figure) {
-				$figures[$key] = new Figure($figure);
-			}						
-		}
-		else {
-			$resume = new Resume();
-			$extended = new Extended();
-			
-		}
-
-		if(empty($figures)) $figures = array(new Figure());
-
-		$d['resume'] = $resume;
-		$d['extended'] = $extended;
-		$d['figures'] = $figures;
-		$this->set($d);
-	}
-
 	public function resume( $id = null ){
 
 		$this->loadModel('Articles');
+		$this->loadModel('Users');
 
 		if(!Session::user()->canSeeResume()) throw new zException("user can not see reume", 1);
 		
@@ -291,7 +254,11 @@ class ArticlesController extends Controller {
 
 				if($id = $this->Articles->saveResume($data)){
 
-					Session::setFlash("Merci, votre résumé a bien été enregistré ! Vous serez averti par email dès qu'il aura été accepté ou refusé","success");
+					Session::setFlash("Merci, votre résumé <strong>a bien été enregistré !</strong> Vous serez averti par email dès qu'il aura été accepté ou refusé","success");
+
+					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
+					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
+
 					$this->redirect('articles/resume/'.$id);
 				}
 				else
@@ -317,6 +284,43 @@ class ArticlesController extends Controller {
 		$this->set('authors',$authors);
 	}
 
+
+	private function sendMailArticleSuccefullyDeposed($userLogin,$userEmail,$articleType,$articleId,$articleTitle){
+
+		
+		$subject = 'Votre résumé a été déposé !';
+		$body = file_get_contents('../view/email/confirmResumeDeposed.html');
+		$link = Conf::getSiteUrl().'/articles/resume/'.$articleId;
+		
+		if($articleType=='deposed'){
+			$subject = 'Votre article étendu a été déposé !';
+			$body = file_get_contents('../view/email/confirmArticleDeposed.html');
+			$link = Conf::getSiteUrl().'/articles/deposed/'.$articleId;
+
+		}
+
+		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
+
+		$body = preg_replace("~{subject}~i", $subject, $body);
+		$body = preg_replace("~{articleTitle}~i", $articleTitle, $body);
+		$body = preg_replace("~{userLogin}~i", $userLogin, $body);
+		$body = preg_replace("~{link}~i", $link, $body);
+		$body = preg_replace("~{website}~i", Conf::getsiteUrl(), $body);
+
+
+		$message = Swift_Message::newInstance()
+		  ->setSubject($subject.' - '.Conf::$congressName)
+		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
+		  ->setTo($userEmail, $userLogin)
+		  ->setBody($body, 'text/html', 'utf-8');
+
+		  if (!$mailer->send($message, $failures))
+		{
+		    echo "Erreur lors de l'envoi du email à :";
+		    print_r($failures);
+		}
+		else return true;
+	}
 
 
 	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$type){

@@ -15,7 +15,12 @@ class MailingModel extends Model {
 			'pj'=>array(
 				'rule'=>'file',
 				'params'=>array(
-					'destination'=>'media/pj',					
+					'destination'=>'media/pj',
+					//'extentions'=>array('doc'),
+					//'extentions_error'=>'Your document is not a .doc file',
+					//'max_size'=>500000,
+					//'max_size_error'=>'Your document is too big',
+					//'ban_php_code'=>true					
 					)
 				)
 			,
@@ -29,20 +34,6 @@ class MailingModel extends Model {
 				'message'=>'Le contenu du mail ne peut être vide'
 				)
 			)
-		,		
-		'deposit'=>array(
-			'deposed'=>array(
-					'rule'=>'file',
-					'params'=>array(
-						'destination'=>'media/deposed',
-						'extentions'=>array('doc'),
-						'extentions_error'=>'Your document is not a .doc file',
-						'max_size'=>500000,
-						'max_size_error'=>'Your document is too big',
-						'ban_php_code'=>true
-						),
-					)
-				)
 		);
 
 	public function saveMailing($data){

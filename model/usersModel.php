@@ -328,6 +328,12 @@ class User {
 		else return $this->login;
 	}
 
+	public function getEmail(){
+
+		if(!empty($this->email)) return $this->email;
+		return false;
+	}
+
 	public function getAvatar(){
 
 		if(isset($this->avatar)&&!empty($this->avatar)&&file_exists(WEBROOT.DS.$this->avatar)) return $this->avatar;

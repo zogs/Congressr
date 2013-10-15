@@ -13,6 +13,7 @@
 		</p>
 	<?php endif; ?>
 	
+	<?php echo $this->Form->input('user_id','hidden',array('value'=>Session::user()->getID())); ?>
 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 	<?php echo $this->Form->input('resume_id','hidden',array('value'=>$resume->id)); ?>
 	<?php echo $this->Form->input('title','hidden',array('value'=>$resume->title)); ?>	

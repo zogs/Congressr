@@ -25,8 +25,7 @@ class Conf {
 	static $congressContactEmail = 'contact@aic2014.com';
 
 	//Database connexion
-	static $databases = array(
-			
+	static $databases = array(			
 		'localhost'  => array(
 			'host'     => 'localhost',
 			'database' => 'congressr',

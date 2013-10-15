@@ -115,7 +115,7 @@ class MailingController extends Controller {
 					$content = $data->content;
 				}
 				
-				if(isset($_FILES['pj'])){
+				if(!empty($_FILES['pj']['name'])){
 
 					if($path = $this->Mailing->saveFile('pj')){
 
