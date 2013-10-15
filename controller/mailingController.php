@@ -178,7 +178,7 @@ class MailingController extends Controller {
 		 ->setTo($dest)
 		 ->setBody($body, 'text/html', 'utf-8');
 
-		  if(isset($pj)){
+		  if(!empty($pj)){
 		  	$pj = Swift_Attachment::FromPath($pj);
 		  	$message->attach($pj);
 		  }
