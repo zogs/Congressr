@@ -21,7 +21,7 @@ class Conf {
 	static $lang = 'fr';
 	static $pays = 'FR';
 
-	static $congressName = 'Congres de test';
+	static $congressName = 'AIC Dijon 2014';
 	static $congressContactEmail = 'contact@aic2014.com';
 
 	//Database connexion
