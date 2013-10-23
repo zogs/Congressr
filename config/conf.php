@@ -99,9 +99,13 @@ class Conf {
     	if($host=='www.aic2014.com'){
 
 	    	//SMTP configuration
-	    	$transport = Swift_SmtpTransport::newInstance('smtp1.dc0.gpaas.net', 25)
-		->setUsername('contact@aic2014.com')
-		->setPassword('climato21...');
+	    	//$transport = Swift_SmtpTransport::newInstance('smtp1.dc0.gpaas.net', 25)
+		//->setUsername('contact@aic2014.com')
+		//->setPassword('climato21...');
+
+		$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 587,'StartTLS')
+		->setUsername('si3804gu')
+		->setPassword('f4tb0ysl/m');
 	}
 
 	if($host=='localhost'){
