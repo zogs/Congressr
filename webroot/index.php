@@ -43,7 +43,7 @@ $loader = Autoloader::getInstance()
 
 
 //Librairy dependency
-require ROOT.'/lib/SwiftMailer/swift_required.php';//Swift mailer
+require ROOT.'/lib/SwiftMailer/lib/swift_init.php';//Swift mailer
 
 
 //define routes for the router
