@@ -103,7 +103,7 @@ class Conf {
 		//->setUsername('contact@aic2014.com')
 		//->setPassword('climato21...');
 
-		$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 587,'starttls')
+		$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 587,'STARTTLS')
 		->setUsername('si3804gu')
 		->setPassword('f4tb0ysl/m');
 	}
