@@ -145,7 +145,7 @@ class UsersModel extends Model{
 												'conditions'=>array('mail'=>$user->mail)
 												));
 			if(!empty($checkmail)){
-				Session::setFlash("This email is already in use. Please try to recovery your password","error");
+				Session::setFlash("Cet email est déjà pris... Vous êtes peut-être déjà inscrit ? Vous avez oublié vorte mot de passe ? Essayer de le <a href='".Router::url('users/recovery')."'>réinitialiser</a> !  ","error");
 				return false;
 			}
 		}		
@@ -373,8 +373,10 @@ class User {
 		return false;
 	}
 
-	public function canSeeResume(){
-		return true;
+	public function canSeeResume($author_id){
+		if($this->role=='chairman' || $this->role=='admin') return true;
+		if($this->user_id == $author_id) return true;
+		return false;
 	}
 	public function canReview(){
 		if($this->role=='reviewer' || $this->role=='chairman' ||$this->role=='admin') return true;

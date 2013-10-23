@@ -87,7 +87,7 @@
 						<input type="hidden" name="token" value="<?php echo Session::token();?>" />
 						<input type="submit" value="OK" />
 					</form>
-					<li><a href="<?php echo Router::url('users/login');?>">Login</a></li>	
+					<li><a href="<?php echo Router::url('users/login');?>">Connexion</a></li>	
 					
 
 

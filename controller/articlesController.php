@@ -147,24 +147,31 @@ class ArticlesController extends Controller {
 		$this->redirect('admin/articles/view/'.$type.'/'.$id);
 	}
 
-	public function deposit($resume_id){
-
-		//secu
-		if(!Session::user()->isLog()) {
-			Session::setFlash('Vous devez vous connecter pour déposer un article');
-			$this->redirect('users/login');
-		}
-		if(!is_numeric($resume_id)) throw new Exception("$resume_id must be a numeric value", 1);
-		
+	public function deposit($resume_id = null){
 
 		$this->loadModel('Articles');
+
+
+		//security
+		if(!Session::user()->isLog()) {
+			Session::setFlash('<strong>Votre session a expiré. Veuillez vous <strong>reconnecter</strong>...');
+			$this->redirect('users/login');
+		}
+		if(!is_numeric($resume_id)) $this->e404("Cet article n'existe pas");
+		if($resume_id){
+			$resume = $this->Articles->findArticleTypeID('resume',$resume_id);
+			if(!Session::user()->canSeeResume($resume->user_id)){
+				Session::setFlash("Désolé... Vous ne pouvez accéder à cet article.",'error');
+				$this->redirect('articles/resume');
+			}
+		}
+		
+
 
 		if(!empty($resume_id)){
 			$resume = $this->Articles->findFirst(array('table'=>'resume','conditions'=>array('id'=>$resume_id)));
 			$resume = new Resume($resume);
-
 			$resume->authors = $this->Articles->findAuthors( $resume_id, 'resume');
-
 			$deposed = $this->Articles->findDeposedByResumeId($resume->id);
 
 		}
@@ -243,7 +250,18 @@ class ArticlesController extends Controller {
 		$this->loadModel('Articles');
 		$this->loadModel('Users');
 
-		if(!Session::user()->canSeeResume()) throw new zException("user can not see reume", 1);
+		//security
+		if(!Session::user()->isLog()){
+			Session::setFlash('<strong>Votre session a expiré. Veuillez vous <strong>reconnecter</strong>...');
+			$this->redirect('users/login');
+		}
+		if($id){
+			$resume = $this->Articles->findArticleTypeID('resume',$id);
+			if(!Session::user()->canSeeResume($resume->user_id)){
+				Session::setFlash("Vous ne pouvez accéder à cet article.",'error');
+				$this->redirect('articles/resume');
+			}
+		}		
 		
 
 		if($this->request->post()){

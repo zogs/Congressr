@@ -103,14 +103,14 @@ class UsersController extends Controller{
 					//check if login exist
 					$check = $this->Users->findFirst(array('fields'=>'user_id','conditions'=>array('login'=>$data->login)));							
 					if(!empty($check)) {
-						Session::setFlash("This login is already used","error");
+						Session::setFlash("Ce login est déjà pris? Veuillez essayer un autre...","error");
 						$this->request->data = $data;
 
 					} else {
 						//check if email exist
 						$check = $this->Users->findFirst(array('fields'=>'user_id','conditions'=>array('email'=>$data->email)));
 						if(!empty($check)) {
-						Session::setFlash("The email ".$data->email." is already used","error");
+						Session::setFlash("L'adresse email <strong>".$data->email."</strong> est déjà prise. Vous êtes peut être déjà inscrit en tant qu'auteur ou reviewer ?<br/> <small>Si vous avez oublié vos identifiants, essayez de <a href='".Router::url('users/recovery')."'>réinitialiser</a> votre mot de passe...</small>","error");
 						$this->request->data = $data;
 
 						} else {

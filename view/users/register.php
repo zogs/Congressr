@@ -3,7 +3,10 @@
 <?php echo Session::flash();?>
 	<form class="form" id="form_register" autocomplete="on" action="<?php echo Router::url('users/register'); ?>" method="post" <?php echo (isset($Success))? 'class="hide"':''; ?>>
 		<h1>Inscription</h1>
-		<p>Pour devenir auteur et proposer des articles, veuillez remplir le formulaire suivant.</p>
+		<p>
+			Pour devenir <strong>auteur</strong> et <strong>proposer des articles</strong>, veuillez remplir le formulaire suivant.<br>
+			<small>Nb: Si vous êtes un reviewer du congrès, vous êtes déjà inscrit et vos informations de connexion vous ont été fourni par email.</small>
+		</p>
 		<?php echo $this->Form->input('login','Login',array('icon'=>'icon-user','required'=>'required','placeholder'=>"Choisissez votre login de connexion",'data-url'=>Router::url('users/check'))) ?>
 		<?php echo $this->Form->input('email',"Email",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Entrer votre email de contact",'data-url'=>Router::url('users/check'))) ?>
 		<?php echo $this->Form->input('confirmEmail',"Confirmer",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Confirmer votre email")); ?>
