@@ -6,7 +6,7 @@
 	<h3>Envoi de mailing</h3>
 	<p>Cet outil permet d'envoyer un par un des emails à une mailing list depuis l'adresse de contact du congrès</p>
 
-	<form class='form' action="#" method="POST" enctype="multipart/form-data">
+	<form class='form' action="<?php echo Router::url('admin/mailing/freemailing');?>" method="POST" enctype="multipart/form-data">
 		
 		<?php echo $this->Form->select('list_id','Selectionnez une mailing list',$selectLists,array('helper'=>'<a href="'.Router::url("admin/mailing/editlist/").'">Créez une nouvelle liste</a>','placeholder'=>"Sélectionnez une mailing list")); ?>
 
