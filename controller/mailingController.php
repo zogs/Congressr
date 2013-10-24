@@ -127,15 +127,20 @@ class MailingController extends Controller {
 				$results = array();
 				$results['sended'] = array();
 				$results['errors'] = array();
-				foreach ($emails as $email) {
-					
-					if($this->send_freemailing($email,$title,$content,$path)){
-						$results['sended'][] = $email;
+
+
+				//split by 15 emails
+				$emailsPart = array_chunk($emails, 15);
+
+				foreach ($emailsPart as $emails) {
+
+					if($this->sendFreemailing($emails,$title,$content,$path)){
+						$results['sended'] = array_merge($results['sended'],$emails);
 					}
 					else{
-						$results['errors'][] = $email;
+						$results['errors'] = array_merge($results['errors'],$emails);
 					}
-				}
+				}				
 
 				if(!empty($results['sended'])){
 					Session::setFlash(count($results['sended']).' emails envoyés ! ','success');
@@ -158,7 +163,9 @@ class MailingController extends Controller {
 		$this->set('selectLists',$selectLists);
 	}
 
-	private function send_freemailing($dest,$title,$content,$pj = null){		
+	private function sendFreemailing($dests = array(), $title = '',$content = '',$pj = null){		
+
+		$emails = $dests;
 
 		//Création d'une instance de swift mailer
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
@@ -175,8 +182,14 @@ class MailingController extends Controller {
 		$message = Swift_Message::newInstance()
 		 ->setSubject($title)
 		 ->setFrom(Conf::$congressContactEmail,Conf::$congressName)
-		 ->setTo($dest)
+		 ->setTo($emails[0])
 		 ->setBody($body, 'text/html', 'utf-8');
+
+		 //ajouter les copies cachés
+		 unset($emails[0]);
+		 if(!empty($emails)){
+		 	$message->setBcc($emails);		 	
+		 }
 
 		  if(!empty($pj)){
 		  	$pj = Swift_Attachment::FromPath($pj);
@@ -187,7 +200,7 @@ class MailingController extends Controller {
 		//Envoi du message et affichage des erreurs éventuelles
 		if (!$mailer->send($message, $failures))
 		{
-		   return $dest;
+		   return $dests;
 		}
 		else return true;
 
