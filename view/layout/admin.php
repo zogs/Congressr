@@ -89,10 +89,10 @@ tinyMCE.init({
         skin : "o2k7",
         skin_variant : "silver",
 
-        // Absolute URL
-        //relative_urls : false,
-        //remove_script_host : false,
-       // document_base_url : "http://climatologie.u-bourgogne.fr/ecole/",
+        //URL 
+        convert_urls:true,
+        relative_urls:false,
+        remove_script_host:false,
 
         // Example content CSS (should be your site CSS)
         content_css : "css/example.css",
