@@ -188,7 +188,7 @@ class MailingController extends Controller {
 		 //ajouter les copies cachés
 		 unset($emails[0]);
 		 if(!empty($emails)){
-		 	$message->setBcc($emails);		 	
+		 	$message->setCc($emails);		 	
 		 }
 
 		  if(!empty($pj)){
