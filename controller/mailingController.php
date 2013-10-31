@@ -1,6 +1,8 @@
 <?php
 
 class MailingController extends Controller {
+
+	private static $mailBody  = array();
 	
 	public function admin_index(){
 
@@ -191,11 +193,19 @@ class MailingController extends Controller {
 
 	private function sendMailing($emails = array(), $message){		
 
-		foreach ($emails as $name => $address) {
+		if(count($emails)==1){
 			if(is_int($name))
-				$message->addTo($address);
+				$message->setTo($address);
 			else
-				$message->addTo(array($address => $name));			
+				$message->setTo(array($address => $name));	
+		}
+		else {
+			foreach ($emails as $name => $address) {
+				if(is_int($name))
+					$message->addTo($address);
+				else
+					$message->addTo(array($address => $name));			
+			}		
 		}
 
 		if (!Conf::getMailer()->send($message, $failures))
@@ -313,17 +323,17 @@ class MailingController extends Controller {
 
 		if(!empty($refused)){
 
-			$body = $this->mailingGetResumeContent('refused');
+			$body = $this->getResumeMailDecisionBody('refused');
 			$this->sendMailingResumeByStatus($refused,$body,'refused');
 		}
 
 		if(!empty($accepted['oral'])){
-			$body = $this->mailingGetResumeContent('oral');
+			$body = $this->getResumeMailDecisionBody('oral');
 			$this->sendMailingResumeByStatus($accepted['oral'],$body,'oral');
 		}
 
 		if(!empty($accepted['poster'])){
-			$body = $this->mailingGetResumeContent('poster');
+			$body = $this->getResumeMailDecisionBody('poster');
 			$this->sendMailingResumeByStatus($accepted['poster'],$body,'poster');
 		}
 
@@ -332,7 +342,7 @@ class MailingController extends Controller {
 		Session::setFlash(count($resumes). ' resumes, '.count($accepted['poster']).' poster, '.count($accepted['oral']).' oral, '.count($refused).' refused, '.count($pending).' still pending ,'.count($reviewed).' reviewed with no decision','info');		
 		Session::setFlash('Envoi effectué en '.round(microtime(true) - $timer,5).' secondes','warning');
 
-		$this->redirect('admin/articles/mailing');
+		$this->redirect('admin/articles/resumes');
 	}
 
 	/**
@@ -341,8 +351,12 @@ class MailingController extends Controller {
 	 * @param  string $lang   lang du mail
 	 * @return string         body of the mail
 	 */
-	private function mailingGetResumeContent($status,$lang='fr'){
+	private function getResumeMailDecisionBody($status,$lang='fr'){
 
+		//check and return the body if in memory
+		if(isset(self::$mailBody['resume'][$lang][$status])) return self::$mailBody['resume'][$lang][$status];
+
+		//load model
 		$this->loadModel('Articles');
 
 		//find the appropriate content depending of the status
@@ -369,6 +383,9 @@ class MailingController extends Controller {
 		$body = preg_replace("~{congress}~i", Conf::$congressName, $body);
 		$body = preg_replace("~{signature}~i", $this->signature, $body);
 
+		//set body in memory
+		self::$mailBody['resume'][$lang][$status] = $body;
+
 		return $body;
 	}
 
@@ -386,19 +403,22 @@ class MailingController extends Controller {
 		  ->setSubject(Conf::$congressName)
 		  ->setFrom(Conf::$congressContactEmail, Conf::getSiteUrl());
 		  
+		//boucle sur tous les résumé 
 		$errors = array();
 		foreach ($resumes as $resume) {
 			
+			//personnalise le contenu du mail
 			$body = str_replace("{lastname}", $resume->nom, $body);
 			$body = str_replace("{title}", $resume->title, $body);
-			$message->setBody($body, 'text/html', 'utf-8');
-			$message->addTo(array($resume->nom=>$resume->email));
-
+			$message->setBody($body, 'text/html', 'utf-8');			
+			$message->setTo(array($resume->email=>$resume->nom));			
+			
 			//Envoi du message et affichage des erreurs éventuelles
 			if (!Conf::getMailer()->send($message, $failures)){
-			   	$errors = array_merge($erros,$failures);
+			   	$errors = array_merge($errors,$failures);
 			}
 		}
+
 
 		$sended = count($resumes) - count($errors);
 		Session::setFlash($status.' : '.$sended.' email sended ','success');
@@ -441,7 +461,7 @@ class MailingController extends Controller {
 
 				$status = array('refused','poster','oral');
 				foreach ($status as $s) {
-					$body = $this->mailingGetResumeContent($s,$lang);
+					$body = $this->getResumeMailDecisionBody($s,$lang);
 					$this->sendMailingResumeByStatus($resume,$body,$s);
 				}
 			}
@@ -449,7 +469,7 @@ class MailingController extends Controller {
 
 		Session::setFlash('Test mails sended');
 
-		$this->redirect('admin/articles/mailing');
+		$this->redirect('admin/articles/resumes');
 	}
 
 
@@ -485,18 +505,62 @@ class MailingController extends Controller {
 				$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang->lang,'article'=>'signature')));
 				$this->signature = $signature->content;
 
-				$this->mailArticleAcceptedOral($article);
-				$this->mailArticleAcceptedPoster($article);
+				$status = array('refused','poster','oral');
+				foreach ($status as $s) {
+					$body = $this->getArticleMailDecisionBody($s,$lang);
+					$this->sendArticleDecisionByCommType($resume,$body,$s);
+				}
 
 			}
 		}
 
 		Session::setFlash('Test mails sended');
 
-		$this->redirect('admin/articles/mailing');
+		$this->redirect('admin/articles/articles');
 	}
 
+	/**
+	 * find article mail decision contents
+	 * @param  string $status refused|poster|oral
+	 * @param  string $lang   lang du mail
+	 * @return string         body of the mail
+	 */
+	private function getArticleMailDecisionBody($status,$lang='fr'){
+
+		//check if the body is in memory
+		if(isset(self::$mailBody['article'][$lang][$status])) return self::$mailBody['article'][$lang][$status];
+
+
+		$this->loadModel('Articles');
+
+		//find the appropriate content depending of the status
+		$content = '';
+		if($status=='poster'){			
+			$c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+			$content = $c->content;					
+		}
+		if($status=='oral'){		
+			$c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+			$content = $c->content;							
+		}
+
+		//get the template of the mail
+		$body = file_get_contents('../view/email/articlesMailing.html');
+		$body = preg_replace("~{content}~i", $content, $body);
+		$body = preg_replace("~{congress}~i", Conf::$congressName, $body);
+		$body = preg_replace("~{signature}~i", $this->signature, $body);
+
+		//set the body in memory 
+		self::$mailBody['article'][$lang][$status] = $body;
+
+
+		return $body;
+	}
 	public function admin_sendArticleMailing(){
+
+		$timer = microtime(true);
 
 		$this->loadModel('Articles');
 
@@ -506,122 +570,74 @@ class MailingController extends Controller {
 		$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature')));
 		$this->signature = $signature->content;
 
-		$count = array();
-		$count['refused'] = 0;
-		$count['accepted'] = 0;
-		$count['pending'] = 0;
-		$count['reviewed'] = 0;
-		$count['total'] = 0;
-		$count['poster'] = 0;
-		$count['oral'] = 0;
-		$errors = array();
-
-		foreach ($articles as $art) {
+		foreach ($articles as $a) {
 			
-			if($art->status=='accepted'){				
-
-				$count['accepted']++;
-				if($art->comm_type=='poster'){
-
-					$count['poster']++;
-					if($email = $this->mailArticleAcceptedPoster($art)){
-						$count['total']++;
-						$this->Articles->setArticleMailed($art->id);
-					}
-					else $errors[] = array('poster'=>$email);
-					continue;					
-				}
-				if($art->comm_type=='oral'){
-
-					$count['oral']++;
-					if($email = $this->mailArticleAcceptedOral($art)){
-						$count['total']++;
-						$this->Articles->setArticleMailed($art->id);
-					}
-					else $errors[] = array('oral'=>$email);
-					continue;
-				}
-				
+			if($a->comm_type=='poster'){
+				$posters[] = $a;
 			}
-
-			//else if pending or reviewed
-			$count[$art->status]++;	
+			if($a->comm_type=='oral'){
+				$orals[] = $a;
+			}
 		}
 
-		Session::setFlash($count['total'].' emails sended, '.$count['accepted'].' accepted, '.$count['refused']. 'refused, '.$count['oral'].' oral, '.$count['poster'].' poster');
-		if(!empty($count['pending']) || !empty($count['reviewed'])) Session::setFlash('Not mailed : '.$count['pending'].' pending, '.$count['reviewed'].' reviewed','info');
-		if(!empty($errors)) Session::setFlash(count($errors).' errors : '.implode(' - ',$errors),'danger');
-		else Session::setFlash('<strong>Bon congrès à tous !</strong>','info');
-		$this->redirect('admin/articles/mailing');
+		if(!empty($posters)){
+
+			$body = $this->getArticleMailDecisionBody('poster');
+			$this->sendArticleDecisionByCommType($posters,$body,'poster');
+		}
+
+		if(!empty($orals)){
+			$body = $this->getArticleMailDecisionBody('oral');
+			$this->sendArticleDecisionByCommType($orals,$body,'oral');
+		}
+
+		//Flash
+		Session::setFlash(count($articles). ' articles, '.count($posters).' posters, '.count($orals).' orals','info');		
+		Session::setFlash('Envoi effectué en '.round(microtime(true) - $timer,5).' secondes','warning');
+
+		$this->redirect('admin/articles/articles');
+
 	}
 
-	private function mailArticleAcceptedPoster($article){
+	/**
+	 * send decisions to an array of resumes depending of the status of the resumes
+	 * @param  array  $resumes array of resume object
+	 * @param  string $body    body of the mail
+	 * @param  string $status  status of the resumes
+	 * @return true         set flash of success and errors
+	 */
+	private function sendArticleDecisionByCommType($articles = array(),$body = '', $comm = ''){
 
-		$this->loadModel('Articles');
-		$content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$article->lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
-		if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
-		$content = $content->content;
-
-		//Création d'une instance de swift mailer
-		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
-
-		//Récupère le template et remplace les variables
-		$body = file_get_contents('../view/email/articlesMailing.html');
-		$body = preg_replace("~{content}~i", $content, $body);
-		$body = preg_replace("~{congress}~i", Conf::$congressName, $body);
-		$body = preg_replace("~{lastname}~i", $article->nom, $body);
-		$body = preg_replace("~{title}~i", $article->title, $body);
-		$body = preg_replace("~{signature}~i", $this->signature, $body);
-
-		//Création du mail
+		//creation du message
 		$message = Swift_Message::newInstance()
 		  ->setSubject(Conf::$congressName)
-		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
-		  ->setTo($article->email, $article->nom)
-		  ->setBody($body, 'text/html', 'utf-8');
-
-		
-		//Envoi du message et affichage des erreurs éventuelles
-		if (!$mailer->send($message, $failures))
-		{
-		   return $article->email;
+		  ->setFrom(Conf::$congressContactEmail, Conf::getSiteUrl());
+		  
+		//boucle sur tous les résumé 
+		$errors = array();
+		foreach ($articles as $article) {
+			
+			//personnalise le contenu du mail
+			$body = str_replace("{lastname}", $article->nom, $body);
+			$body = str_replace("{title}", $article->title, $body);
+			$message->setBody($body, 'text/html', 'utf-8');			
+			$message->setTo(array($article->nom=>$article->email));			
+			
+			//Envoi du message et affichage des erreurs éventuelles
+			if (!Conf::getMailer()->send($message, $failures)){
+			   	$errors = array_merge($errors,$failures);
+			}
 		}
-		else return true;
+
+
+		$sended = count($articles) - count($errors);
+		Session::setFlash($comm.' : '.$sended.' email sended ','success');
+		
+		if(!empty($errors)) 
+			Session::setFlash($comm.' : '.count($errors).' errors :'.implode(' ; ',$errors));
+
+		return true;
 
 	}
 
-	private function mailArticleAcceptedOral($article){
-
-		$this->loadModel('Articles');
-		$content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$article->lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
-		if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
-		$content = $content->content;
-
-		//Création d'une instance de swift mailer
-		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
-
-		//Récupère le template et remplace les variables
-		$body = file_get_contents('../view/email/articlesMailing.html');
-		$body = preg_replace("~{content}~i", $content, $body);
-		$body = preg_replace("~{congress}~i", Conf::$congressName, $body);
-		$body = preg_replace("~{lastname}~i", $article->nom, $body);
-		$body = preg_replace("~{title}~i", $article->title, $body);
-		$body = preg_replace("~{signature}~i", $this->signature, $body);
-
-		//Création du mail
-		$message = Swift_Message::newInstance()
-		  ->setSubject(Conf::$congressName)
-		  ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
-		  ->setTo($article->email, $article->nom)
-		  ->setBody($body, 'text/html', 'utf-8');
-
-		
-		//Envoi du message et affichage des erreurs éventuelles
-		if (!$mailer->send($message, $failures))
-		{
-		   return $article->email;
-		}
-		else return true;
-
-	}
 }
