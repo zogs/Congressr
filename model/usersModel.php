@@ -6,12 +6,27 @@ class UsersModel extends Model{
 	public $validates = array(
 		'register' => array(
 			'login' => array(
-				'rule'    => 'notEmpty',
-				'message' => 'Vous devez choisir un pseudo'		
-				),
+				'rules'=>array(
+						array(
+							'rule'    => 'notEmpty',
+							'message' => 'Vous devez choisir un pseudo'		
+						),
+						array(
+							'rule'=>'regex',
+							'regex'=>'[ \'\"@,\.;:\/\\!&$£*§~#|)(}{]',
+							'message'=>"Le login contient des caractères interdits"
+						)
+					)
+				),				
 			'email' => array(
-				'rule' => 'email',
-				'message' => "L'adresse email n'est pas valide"
+				'rules'=>array(
+							array(
+								'rule' => '[_a-zA-Z0-9-+]+(\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-z]{2,4})',
+								'message' => "L'adresse email n'est pas valide"),
+							array(
+								'rule' => 'notEmpty',
+								'Vous devez remplir une adresse email')
+							)
 				),
 			'confirmEmail' => array(
 				'rule' => 'confirmEmail',

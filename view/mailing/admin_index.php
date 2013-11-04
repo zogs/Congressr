@@ -7,4 +7,8 @@
 
 <p><a class="btn btn-warning" href="<?php echo Router::url('admin/mailing/listmailing');?>">Gestion des listes d'adresses</a> Créer ou gérer des listes d'adresses emails</p>
 
+<p><a href="<?php echo Router::url('admin/mailing/mailings');?>" class="btn">Gestion des envois de mailing</a></p>
+
+<p><a href="<?php echo Router::url('admin/mailing/editmailing');?>" class="btn">Création d'un envoi de mailing</a></p>
+
 <p><a class="btn btn-danger" href="<?php echo Router::url('admin/mailing/freemailing');?>">Free mailing</a> Envoyer des emails aux listes d'adresses</p>

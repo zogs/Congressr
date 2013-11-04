@@ -81,6 +81,80 @@ class MailingController extends Controller {
 
 	}
 
+
+
+	public function admin_mailings(){
+
+		$this->loadModel('Mailing');
+
+		$mailings = $this->Mailing->findMailing();
+
+
+		$d['mailings'] = $mailings;
+		$this->set($d);
+
+	}
+
+	public function admin_editmailing($mid = null){
+
+		$this->loadModel('Mailing');
+
+		if($data = $this->request->post()){
+
+			if($data = $this->Mailing->validates($data,'editmailing')){
+
+				$new = new stdClass();
+				$new->table = 'mailing_sending';
+				$new->date_create = Date::MysqlNow();					
+
+				if(!empty($data->list_id)){
+					$new->mailinglist_id = $data->list_id;
+				}
+				if(!empty($data->emails)){
+					$new->emails_added = $data->emails_added;
+				}
+				if(!empty($data->title)){
+					$new->title = $data->title;
+				}
+				if(!empty($data->object)){
+					$new->object = $data->object;
+				}
+				if(!empty($data->content)){
+					$new->content = $data->content;
+				}
+				if(!empty($_FILES['addpj']['name'])){
+					if($path = $this->Mailing->saveFile('pj')){
+						$new->path = WEBROOT.DS.$path;
+					}
+				}
+
+				if(!empty($data->id)){
+					$new->id = $data->id;
+					$new->key = 'id';
+					$new->date_created = '';
+				}
+
+				if($id = $this->Mailing->save($new)){
+					$this->redirect('admin/mailing/editmailing/'.$id);
+				}
+
+			}
+		}
+
+		$mailing = $this->Mailing->findMailingById($mid);
+		$mailinglists = $this->Mailing->findMailingList();
+		$selectLists = array();
+		foreach ($mailinglists as $key => $l) {
+			$selectLists[$l->list_id] = $l->name;
+		}
+		
+		$this->request->data = $mailing;
+
+		$this->set('mailingLists',$selectLists);
+		$this->set('mailing',$mailing);
+	}
+
+
 	public function admin_freemailing(){
 
 		$this->loadModel('Mailing');
@@ -227,10 +301,10 @@ class MailingController extends Controller {
 				Session::setFlash("Error while saving mailing content","error");							
 		}
 
-		$d['resumeRefused'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'refused')));
-		$d['resumeAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
-		$d['resumeAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));		
-		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
+		$d['resumeRefused'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'refused')));
+		$d['resumeAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
+		$d['resumeAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));		
+		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
 
 
 		$this->set($d);
@@ -248,9 +322,9 @@ class MailingController extends Controller {
 				Session::setFlash("Error while saving mailing content","error");							
 		}
 
-		$d['articleAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
-		$d['articleAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
-		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
+		$d['articleAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+		$d['articleAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
 
 		$this->set($d);
 	}
@@ -269,17 +343,16 @@ class MailingController extends Controller {
 			
 		}
 
-		$d['resumeRefused'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'refused')));
-		$d['resumeAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
-		$d['resumeAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
-		$d['articleAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
-		$d['articleAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
-		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
+		$d['resumeRefused'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'refused')));
+		$d['resumeAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
+		$d['resumeAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
+		$d['articleAcceptedPoster'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+		$d['articleAcceptedOral'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+		$d['signature'] = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature','result'=>'none','comm_type'=>'none')));
 
 
 		$this->set($d);
 	}
-
 
 
 
@@ -297,7 +370,7 @@ class MailingController extends Controller {
 		$resumes = $this->Articles->JOIN('users','prenom,nom,email,lang',array('user_id'=>':user_id'),$resumes);
 		$resumes = $this->Articles->joinReviews($resumes,'resume');
 
-		$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature')));
+		$signature = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature')));
 		$this->signature = $signature->content;				
 		
 		$refused = array();
@@ -362,18 +435,18 @@ class MailingController extends Controller {
 		//find the appropriate content depending of the status
 		$content = '';
 		if($status=='refused'){
-			$content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'refused')));
-			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'refused')));
+			$content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'refused')));
+			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'refused')));
 			$content = $content->content;	
 		}
 		if($status=='poster'){
-			$content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
-			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
+			$content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
+			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'accepted','comm_type'=>'poster')));
 			$content = $content->content;			
 		}
 		if($status=='oral'){
-			$content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
-			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
+			$content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang,'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
+			if(empty($content)) $content = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'resume','result'=>'accepted','comm_type'=>'oral')));
 			$content = $content->content;
 		}
 
@@ -443,7 +516,7 @@ class MailingController extends Controller {
 		$chairmans = $this->Users->findUsers(array('conditions'=>array('role'=>'chairman')));
 		$admins = array_merge($admins,$chairmans);
 
-		$langs = $this->Articles->find(array('table'=>'mailing','fields'=>'DISTINCT lang'));
+		$langs = $this->Articles->find(array('table'=>'mailing_content','fields'=>'DISTINCT lang'));
 
 		foreach ($langs as $lang) {
 			
@@ -456,7 +529,7 @@ class MailingController extends Controller {
 				$resume->email = $admin->email;
 				$resume = array($resume);
 
-				$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang->lang,'article'=>'signature')));
+				$signature = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang->lang,'article'=>'signature')));
 				$this->signature = $signature->content;
 
 				$status = array('refused','poster','oral');
@@ -492,7 +565,7 @@ class MailingController extends Controller {
 		}		
 		else $article = $article[0];
 
-		$langs = $this->Articles->find(array('table'=>'mailing','fields'=>'DISTINCT lang'));
+		$langs = $this->Articles->find(array('table'=>'mailing_content','fields'=>'DISTINCT lang'));
 
 		foreach ($langs as $lang) {
 			
@@ -502,7 +575,7 @@ class MailingController extends Controller {
 				$article->nom = (!empty($admin->nom))? $admin->nom : 'LASTNAME';
 				$article->email = $admin->email;
 
-				$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang->lang,'article'=>'signature')));
+				$signature = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang->lang,'article'=>'signature')));
 				$this->signature = $signature->content;
 
 				$status = array('refused','poster','oral');
@@ -536,13 +609,13 @@ class MailingController extends Controller {
 		//find the appropriate content depending of the status
 		$content = '';
 		if($status=='poster'){			
-			$c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
-			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+			$c = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
+			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'poster')));
 			$content = $c->content;					
 		}
 		if($status=='oral'){		
-			$c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
-			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+			$c = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$lang,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
+			if(empty($c)) $c = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>Conf::$languageDefault,'article'=>'deposed','result'=>'accepted','comm_type'=>'oral')));
 			$content = $c->content;							
 		}
 
@@ -567,7 +640,7 @@ class MailingController extends Controller {
 		$articles = $this->Articles->findDeposed(array('mailed'=>0));
 		$articles = $this->Articles->JOIN('users','prenom,nom,email,lang',array('user_id'=>':user_id'),$articles);
 
-		$signature = $this->Articles->findFirst(array('table'=>'mailing','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature')));
+		$signature = $this->Articles->findFirst(array('table'=>'mailing_content','conditions'=>array('lang'=>$this->getLang(),'article'=>'signature')));
 		$this->signature = $signature->content;
 
 		foreach ($articles as $a) {

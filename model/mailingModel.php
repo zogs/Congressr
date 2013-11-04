@@ -11,8 +11,8 @@ class MailingModel extends Model {
 				'message'=>'Veuillez remplir avec au moins une adresse email'),
 			)
 		,
-		'freemailing'=>array(
-			'pj'=>array(
+		'editmailing'=>array(
+			'addpj'=>array(
 				'rule'=>'file',
 				'params'=>array(
 					'destination'=>'media/pj',
@@ -27,6 +27,11 @@ class MailingModel extends Model {
 			'title'=>array(
 				'rule'=>'notEmpty',
 				'message'=>'Le titre ne peut être vide'
+				)
+			,
+			'object'=>array(
+				'rule'=>'notEmpty',
+				'message'=>"L'objet de l'email ne peut être vide"
 				)
 			,
 			'content'=>array(
@@ -57,7 +62,7 @@ class MailingModel extends Model {
 
 	public function deleteList($lid){
 
-		$sql = 'DELETE FROM mailing_list WHERE list_id='.$lid;
+		$sql = 'DELETE FROM mailing_mailinglist WHERE list_id='.$lid;
 
 		$emails = $this->getEmailsByListID($lid);
 		foreach ($emails as $email) {
@@ -125,11 +130,11 @@ class MailingModel extends Model {
 	public function saveList($data){
 
 		if(!empty($data->list_id))
-			$check = $this->findFirst(array('table'=>'mailing_list','conditions'=>array('list_id'=>$data->list_id)));
+			$check = $this->findFirst(array('table'=>'mailing_mailinglist','conditions'=>array('list_id'=>$data->list_id)));
 
 		$list = new stdClass();
 		$list->name = $data->name;
-		$list->table='mailing_list';
+		$list->table='mailing_mailinglist';
 		if(!empty($check)){
 			$list->key = 'list_id';
 			$list->list_id=$check->list_id;
@@ -144,7 +149,7 @@ class MailingModel extends Model {
 
 	public function getlistByID($lid){
 
-		return $this->findFirst(array('table'=>'mailing_list','conditions'=>array('list_id'=>$lid)));
+		return $this->findFirst(array('table'=>'mailing_mailinglist','conditions'=>array('list_id'=>$lid)));
 	}
 
 	public function getEmailsByListID($lid){
@@ -154,7 +159,7 @@ class MailingModel extends Model {
 
 	public function findMailingList(){
 
-		$li = $this->find(array('table'=>'mailing_list'));
+		$li = $this->find(array('table'=>'mailing_mailinglist'));
 
 		foreach ($li as $l) {
 			
@@ -164,6 +169,37 @@ class MailingModel extends Model {
 		}
 
 		return $li;
+	}
+
+	public function findMailingbyId($mid){
+		if(empty($mid)) return new Mailing();
+		$m = $this->findFirst(array('table'=>'mailing_sending','conditions'=>array('id'=>$mid)));
+		$m = new Mailing($m);
+		return $m;
+	}
+
+	public function findMailing(){
+
+		$mailings =  $this->find(array('table'=>'mailing_sending'));
+		foreach ($mailings as $m) {
+			$m = new Mailing($m);
+		}
+		return $mailings;
+	}
+}
+
+class Mailing {
+
+	public $id = '';
+	public $title = '';
+	public $status = '';	
+
+
+	public function __construct( $fields = array() ){
+
+		foreach ($fields as $key => $value) {
+			$this->$key = $value;
+		}
 	}
 }
 

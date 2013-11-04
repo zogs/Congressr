@@ -151,9 +151,8 @@ $(document).ready(function(){
 
 	});
 
-	function forbiddenchar(string){
-
-		var carac = new RegExp("[ @,\.;:/!&$£*§~#|)(}{ÀÂÇÈÉÊËÎÔÙÛàâçèéêëîôöùû]","g");
+	function forbiddenchar(string){		
+		var carac = new RegExp("[ @,\.;:\/\\!&$£*§~#|)(}{]","g");
 		var c = string.match(carac);
 		if(c) return c;
 	}

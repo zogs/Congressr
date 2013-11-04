@@ -142,7 +142,6 @@ class UsersController extends Controller{
 					}
 				}  else {				
 					Session::setFlash("Veuillez vérifier vos informations",'error');
-					debug($this->Users->errors);
 				}
 			}  else {
 				Session::setFlash("You forgot to accept the terms of use","error");
