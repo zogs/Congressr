@@ -123,6 +123,25 @@ class ArticlesController extends Controller {
 
 	}
 
+	public function admin_delete($type,$id){
+
+		$this->loadModel('Articles');
+
+		//Auth
+		if(!Session::user()->isChairman()) throw new zException("user have no chairman rights", 1);
+
+		if($data = $this->request->post()){
+
+			if($type=='resume') $this->Articles->deleteResume($id);
+			if($type=='deposed') $this->Articles->deleteDeposed($id);
+
+			Session::setFlash('Article supprimé');
+		}
+
+		$this->redirect('admin/articles/index/'.$type);
+	}
+
+
 	public function admin_decision($type,$id){
 
 		$this->loadModel('Articles');
@@ -402,5 +421,5 @@ class ArticlesController extends Controller {
 
 		$this->set($d);
 	}
-
+}
 ?>

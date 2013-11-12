@@ -11,11 +11,17 @@ class MailingModel extends Model {
 				'message'=>'Veuillez remplir avec au moins une adresse email'),
 			)
 		,
+		'editsignature'=>array(
+			'name'=>array(
+				'rule'=>'notEmpty',
+				'message'=>"Le nom ne peut être vide"
+				)
+			),
 		'editmailing'=>array(
 			'addpj'=>array(
 				'rule'=>'file',
 				'params'=>array(
-					'destination'=>'media/pj',
+					'destination'=>'media/mailing/pj',
 					//'extentions'=>array('doc'),
 					//'extentions_error'=>'Your document is not a .doc file',
 					//'max_size'=>500000,
@@ -41,7 +47,7 @@ class MailingModel extends Model {
 			)
 		);
 
-	public function saveMailing($data){
+	public function saveMailingList($data){
 
 		$list_id = $this->saveList($data);
 		
@@ -147,6 +153,17 @@ class MailingModel extends Model {
 
 	}
 
+	public function findSignatures(){
+
+		return $this->find(array('table'=>'mailing_signature'));
+	}
+
+	public function getSignatureById($id){
+		if(empty($id)) return '';
+		$s = $this->findFirst(array('table'=>'mailing_signature','conditions'=>array('id'=>$id)));
+		return $s->content;
+	}
+
 	public function getlistByID($lid){
 
 		return $this->findFirst(array('table'=>'mailing_mailinglist','conditions'=>array('list_id'=>$lid)));
@@ -155,6 +172,26 @@ class MailingModel extends Model {
 	public function getEmailsByListID($lid){
 
 		return $this->find(array('table'=>'mailing_email','conditions'=>array('list_id'=>$lid)));
+	}
+
+	public function getEmailsByUserList($list){
+
+		if(empty($list)) return array();
+		if($list=='reviewers') return $this->find(array('table'=>'users','conditions'=>array('role'=>'reviewer'),'fields'=>'user_id,login,prenom,nom,email,job'));
+		if($list=='redactors') return $this->find(array('table'=>'users','conditions'=>array('role'=>'redactor'),'fields'=>'user_id,login,prenom,nom,email,job'));
+
+		if($list=='resume_oral') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'accepted','comm_type'=>'oral')));
+		if($list=='resume_poster') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'accepted','comm_type'=>'poster')));
+		if($list=='resume_refused') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'refused')));
+		if($list=='resume_pending') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'pending')));
+		if($list=='article_oral') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'accepted','comm_type'=>'oral')));
+		if($list=='article_poster') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'accepted','comm_type'=>'poster')));
+		if($list=='article_refused') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'refused')));
+		if($list=='article_pending') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'pending')));
+
+		$articles = $this->JOIN('users','user_id,prenom,nom,email,job',array('user_id'=>':user_id'),$articles);
+		return $articles;		
+		
 	}
 
 	public function findMailingList(){
@@ -171,7 +208,61 @@ class MailingModel extends Model {
 		return $li;
 	}
 
-	public function findMailingbyId($mid){
+	public function findMailingToSendByCron(){
+
+		$m = $this->find(array('table'=>'mailing_sending','conditions'=>array('method'=>'cron','finished'=>0)));
+		foreach ($m as $k => $v) {
+			$m[$k] = new Mailing($v);
+		}
+		return $m;
+	}
+
+	public function findEmailsToSend($method,$limit = 10){
+
+		$emails = $this->find(array('table'=>'mailing_mailtosend','conditions'=>array('method'=>$method,'sended'=>0),'limit'=>$limit));		
+		foreach ($emails as $key => $value) {
+				$value->email = unserialize($value->email);	
+				$emails[$key] = $value;
+		}		
+		return $emails;
+	}
+
+	public function findEmailsToSendByMailingId($mid,$limit=10){
+
+		$m = $this->find(array('table'=>'mailing_mailtosend','conditions'=>array('mid'=>$mid,'sended'=>0),'limit'=>$limit));
+		return $m;
+	}
+
+	public function findNumberRestRefreshMailing($mid){
+
+		$m = $this->findFirst(array('table'=>'mailing_mailtosend','fields'=>'count(id) as count','conditions'=>array('mid'=>$mid,'sended'=>0)));
+		return $m->count;
+	}
+
+	public function isNoMoreMailToSendForMailing($mid){
+
+		$m = $this->findFirst(array('table'=>'mailing_mailtosend','conditions'=>array('mid'=>$mid,'sended'=>0),'limit'=>1));
+		if(empty($m)) return true;
+		else return false;
+	}
+
+	public function deleteMailSendedByMailingId($mid){
+
+		$sql = 'DELETE FROM mailing_mailtosend WHERE mid=:mid AND sended=1';
+		$tab = array('mid'=>$mid);
+		$this->query($sql,$tab);
+		return true;
+	}
+
+	public function markEmailAsSended($id){
+
+		$sql = 'UPDATE mailing_mailtosend SET sended=1,date=:date WHERE id=:id';
+		$tab = array(':id'=>$id,':date'=>Date::mysqlNow());
+		$this->query($sql,$tab);
+		return true;
+	}
+
+	public function getMailingbyId($mid){
 		if(empty($mid)) return new Mailing();
 		$m = $this->findFirst(array('table'=>'mailing_sending','conditions'=>array('id'=>$mid)));
 		$m = new Mailing($m);
@@ -180,11 +271,43 @@ class MailingModel extends Model {
 
 	public function findMailing(){
 
-		$mailings =  $this->find(array('table'=>'mailing_sending'));
-		foreach ($mailings as $m) {
-			$m = new Mailing($m);
+		$mailings =  $this->find(array('table'=>'mailing_sending','order'=>'date_created DESC'));		
+		foreach ($mailings as $k => $m) {			
+			$mailings[$k] = new Mailing($m);			
 		}
 		return $mailings;
+	}
+
+	public function saveMailing($m){
+
+		$m->table = 'mailing_sending';
+		$m->key = 'id';
+
+		if($this->save($m)) return true;
+		return false;
+	}
+
+	public function deleteMailing($mid){
+
+		$sql = 'DELETE FROM mailing_sending WHERE id='.$mid;
+
+		if($this->query($sql)) return true;
+		return false;
+	}
+
+	public function saveMailToSend($emails,$mid,$action){
+
+		foreach ($emails as $k => $v) {
+		
+			$new = new stdClass();
+			$new->table = 'mailing_mailtosend';
+			$new->email = serialize($v);
+			$new->method = $action;
+			$new->mid = $mid;
+
+			$this->save($new);
+		}
+
 	}
 }
 
@@ -192,7 +315,8 @@ class Mailing {
 
 	public $id = '';
 	public $title = '';
-	public $status = '';	
+	public $status = '';
+
 
 
 	public function __construct( $fields = array() ){
@@ -201,6 +325,36 @@ class Mailing {
 			$this->$key = $value;
 		}
 	}
+
+	public function exist(){
+		if(!empty($this->id)) return true;
+		return false;
+	}
+
+	public function getSendingDate(){
+		if($this->date_sended!=='0000-00-00 00:00:00') return $this->date_sended;
+		return false;
+	}
+
+	public function getFinishedDate(){
+		if($this->date_finished!=='0000-00-00 00:00:00') return $this->date_finished;
+	}
+
+	public function getStatus(){
+		if($this->getFinishedDate()) return 'Finished: '.$this->getFinishedDate();
+		if(!empty($this->status)) return $this->status;
+
+	}
+
+	public function getMailingListId(){
+		if(!empty($this->mailinglist_id)) return $this->mailinglist_id;
+		return 0;
+	}
+	public function getMethod(){
+		if(!empty($this->method)) return $this->method;
+		return false;		
+	}
+
 }
 
 ?>

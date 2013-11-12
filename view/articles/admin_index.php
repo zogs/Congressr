@@ -41,7 +41,12 @@
 	 			<td><?php echo $a->getCommPrefered(); ?></td>
 				<td><?php echo $a->getAverageNote(); ?></td>	 			
 		 		<td>
-		 			<strong><?php echo $a->status;?></strong>
+		 			<span class="label label-<?php 
+		 			if(isset($a->status) && $a->status=='pending') echo 'warning';
+		 			if(isset($a->status) && $a->status=='reviewed') echo 'info';
+		 			if(isset($a->status) && $a->status=='accepted') echo 'success';
+		 			if(isset($a->status) && $a->status=='refused') echo 'important';
+		 			?>"><?php echo $a->status;?></span>
 		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
 		 		</td>				
 					

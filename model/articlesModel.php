@@ -47,6 +47,35 @@ class ArticlesModel extends Model {
 				)
 		);
 
+
+	public function deleteArticle($type,$id){
+		if($type=='resume') $this->deleteResume($id);
+		if($type=='deposed') $this->deleteDeposed($id);
+	}
+
+	public function deleteResume($id){
+
+		$sql = "DELETE FROM resume WHERE id = :id";
+		$val = array(':id'=>$id);
+
+		$this->query($sql,$val);
+	}
+
+	public function deleteDeposed($id){
+
+		$sql= "DELETE FROM deposed WHERE id= :id";
+		$val = array(':id'=>$id);
+
+		$this->query($sql,$val);
+	}
+
+	public function deleteAssignement($id){
+		$sql= "DELETE FROM assignment WHERE id= :id";
+		$val = array(':id'=>$id);
+		$this->query($sql,$val);
+	}
+
+
 	public function saveArticle($data,$type){
 
 		if($type=='resume')
@@ -250,7 +279,8 @@ class ArticlesModel extends Model {
 		$a = array();
 		foreach ($res as $r) {
 			
-			$a[] = new Resume($r);		}
+			if(!empty($r)) $a[] = new Resume($r);
+		}
 
 		return $a;
 	}
@@ -274,7 +304,7 @@ class ArticlesModel extends Model {
 		$res = $this->find($params);
 		$a = array();
 		foreach ($res as $r) {
-			$a[] = new Deposed($r);
+			if(!empty($r)) $a[] = new Deposed($r);
 		}
 		return $a;
 	}

@@ -42,7 +42,8 @@
 			</table>
 			
 		</form>
-	<?php if($type=='resume'): ?>
+
+		<?php if($type=='resume'): ?>
 		<form class="form form-center " action="<?php echo Router::url('admin/articles/view/resume/'.$resume->id);?>" method="POST">
 			<div class="form-header">Resumé</div>
 			<?php echo $this->Form->input('id','hidden',array('value'=>$resume->id)) ;?>
@@ -96,11 +97,8 @@
 			<?php echo $this->Form->input('textEmail','Texte du mail',array('type'=>'textarea','rows'=>6,'style'=>"width:100%;",'placeholder'=>'Rédiger ici votre demande de modification'));?>
 			<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>	
 			<input type="submit" name="review" value="Envoyer la demande" class="btn btn-primary">
-		</form>
-		
-	<?php endif; ?>
-
-	
+		</form>		
+		<?php endif; ?>		
 
 </div>
 
@@ -135,7 +133,7 @@
 	</form>
 
 	<form class="form form-row label-left" action="<?php echo Router::url('admin/articles/decision/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
-		<div class="form-header">Accepter ou refuser le résumé</div>
+		<div class="form-header">Decision</div>
 		<?php echo $this->Form->select('decision','Choisir le statut',array('accepted'=>'accepted','refused'=>'refused','pending'=>'pending','reviewed'=>'reviewed'),array('style'=>'width:auto;padding-left:0;')); ?>
 		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Sauvegarder','style'=>'margin:0')); ?>
@@ -145,6 +143,15 @@
 				<?php echo $$type->status;?>
 			</ul>
 		</div>
+
+	</form>
+
+	<form class="form form-row label-left" action="<?php echo Router::url('admin/articles/delete/'.$type.'/'.$$type->id);?>" method="POST">
+		<div class="form-header">Supprimer</div>
+		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
+		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn','value'=>'Supprimer','style'=>'margin:0')); ?>
+		
+
 
 	</form>
 </div>

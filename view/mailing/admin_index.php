@@ -12,3 +12,42 @@
 <p><a href="<?php echo Router::url('admin/mailing/editmailing');?>" class="btn">Création d'un envoi de mailing</a></p>
 
 <p><a class="btn btn-danger" href="<?php echo Router::url('admin/mailing/freemailing');?>">Free mailing</a> Envoyer des emails aux listes d'adresses</p>
+
+<p>
+	<a class="btn btn-info btn-small" href="<?php echo Router::url('admin/mailing/editmailing');?>" class="btn">Créer un mailing</a>
+	<a class="btn btn-info btn-small" href="<?php echo Router::url('admin/mailing/listmailing');?>">Gerér les listes d'adresses</a>
+	<a class="btn btn-info btn-small" href="<?php echo Router::url('admin/mailing/editsignature');?>">Gerér les signatures</a>
+</p>
+
+<table class="table table-striped table-condensed table-hover">
+		<thead>
+			<th>Date d'envoi</th>
+			<th>Methode</th>
+			<th>Nom du mailing</th>
+			<th>Action</th>
+
+		</thead>
+		<tbody>
+			 <?php foreach ($mailings as $m): ?>	
+			 	<tr>
+		 			<td>		 				
+		 				<?php if($m->getStatus()=='pending'): ?>
+		 					<a href="<?php echo Router::url('admin/mailing/launchmailing/'.$m->id);?>">Commencer</a>
+		 				<?php else:?>
+		 					<?php echo ucfirst($m->getStatus()); ?>
+		 				<?php endif; ?>
+		 			</td>
+		 			<td>
+		 				<?php echo $m->getMethod(); ?>
+		 			</td>	 			
+		 			<td><a href="<?php echo Router::url('admin/mailing/editmailing/'.$m->id);?>"><?php echo $m->title; ?></a></td>
+			 		<td>
+			 			<a href="<?php echo Router::url('admin/mailing/editmailing/'.$m->id);?>">Editer</a>			 			
+			 			<a href="<?php echo Router::url('admin/mailing/deletemailing/'.$m->id);?>">Supprimer</a>
+			 		</td>				
+						
+			 	</tr>
+				 </form>
+			 <?php endforeach ?>
+		</tbody>
+	</table>

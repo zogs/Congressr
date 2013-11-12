@@ -17,10 +17,11 @@ class ReviewerController extends usersController {
 		//$extended = $this->Articles->findAssignmentByUser(Session::user()->getID(),'extended');
 		$deposed = $this->Articles->findAssignmentByUser(Session::user()->getID(),'deposed');
 
-		foreach ($resumes as $key => $resume) {
+		foreach ($resumes as $key => $v) {
 		 	
-		 	$r = $this->Articles->findResumes(array('conditions'=>array('id'=>$resume->article_id)));
-		 	if(!empty($r)) $resumes[$key] = $r[0];
+		 	$r = $this->Articles->findResumes(array('conditions'=>array('id'=>$v->article_id)));
+		 	if(!empty($r)) $resumes[$key] = $r[0]; //si le résumé existe bel et bien
+		 	else $this->Articles->deleteAssignement($v->id); //
 		 } 
 		// foreach ($extended as $key => $a) {
 		 	
@@ -31,12 +32,13 @@ class ReviewerController extends usersController {
 		 	
 		 	$r = $this->Articles->findArticleTypeID('deposed',$a->article_id);
 		 	if(!empty($r)) $deposed[$key] = $r;
+		 	else $this->Articles->deleteAssignement($v->id);
 		 } 
 
 		 $resumes =  $this->Articles->joinReviews($resumes,'resume');
 		 //$extended =  $this->Articles->joinReviews($extended,'extended');
 		 $deposed = $this->Articles->joinReviews($deposed,'deposed');
-
+		
 		 $d['resumes'] = $resumes;
 		// $d['extended'] = $extended;
 		 $d['deposed'] = $deposed;

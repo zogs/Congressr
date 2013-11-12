@@ -110,31 +110,7 @@
 
  			$sql .= ' WHERE ';
 
- 			//Si les conditions sont pas un tableau , genre une requete personnelle
- 			if(!is_array($req['conditions'])){
- 				$sql .= $req['conditions']; 				
- 			}
- 			else {
-
- 			$cond = array();
- 			//On parse toutes les conditions du  tableau
-	 			foreach ($req['conditions'] as $k => $v) {
-
-	 				if(!empty($v)){
-
-	 					//On escape les valeurs
-		 				if(!is_numeric($v)){ 
-		 					$v = '"'.mysql_real_escape_string($v).'"';	 					
-		 				}
-	 				
-		 				//On incremente le tableau avec les conditions
-		 				$cond[] = "$k=$v";
-	 				}
-	 					 			
-	 			}
-	 			//Enfin on rassemble les conditions et on les ajoute à la requete sql
-	 			$sql .= implode(' AND ',$cond);
- 			}
+ 			$sql .= $this->sqlConditions($req['conditions']); 			
  			
  		} 	
 
@@ -666,12 +642,11 @@ public function validates($data, $rules = null, $field = null){
  		return $f; 	
  	}
 
- 	public function sqlConditions($conditions){
+	public function sqlConditions($conditions){
  		
  		$c='';
  		if($conditions && !empty($conditions)){
 	 		if(is_array($conditions)){
-
 	 			$cond = array();
 	 			foreach ($conditions as $k => $v) {
 	 				if(!is_numeric($v) && substr($v, 0, 1) != ':' )
@@ -687,6 +662,7 @@ public function validates($data, $rules = null, $field = null){
 	 		$c .= '1=1';
 	 	return $c;
  	}
+
 
 
  	public function JOIN($table,$fields,$conds,$obj){
