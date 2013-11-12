@@ -35,6 +35,15 @@
 	<?php endif; ?>
 </form>
 
+<?php if(!empty($resume->id)): ?>
+<form class="form form-center w70pc" action="<?php echo Router::url('articles/delete/resume/'.$resume->id);?>" method='POST'>
+	<div class="form-header">Supprimer Le résumé</div>
+	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
+	<?php echo $this->Form->input('Cliquez ici pour supprimer ce résumé','submit',array('class'=>'btn btn-small')) ;?>
+
+</form>
+<?php endif;?>
+
 <script type="text/javascript">		
 
 	$(document).ready(function(){

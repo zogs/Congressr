@@ -58,7 +58,7 @@ class ArticlesController extends Controller {
 		
 		if($type=='resume'){
 
-			$res = $this->Articles->findResumes();		
+			$res = $this->Articles->findResumes(array('order'=>'user_id DESC'));		
 			$res = $this->Articles->joinAssignments($res,'resume');
 			$res = $this->Articles->joinReviews($res,'resume');
 			$res = $this->Articles->joinAuthors($res);
@@ -70,7 +70,7 @@ class ArticlesController extends Controller {
 
 		if($type=='deposed'){
 
-			$res = $this->Articles->findDeposed();
+			$res = $this->Articles->findDeposed(array('order'=>'user_id DESC'));
 			$res = $this->Articles->JOIN('resume','comm_type,title',array('id'=>':resume_id'),$res);
 			$res = $this->Articles->joinAssignments($res,'deposed');
 			$res = $this->Articles->joinReviews($res,'deposed');
@@ -120,6 +120,19 @@ class ArticlesController extends Controller {
 		}
 
 		$this->redirect('admin/articles/view/'.$type.'/'.$id);
+
+	}
+
+	public function delete($type,$id){
+
+		$this->loadModel('Articles');
+
+		$a = $this->Articles->findArticleTypeID($type,$id);
+		if($a->user_id!=Session::user()->getID()) $this->e404("Vous n'êtes pas l'auteur du résumé, vous ne pouvez le supprimer",'error');
+
+		$this->Articles->deleteArticle($type,$id);
+
+		$this->redirect(Session::user()->getRole().'/board');
 
 	}
 
