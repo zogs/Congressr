@@ -15,7 +15,7 @@
 
 
 <?php if(!empty($resumes)): ?>
-<h2>Resumés déposés</h2>
+<h2><?php echo count($resumes);?> Resumés déposés</h2>
 <table class="table table-striped table-condensed table-hover">
 	<thead>
 		<th>Title</th>
@@ -61,7 +61,7 @@
 <?php endif; ?>
 
 <?php if(!empty($deposed)): ?>
-<h2>Articles étendus déposés</h2>
+<h2><?php echo count($deposed);?> Articles étendus déposés</h2>
 <table class="table table-striped table-condensed table-hover">
 	<thead>
 		<th>Title</th>
