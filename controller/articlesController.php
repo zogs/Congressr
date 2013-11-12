@@ -58,7 +58,7 @@ class ArticlesController extends Controller {
 		
 		if($type=='resume'){
 
-			$res = $this->Articles->findResumes(array('order'=>'user_id DESC'));		
+			$res = $this->Articles->findResumes(array('order'=>'user_id ASC'));		
 			$res = $this->Articles->joinAssignments($res,'resume');
 			$res = $this->Articles->joinReviews($res,'resume');
 			$res = $this->Articles->joinAuthors($res);
@@ -70,7 +70,7 @@ class ArticlesController extends Controller {
 
 		if($type=='deposed'){
 
-			$res = $this->Articles->findDeposed(array('order'=>'user_id DESC'));
+			$res = $this->Articles->findDeposed(array('order'=>'user_id ASC'));
 			$res = $this->Articles->JOIN('resume','comm_type,title',array('id'=>':resume_id'),$res);
 			$res = $this->Articles->joinAssignments($res,'deposed');
 			$res = $this->Articles->joinReviews($res,'deposed');
