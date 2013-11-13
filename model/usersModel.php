@@ -13,8 +13,8 @@ class UsersModel extends Model{
 						),
 						array(
 							'rule'=>'regex',
-							'regex'=>'[ \'\"@,\.;:\/\\!&$£*§~#|)(}{]',
-							'message'=>"Le login contient des caractères interdits"
+							'regex'=>'^[a-zA-Z0-9 \.\-_]+$',
+							'message'=>"Pas d'accents ou de caractères interdits..."
 						)
 					)
 				),				
