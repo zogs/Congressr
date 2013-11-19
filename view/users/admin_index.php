@@ -2,7 +2,8 @@
 
 
 <h2>Utilisateurs <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Créer un reviewer</a></h2>
-<table class="table table-striped table-hover">
+<form id="formTS" action="" method="post"><input id="queryTS" type="text" /> <input type="submit" value="Search" /> <input id="clearTS" type="button" value="Clear" /></form>
+<table class="table table-striped table-hover tableSearch">
 	<thead>
 		<th>Login</th>
 		<th>Role</th>

@@ -82,6 +82,16 @@ $(document).ready(function(){
     		$("#CC1").select2({ formatResult: addCountryFlagToSelectState, formatSelection: addCountryFlagToSelectState});
 
 
+
+    	/*============================================================
+    		TABLE SEARCH
+    	============================================================*/
+    	if($('.tableSearch').length!=0){
+		$(".tableSearch").tablesearch(); 
+    	}
+	
+	
+
 	/*===========================================================
 		FORM AJAX
 	============================================================*/
