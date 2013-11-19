@@ -16,6 +16,7 @@
 		
 		<form action="#" class="form">
 			<div class="form-header">Evaluation des reviewers</div>
+			<?php if(!empty($$type->reviewed)):?>
 			<table class="table table-stripped">
 				<thead>
 					<th>Reviewer</th>
@@ -24,7 +25,7 @@
 					<th>Commentaire</th>
 				</thead>
 				<tbody>
-					<?php if(!empty($$type->reviewed)):?>
+					
 					<?php foreach ($$type->reviewed as $r) :?>
 					<tr>
 						<td><?php echo $reviewers[$r->reviewer_id];?></td>
@@ -33,14 +34,14 @@
 						<td><?php echo $r->comment;?></td>
 					</tr>
 					<?php endforeach;?>
-					<?php else: ?>
-					<tr>
-						<td><i>Pas encore d'évaluation</i></td>
-					</tr>
-					<?php endif; ?>
+					
 				</tbody>
 			</table>
-			
+			<?php else: ?>
+
+			<i>Pas encore d'évaluation</i>
+
+			<?php endif; ?>
 		</form>
 
 		<?php if($type=='resume'): ?>
@@ -106,10 +107,7 @@
 	
 	<form class="form form-row label-left" action="<?php echo Router::url('admin/articles/assign/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 		<div class="form-header">Demande de review</div>
-		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
-		<?php echo $this->Form->select('reviewer','Choisir le reviewer',$reviewers,array('style'=>'width:auto;padding-left:0;')) ;?>
-		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Envoyer la demande','style'=>'margin:0')); ?>
-		
+
 		<?php if(!empty($$type->assigned)): ?>
 			<div class="alert alert-info" style="float:left;">
 			<small>Demandes envoyés</small>
@@ -130,13 +128,16 @@
 			</div>
 		<?php endif; ?>
 
+		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
+		<?php echo $this->Form->select('reviewer','Choisir un reviewer',$reviewers,array('style'=>'width:auto;padding-left:0;')) ;?>
+		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Envoyer une demande','style'=>'margin:0')); ?>
+		
+
 	</form>
 
 	<form class="form form-row label-left" action="<?php echo Router::url('admin/articles/decision/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
-		<div class="form-header">Decision</div>
-		<?php echo $this->Form->select('decision','Choisir le statut',array('accepted'=>'accepted','refused'=>'refused','pending'=>'pending','reviewed'=>'reviewed'),array('style'=>'width:auto;padding-left:0;')); ?>
-		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
-		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Sauvegarder','style'=>'margin:0')); ?>
+		<div class="form-header">Statut de l'article</div>
+
 		<div class="alert alert-<?php if($$type->status=='accepted') echo 'success'; elseif($$type->status=='pending') echo 'warning'; elseif($$type->status=='refused') echo 'error'; elseif($$type->status=='reviewed') echo 'info';?>" style="float:left">
 			<small>Statut en cours</small>
 			<ul style="width:100%;float:left;">
@@ -144,10 +145,14 @@
 			</ul>
 		</div>
 
+		<?php echo $this->Form->select('decision','Choisir un statut',array('accepted'=>'accepted','refused'=>'refused','pending'=>'pending','reviewed'=>'reviewed'),array('style'=>'width:auto;padding-left:0;')); ?>
+		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
+		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Sauvegarder','style'=>'margin:0')); ?>
+
 	</form>
 
 	<form class="form form-row label-left" action="<?php echo Router::url('admin/articles/delete/'.$type.'/'.$$type->id);?>" method="POST">
-		<div class="form-header">Supprimer</div>
+		<div class="form-header">Supprimer L'article</div>
 		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn','value'=>'Supprimer','style'=>'margin:0')); ?>
 		

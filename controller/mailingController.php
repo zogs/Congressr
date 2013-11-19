@@ -576,18 +576,12 @@ class MailingController extends Controller {
 
 
 	private function sendMail($emails = array(), $message){		
-		
+
 		if(count($emails)==1){
 			if(!is_array($emails[0]))
 				$message->setTo($emails);
-			else{
-				foreach ($emails[0] as $name => $address) {
-					if(is_int($name))
-						$message->setTo($address);
-					else
-						$message->setTo(array($address => $name));
-				}
-			}
+			else
+				$message->setTo($emails[0]);	
 		}
 		else {
 			foreach ($emails as $name => $address) {
@@ -603,7 +597,6 @@ class MailingController extends Controller {
 		else 
 			return true;
 	}
-
 
 
 	private function sendAllInOne($mailing){

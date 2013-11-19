@@ -69,11 +69,11 @@ class ReviewerController extends usersController {
 
 			if($this->Articles->saveReview($id,Session::user()->getID(),$type,$this->request->post())){
 
-				Session::setFlash("<strong>Merci d'avoir évalué cet article !</strong> <a href='".Router::url('reviewer/board')."''>Vous pouvez retourner à la liste des articles</a>",'success');
+				
 
 				//update article status			
 				if($this->Articles->updateArticleStatus($id,$type,'reviewed')){
-					Session::setFlash("DEBUG: L'article a été marqué comme reviewé",'info');
+					Session::setFlash("<strong>Merci d'avoir évalué cet article !</strong> <a href='".Router::url('reviewer/board')."''>Vous pouvez retourner à la liste des articles</a>",'success');					
 				}else {
 					Session::setFlash("ERROR: L'article na PAS été marqué comme reviewé",'error');
 				}					

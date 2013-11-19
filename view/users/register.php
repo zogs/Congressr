@@ -9,9 +9,9 @@
 		</p>
 		<?php echo $this->Form->input('login','Login',array('icon'=>'icon-user','required'=>'required','placeholder'=>"Choisissez votre login de connexion",'data-url'=>Router::url('users/check'))) ?>
 		<?php echo $this->Form->input('email',"Email",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Entrer votre email de contact",'data-url'=>Router::url('users/check'))) ?>
-		<?php echo $this->Form->input('confirmEmail',"Confirmer",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Confirmer votre email")); ?>
+		<?php echo $this->Form->input('confirmEmail',"Confirmer Email",array('type'=>'email', 'icon'=>"icon-envelope","required"=>"required","placeholder"=>"Confirmer votre email")); ?>
 		<?php echo $this->Form->input('password','Mot de passe',array('type'=>"password",'icon'=>'icon-lock','required'=>'required','placeholder'=>'Entrer votre mot de passe')) ?>
-		<?php echo $this->Form->input('confirmPassword','Confirmer', array('type'=>'password','icon'=>'icon-lock','required'=>'required','placeholder'=>'Confirmer votre mot de passe')) ?>		
+		<?php echo $this->Form->input('confirmPassword','Confirmer Mot de Passe', array('type'=>'password','icon'=>'icon-lock','required'=>'required','placeholder'=>'Confirmer votre mot de passe')) ?>		
 		<?php echo $this->Form->input('prenom',"Prénom",array('icon'=>'icon-user','placeholder'=>'Prénom')) ?>
 		<?php echo $this->Form->input('nom',"Nom",array('icon'=>'icon-user','placeholder'=>'Nom ')) ;?>
 		<?php echo $this->Form->input('job','Institution',array('icon'=>'icon-bookmark','placeholder'=>'Organisme')) ;?>

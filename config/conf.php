@@ -75,7 +75,8 @@ class Conf {
 									'bootstrap/js/bootstrap.js',
 									'js/phpfunctions.js',
 									'js/jquery/select2-2.1/select2.min.js',
-									'js/jquery/jquery.expander.min.js'
+									'js/jquery/jquery.expander.min.js',
+									'js/jquery/jquery.tablesearch.js'
 								);
 
 

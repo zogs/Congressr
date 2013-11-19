@@ -252,8 +252,7 @@ class ArticlesController extends Controller {
 								$errors[] = $r->login;
 							}
 						}						
-						if(!empty($sended)) Session::setFlash('Degug : demande de reviewing envoyé à '.implode(',',$sended));
-						if(!empty($errors)) Session::setFlash('Debug : Echec de l\'envoi pour : '.implode(',',$errors),'error');
+						
 
 					}
 

@@ -9,6 +9,7 @@
 		<th>Prenom</th>
 		<th>Nom</th>				
 		<th>Pays</th>
+		<th>ID</th>
 		<th>Action</th>
 	</thead>
 	<tbody>
@@ -28,7 +29,8 @@
 	 			</td>
 		 		<td><?php echo $user->prenom; ?></td>
 		 		<td><?php echo $user->nom;?></td>				
-				<td><?php echo $user->CC1;?></td>		 		
+				<td><?php echo $user->CC1;?></td>	
+				<td><?php echo $user->user_id;?></td>	 		
 		 		<td>
 					<?php echo $this->Form->_select('role',array('redactor'=>'redactor','reviewer'=>'reviewer','chairman'=>'chairman','admin'=>'admin'),array('default'=>$user->getRole(),'style'=>"display:inline;width:auto;") );?>
 					<input type="Submit"  class="submitAsLink" value="Sauver" />

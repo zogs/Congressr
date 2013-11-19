@@ -16,43 +16,51 @@
 
 <?php if(!empty($resumes)): ?>
 <h2><?php echo count($resumes);?> Resumés déposés</h2>
-<table class="table table-striped table-condensed table-hover">
+<form id="formTS" action="" method="post"><input id="queryTS" type="text" /> <input type="submit" value="Search" /> <input id="clearTS" type="button" value="Clear" /></form>
+<table class="table table-striped table-condensed table-hover tableSearch">
 	<thead>
 		<th>Title</th>
-		<th>1st Author</th>
+		<th>Authors</th>
 		<th>Mots Clefs</th>
-		<th>Comm.</th>
-		<th>Note</th>	
+		<th>Comm.</th>	
 		<th>Status</th>
 	</thead>
 	<tbody>
-		 <?php foreach ($resumes as $a): ?>
+		 <?php foreach ($resumes as $r): ?>
 			
 			<form class="form-table " action="<?php echo Router::url('admin/articles/index/'.$type);?>" method="POST">
 		 	<tr class="<?php 
-		 			if(isset($a->status) && $a->status=='pending') echo 'warning';
-		 			if(isset($a->status) && $a->status=='reviewed') echo 'info';
-		 			if(isset($a->status) && $a->status=='accepted') echo 'success';
-		 			if(isset($a->status) && $a->status=='refused') echo 'error';
+		 			if(isset($r->status) && $r->status=='pending') echo 'warning';
+		 			if(isset($r->status) && $r->status=='reviewed') echo 'info';
+		 			if(isset($r->status) && $r->status=='accepted') echo 'success';
+		 			if(isset($r->status) && $r->status=='refused') echo 'error';
 		 			?>">
-	 			<td><a href="<?php echo Router::url('admin/articles/view/resume/'.$a->id);?>"><?php echo $a->title; ?></a></td>
-	 			<td><span  style="text-transform:uppercase"><?php echo $a->authors[0]->lastname;?></span>&nbsp;<?php echo $a->authors[0]->firstname;?></td>
-	 			<td><?php echo $a->tags; ?></td>
-	 			<td><?php echo $a->getCommPrefered(); ?></td>
-				<td><?php echo $a->getAverageNote(); ?></td>	 			
+	 			<td><a href="<?php echo Router::url('admin/articles/view/resume/'.$r->id);?>"><?php echo $r->title; ?></a></td>
+	 			<td style="font-size:80%">
+	 				<ul>
+	 				<?php foreach ($r->authors as $k => $a) :?>
+	 					<li>
+			 				<span  style="text-transform:uppercase"><?php echo $a->lastname;?></span>
+			 				&nbsp;<?php echo $a->firstname;?>
+			 				<small><i><?php echo $a->institution;?></i></small>
+			 			</li>
+	 				<?php endforeach;?>
+	 				</ul>
+	 			</td>
+	 			<td><?php echo $r->tags; ?></td>	 			
+	 			<td><?php echo $r->comm_type; ?></td>						
 		 		<td>
 		 			<span class="label label-<?php 
-		 			if(isset($a->status) && $a->status=='pending') echo 'warning';
-		 			if(isset($a->status) && $a->status=='reviewed') echo 'info';
-		 			if(isset($a->status) && $a->status=='accepted') echo 'success';
-		 			if(isset($a->status) && $a->status=='refused') echo 'important';
-		 			?>"><?php echo $a->status;?></span>
-		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
-		 		</td>				
-					
+		 			if(isset($r->status) && $r->status=='pending') echo 'warning';
+		 			if(isset($r->status) && $r->status=='reviewed') echo 'info';
+		 			if(isset($r->status) && $r->status=='accepted') echo 'success';
+		 			if(isset($r->status) && $r->status=='refused') echo 'important';
+		 			?>"><?php echo $r->status;?></span>
+		 			<small><?php if($r->status=='pending' && count($r->assigned)!=0) echo '('.count($r->reviewed).'/'.count($r->assigned).')'; ?></small>
+		 		</td>			 								
 		 	</tr>
 
-		 	<?php echo $this->Form->input('id','hidden',array('value'=>$a->id)) ;?>
+		 	<?php echo $this->Form->input('id','hidden',array('value'=>$r->id)) ;?>
 		 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
 			 </form>
 		 <?php endforeach ?>
@@ -62,7 +70,7 @@
 
 <?php if(!empty($deposed)): ?>
 <h2><?php echo count($deposed);?> Articles étendus déposés</h2>
-<table class="table table-striped table-condensed table-hover">
+<table class="table table-striped table-condensed table-hover tableSearch">
 	<thead>
 		<th>Title</th>
 		<th>1st Author</th>
@@ -99,3 +107,11 @@
 	</tbody>
 </table>
 <?php endif; ?>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){ 
+		$(".tableSearch").tablesearch(); 
+	});
+	
+</script>
