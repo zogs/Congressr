@@ -301,18 +301,25 @@ class ArticlesController extends Controller {
 			
 			if($data = $this->Articles->validates($data,'resume')){
 
-				if($id = $this->Articles->saveResume($data)){
 
-					Session::setFlash("Merci, votre résumé <strong>a bien été enregistré !</strong> Vous serez averti par email dès qu'il aura été accepté ou refusé","success");
-
-					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
-					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
-
-					$this->redirect('articles/resume/'.$id);
-				}
-				else
-					Session::setFlash("Error while saving resume","error");
+				//check first author
+				if($this->Articles->isNotAFirstAuthor($data)){
 				
+					if($id = $this->Articles->saveResume($data)){
+
+						Session::setFlash("Merci, votre résumé <strong>a bien été enregistré !</strong> Vous serez averti par email dès qu'il aura été accepté ou refusé","success");
+
+						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
+						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
+
+						$this->redirect('articles/resume/'.$id);
+					}
+					else
+						Session::setFlash("Error while saving resume","error");
+				}
+				else{
+					Session::setFlash("Le premier auteur est déjà premier auteur pour un autre article. Veuillez mettre un autre auteur en premier auteur.","error");
+				}
 			}
 				
 		}

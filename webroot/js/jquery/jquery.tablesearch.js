@@ -68,6 +68,8 @@ jQuery(function(){
                 var tx = $(this).text();
                 $(this).replaceWith(tx);
             });
+            //reset search field
+            $('#queryTS').val('');
       });
 
 

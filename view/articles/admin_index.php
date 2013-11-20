@@ -17,7 +17,7 @@
 <?php if(!empty($resumes)): ?>
 <h2><?php echo count($resumes);?> Resumés déposés</h2>
 <form id="formTS" action="" method="post"><input id="queryTS" type="text" /> <input type="submit" value="Search" /> <input id="clearTS" type="button" value="Clear" /></form>
-<table class="table table-striped table-condensed table-hover tableSearch">
+<table class="table table-striped table-condensed table-hover tableSearch tableSort">
 	<thead>
 		<th>Title</th>
 		<th>Authors</th>
@@ -71,7 +71,7 @@
 <?php if(!empty($deposed)): ?>
 <h2><?php echo count($deposed);?> Articles étendus déposés</h2>
 <form id="formTS" action="" method="post"><input id="queryTS" type="text" /> <input type="submit" value="Search" /> <input id="clearTS" type="button" value="Clear" /></form>
-<table class="table table-striped table-condensed table-hover tableSearch">
+<table class="table table-striped table-condensed table-hover tableSearch tableSort">
 	<thead>
 		<th>Title</th>
 		<th>1st Author</th>

@@ -2,6 +2,55 @@
 /* Add CSS code here */
 
 
+
+th.header{
+	background-color:#EEEEEE;
+	box-shadow:inset 0 0 1px #FFF;
+	background-image: url(../img/small.gif);     
+	    cursor: pointer; 
+	    font-weight: bold; 
+	    background-repeat: no-repeat; 
+	    background-position: center left; 
+	    padding-left: 20px; 
+	    border-right: 1px solid #dad9c7; 
+	    margin-left: -1px; 
+	    position:relative;
+}
+th.header:after{
+	content:'';
+	position:absolute;
+	right:10px;
+	top:50%; margin-top:2px;
+	border-top:5px solid #AAA; border-left:5px solid transparent; border-right:5px solid transparent; border-bottom:5px solid transparent;
+}
+th.header:before{
+	content:'';
+	position:absolute;
+	right:10px;
+	top:50%; margin-top:-10px;
+	border-bottom:5px solid #AAA; border-left:5px solid transparent; border-right:5px solid transparent; border-top:5px solid transparent;
+}
+
+
+
+th.headerSortDown:after{
+	content:'';
+	position:absolute;
+	right:10px;
+	top:50%; margin-top:-3px;
+	border-top:5px solid #AAA; border-left:5px solid transparent; border-right:5px solid transparent; border-bottom:5px solid transparent;
+}
+th.headerSortDown:before{ display:none; }
+
+th.headerSortUp:after{
+	content:'';
+	position:absolute;
+	right:10px;
+	top:50%; margin-top:-8px;
+	border-bottom:5px solid #AAA; border-left:5px solid transparent; border-right:5px solid transparent; border-top:5px solid transparent;
+	
+}
+th.headerSortUp:before{ display:none;}
 .hero-unit{
 	font-size:12px;
 	line-height: 150%;

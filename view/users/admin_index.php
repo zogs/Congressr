@@ -3,7 +3,7 @@
 
 <h2>Utilisateurs <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Créer un reviewer</a></h2>
 <form id="formTS" action="" method="post"><input id="queryTS" type="text" /> <input type="submit" value="Search" /> <input id="clearTS" type="button" value="Clear" /></form>
-<table class="table table-striped table-hover tableSearch">
+<table class="table table-striped table-hover tableSearch tableSort">
 	<thead>
 		<th>Login</th>
 		<th>Role</th>
@@ -15,8 +15,8 @@
 	</thead>
 	<tbody>
 		 <?php foreach ($users as $user): ?>
-			<form class="form " action="<?php echo Router::url('admin/users/index');?>" method="POST">
 		 	<tr>
+			<form class="form " action="<?php echo Router::url('admin/users/index');?>" method="POST">
 	 			<td><?php echo $user->login ?></td>
 	 			<td>
 	 				<span class="label <?php 
@@ -38,10 +38,10 @@
 		 			<a href="<?php echo Router::url('admin/users/edit/'.$user->user_id); ?>" >Editer</a>
 		 			<a onclick="return confirm('Voulez-vous vraiment supprimer cet élément ?');" href="<?php echo Router::url('admin/users/delete/'.$user->getID()); ?>" >Supprimer</a>
 		 		</td>
-		 	</tr>
 		 	<?php echo $this->Form->input('user_id','hidden',array('value'=>$user->getID())) ;?>
 		 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
 			 </form>
+		 	</tr>
 		 <?php endforeach ?>
 	</tbody>
 </table>

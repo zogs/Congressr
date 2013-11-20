@@ -430,6 +430,21 @@ class ArticlesModel extends Model {
 		else return false;
 	}
 
+	public function isNotAFirstAuthor($data){
+
+		if(!empty($data->id)) return true;
+
+		$a = $this->findFirst(array('table'=>'author','conditions'=>array('firstname'=>$data->author1_firstname,'lastname'=>$data->author1_lastname)));
+
+		if(empty($a)) return true;
+
+		$f = $this->findFirst(array('table'=>'authors','conditions'=>array('id_author'=>$a->id,'no'=>1)));
+
+		if(empty($f)) return true;
+
+		return false;
+	}
+
 	public function saveAuthors ( $data, $article_id, $type ){
 
 		$authors = array();
@@ -441,7 +456,7 @@ class ArticlesModel extends Model {
 			}
 		}
 
-		foreach ($authors as $attributes) {
+		foreach ($authors as $i => $attributes) {
 			
 			$author = new stdClass();
 			$author->table = 'author';
@@ -465,6 +480,7 @@ class ArticlesModel extends Model {
 			$authors->id_article = $article_id;
 			$authors->type = $type;
 			$authors->id_author = $author_id;
+			$authors->no = $i;
 
 			$this->save( $authors );
 			
