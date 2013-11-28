@@ -16,46 +16,71 @@ jQuery(function(){
 
        var tables = this;
 
+
        //on submit 
-       $("#formTS").on("submit",function(){
+       $("#tsearch-form").on("submit",function(){
 
           //delete yellow hightlight
-          $(".yellowTS").each(function(){
+          $(".tsearch-hightlight").each(function(){
               var tx = $(this).text();
               $(this).replaceWith(tx);
           });
 
           //get query
-          var query = $("#queryTS").val();
+          var query = $("#tsearch-query").val();
+          var nbLinesMatches = 0;
+          var matches = null;
+          var nbMatches = 0;
+          var pattern = new RegExp(query,"gi");
+          var match = false;
           //for each tables
          tables.each(function(){
-            var td = $(this).find('td');
-            td.parent().hide(); //hide all table line tr
-            //for each line
-            td.each(function(){
 
-                var tx = $(this).html(); //get line content
-                var pattern = new RegExp(query,"gi");
-                var matches  = pattern.exec(tx); //search
-                if(matches){ //if some content match replace by a hightlighted span
-                    var newtx = tx.replace(matches[0],'<span class="yellowTS" style="color:'+args.color+';background-color:'+args.bgcolor+'">'+matches[0]+'</span>');
-                    if($(this).children().is('a')){
-                        $(this).children('a').html(newtx);
-                    }
-                    else {
-                        $(this).html(newtx);
-                    }
-                    //display cell that match
-                    $(this).show();
-                    //display line that match
-                    $(this).parent().show();
-                }
+            var trs = $(this).find('tr');
+            trs.each(function(){
+
+                    var tr = $(this);
+                    var td = tr.find('td');            
+                    
+                    tr.hide();
+                    //for each line
+                    td.each(function(){
+                          
+                          var content = $(this).html(); //get line content
+                         
+                          matches  = pattern.exec(content); //search
+                          
+                          if(matches){ //if some content match replace by a hightlighted span
+                                  nbMatches++;
+                                  match = true;
+                                  var newtx = content.replace(matches[0],'<span class="tsearch-hightlight" style="color:'+args.color+';background-color:'+args.bgcolor+'">'+matches[0]+'</span>');
+                                  if($(this).children().is('a')){
+                                        $(this).children('a').html(newtx);
+                                  }
+                                  else {
+                                        $(this).html(newtx);
+                                  }
+                                  //display cell that match
+                                  $(this).show();
+                                  tr.show();
+                          }
+                  });
+                  if(match==true) {
+                          nbLinesMatches++;
+                  }
+                  match = false;
             });
+
+              
          });
+
+      
+      $("#tsearch-results").empty().append(nbMatches+" résultats, "+nbLinesMatches+" lignes");
+
         return false;
        });
 
-      $("#clearTS").on('click',function(){
+      $("#tsearch-clear").on('click',function(){
         //display all lines of all tables
             tables.each(function(){
                 var tr = $(this).find('td').parent();
@@ -64,12 +89,14 @@ jQuery(function(){
                 });
             });
             //remove hightlights
-            $('.yellowTS').each(function(){
+            $('.tsearch-hightlight').each(function(){
                 var tx = $(this).text();
                 $(this).replaceWith(tx);
             });
             //reset search field
-            $('#queryTS').val('');
+            $('#tsearch-query').val('');
+            //reset search results
+            $("#tsearch-results").empty();
       });
 
 

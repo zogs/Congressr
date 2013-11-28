@@ -51,6 +51,13 @@ th.headerSortUp:after{
 	
 }
 th.headerSortUp:before{ display:none;}
+
+
+.tsearch-hightlight{
+	color:black;
+	background-color:yellow;
+}
+
 .hero-unit{
 	font-size:12px;
 	line-height: 150%;
