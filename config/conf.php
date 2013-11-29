@@ -24,6 +24,8 @@ class Conf {
 	static $congressName = 'AIC Dijon 2014';
 	static $congressContactEmail = 'contact@aic2014.com';
 
+	static $resumeIsOpen = false;
+
 	//Database connexion
 	static $databases = array(			
 		'localhost'  => array(
