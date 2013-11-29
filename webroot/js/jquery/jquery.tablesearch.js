@@ -36,7 +36,7 @@ jQuery(function(){
           //for each tables
          tables.each(function(){
 
-            var trs = $(this).find('tr');
+            var trs = $(this).find('tbody').find('tr');
             trs.each(function(){
 
                     var tr = $(this);
