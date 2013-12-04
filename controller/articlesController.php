@@ -286,12 +286,24 @@ class ArticlesController extends Controller {
 			Session::setFlash('<strong>Votre session a expiré. Veuillez vous <strong>reconnecter</strong>...');
 			$this->redirect('users/login');
 		}
+
+		//l'article existe
 		if($id){
+			//on verifie si l'user peux y accéderr
 			$resume = $this->Articles->findArticleTypeID('resume',$id);
 			if(!Session::user()->canSeeResume($resume->user_id)){
 				Session::setFlash("Vous ne pouvez accéder à cet article.",'error');
 				$this->redirect('articles/resume');
 			}
+		}
+		//si nouvel article
+		else {
+			//on verifie que le depot de nouveau article est autorisé
+			if(!Conf::$resumeIsOpen){
+				Session::setFlash("<strong>Le dépot de nouveau résumé est clôt...</strong>","info");
+				$this->redirect(Session::user()->getRole().'/board');
+			}
+
 		}		
 		
 
@@ -300,7 +312,6 @@ class ArticlesController extends Controller {
 			$data = $this->request->post();
 			
 			if($data = $this->Articles->validates($data,'resume')){
-
 
 				//check first author
 				if($this->Articles->isNotAFirstAuthor($data)){
@@ -320,8 +331,7 @@ class ArticlesController extends Controller {
 				else{
 					Session::setFlash("Le premier auteur est déjà premier auteur pour un autre article. Veuillez mettre un autre auteur en premier auteur.","error");
 				}
-			}
-				
+			}			
 		}
 
 		if($id != null){

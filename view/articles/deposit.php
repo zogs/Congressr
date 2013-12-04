@@ -3,9 +3,11 @@
 
 <form class="form form-row w70pc fleft" action="" method="POST"  enctype="multipart/form-data">
 	
-	<p>Merci de déposer l'article intitulé <strong><?php echo $resume->title;?></strong></p>
+	<p>Merci de déposer l'article étendu intitulé <strong><?php echo $resume->title;?></strong></p>
 
 	<p>Votre article doit être au format <strong>.doc</strong> et faire moins de 6 pages</p>
+
+	<p>Veillez à suivre les <a href="">instructions de mise en page</a> en suivant le <a href="">patron d'article</a>
 
 	<?php if(!empty($deposed->filename)): ?>
 		<p class="alert">
@@ -24,7 +26,7 @@
 	</label>
 
 	
-	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large btn-inverse",'value'=>"Envoyer le fichier")); ?>
+	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large btn-primary",'value'=>"Envoyer le fichier")); ?>
 
 </form>
 

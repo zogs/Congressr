@@ -5,11 +5,6 @@
 		else Session::setFlash("<strong>Cet article a été évalué, il ne peut plus être modifié.</strong>",'warning');
 	}
 
-	if(!Conf::$resumeIsOpen){
-		Session::setFlash("Le dépot de résumé est maintenant clôt","info");
-		echo Session::flash();
-	}
-	else {
  ?>
 	<?php echo Session::flash(); ?>
 	<form class="form form-center w70pc" action="<?php echo Router::url('articles/resume');?>" method="POST">
@@ -39,7 +34,7 @@
 		<?php endif; ?>
 	</form>
 
-	<?php if(!empty($resume->id)): ?>
+	<?php if(!empty($resume->id) && $resume->status=='pending'): ?>
 	<form class="form form-center w70pc" action="<?php echo Router::url('articles/delete/resume/'.$resume->id);?>" method='POST'>
 		<div class="form-header">Supprimer Le résumé</div>
 		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
@@ -70,4 +65,3 @@
 		});
 		
 	</script>
-<?php } ?>
