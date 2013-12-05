@@ -47,7 +47,7 @@ class Form{
 
 		//Bootstrap html
 		$html = '<div class="control-group '.$classError.'" id="control-'.$id.'">';
-		$html .= '<label class="control-label">'.$label.'</label>';
+		$html .= '<label class="control-label" for="input'.$id.'">'.$label.'</label>';
 		$html .= '<div class="controls">';
 
 		//Icon

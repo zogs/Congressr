@@ -19,12 +19,9 @@
 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 	<?php echo $this->Form->input('resume_id','hidden',array('value'=>$resume->id)); ?>
 	<?php echo $this->Form->input('title','hidden',array('value'=>$resume->title)); ?>	
-	
-	<label for="inputdeposed">
-		<img src="<?php echo Router::webroot('img/icon-ms-word.png');?>" alt="">
-		<input type="file" class="input-file" id="inputdeposed" name="deposed">
-	</label>
 
+
+	<?php echo $this->Form->input('deposed','<img src="'.Router::webroot('img/icon-ms-word.png').'" alt="">',array('type'=>'file','class'=>'input-file')); ?>
 	
 	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large btn-primary",'value'=>"Envoyer le fichier")); ?>
 

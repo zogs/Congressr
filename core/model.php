@@ -563,6 +563,28 @@ public function validates($data, $rules = null, $field = null){
 		 					//if the upload is optional , continue
 		 					if(isset($validates[$key]['optional'])) continue;
 
+		 					//if error
+							switch($file['error'])
+							{
+								case 1:
+								$msg = "Le fichier est trop volumineux..."; //pour apache
+								break;
+
+								case 2:
+								$msg = "Le poid du fichier est trop important..."; //pour php
+								break;
+
+								case 3:
+								$msg = "Le téléchargement à échoue, veuillez réessayer.";
+								break;
+
+								case 4:
+								$msg = "Veuillez choisir un fichier";
+								break;
+			 				}
+			 				$errors[$input] = $msg;
+
+
 		 					//if the upload is required
 		 					if(isset($validates[$key]['required']))
 		 						$errors[$input] =$validates[$key]['message'];

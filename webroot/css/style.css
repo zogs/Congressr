@@ -62,3 +62,15 @@ th.headerSortUp:before{ display:none;}
 	font-size:12px;
 	line-height: 150%;
 }
+
+#control-deposed label.control-label {
+	float:left;
+	width:30%;
+}
+#control-deposed .controls {
+	float:left;
+	width:70%;
+}
+#control-deposed.control-error .controls {
+	background-color:#f2dede;
+}

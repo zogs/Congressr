@@ -266,6 +266,8 @@ class ArticlesController extends Controller {
 					}
 
 				}
+			}else{
+				Session::setFlash('Veuillez revoir votre fichier','error');
 			}
 
 		}

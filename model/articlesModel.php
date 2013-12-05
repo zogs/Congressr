@@ -23,15 +23,6 @@ class ArticlesModel extends Model {
 				'message'=>'Veuillez remplir au moins un auteur'),
 			)
 		,
-		'extended'=> array(
-			'title'=>array(
-				'rule'=>'notEmpty',
-				'message'=>'Veuillez remplir un titre'),
-			'content'=>array(
-				'rule'=>'notEmpty',
-				'message'=>'Veuillez remplir le contenu de votre résumé')
-			)
-		,
 		'deposit'=>array(
 			'deposed'=>array(
 					'rule'=>'file',

@@ -20,6 +20,7 @@ class MailingModel extends Model {
 		'editmailing'=>array(
 			'addpj'=>array(
 				'rule'=>'file',
+				'optional'=>'optional',
 				'params'=>array(
 					'destination'=>'media/mailing/pj',
 					//'extentions'=>array('doc'),

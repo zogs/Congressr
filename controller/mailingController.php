@@ -142,6 +142,8 @@ class MailingController extends Controller {
 
 				if($id = $this->Mailing->save($new)){
 					$this->redirect('admin/mailing/index');
+				} else {
+					$this->request->data = $data;
 				}
 
 			}
