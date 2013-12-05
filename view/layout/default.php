@@ -40,9 +40,9 @@
 				<li><a href="<?php echo Router::url('admin/pages/index');?>">Administration</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='reviewer'):?>
-				<li><a href="<?php echo Router::url('reviewer/board');?>">Evaluer les articles</a></li>
-				<li><a href="<?php echo Router::url('articles/resume');?>">Déposer un resumé</a></li>
 				<li><a href="<?php echo Router::url('redactor/board');?>">Mes articles</a></li>
+				<li><a href="<?php echo Router::url('articles/resume');?>">Déposer un resumé</a></li>
+				<li><a href="<?php echo Router::url('reviewer/board');?>">Evaluer les articles</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='redactor'):?>
 				<li><a href="<?php echo Router::url('redactor/board');?>">Mes articles</a></li>
