@@ -694,25 +694,26 @@ class MailingController extends Controller {
 			);
 
 		//format emails array
+		$recipients = array();
 		foreach ($emails as $k => $v) {
 			if(is_object($v)){
 				if(!empty($v->email)){
-					$emails[$k] = $v->email;
+					$recipients[$k] = $v->email;
 					if(!empty($v->prenom) || !empty($nom))
-						$emails[$k] = array($v->email => $v->prenom.' '.$v->nom);
+						$recipients[$k] = array($v->email => $v->prenom.' '.$v->nom);
 				}
 				else{
 					continue;
 				}	
 			}
 			elseif(is_string($v)){
-				$emails[$k] = $v;
+				$recipients[$k] = $v;
 			}
 		}
 
-		debug($emails);
+		debug($recipients);
 		exit();
-		return $emails;
+		return $recipients;
 	}
 
 	public function admin_freemailing(){
