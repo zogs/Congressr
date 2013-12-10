@@ -693,7 +693,8 @@ class MailingController extends Controller {
 			String::findEmailsInString($mailing->emails_added)
 			);
 
-
+		debug($emails);
+		exit();
 		//format emails array
 		foreach ($emails as $k => $v) {
 			if(is_object($v)){
