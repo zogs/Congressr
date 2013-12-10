@@ -710,6 +710,8 @@ class MailingController extends Controller {
 			}
 		}
 
+		debug($emails);
+		exit();
 		return $emails;
 	}
 
