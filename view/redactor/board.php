@@ -3,9 +3,9 @@
 <?php echo Session::flash(); ?>
 
 
-<h3>
+<h4>
 	Liste des résumés déposés	
-</h3>
+</h4>
 <div class="clearfix">
 	<table class="table table-condensed table-hover">
 		<thead>
@@ -30,15 +30,23 @@
 					</td>
 					<td><?php echo $resume->getCommPrefered(); ?></td>
 					<td><?php echo $resume->date; ?></td>
-					<td><?php echo $resume->status; ?></td>
+					<td>
+						<span class="label <?php 
+							if($resume->status=='accepted') echo 'label-success';
+							if($resume->status=='refused') echo 'label-important';
+							if($resume->status=='reviewed') echo 'label-info';
+						?>">
+							<?php echo $resume->status; ?>
+						</span>
+					</td>
 				</tr>			
 			<?php endforeach;?>
 			<?php else:?>
 				<tr>
-					<td><strong>Pas encore de résumés déposés...</strong></td>
+					<td><small><i>Pas de résumés déposés...</i></small></td>
 				</tr>
 			<?php endif; ?>		
 		</tbody>
 	</table>
 </div>
-<a href="<?php echo Router::url('articles/resume');?>" class="btn btn-mini btn-info">Déposer un nouveau résumé</a>
+<a href="<?php echo Router::url('articles/resume');?>" class="btn btn-link">Déposer un nouveau résumé</a>

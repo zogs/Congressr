@@ -18,13 +18,11 @@
                         </a>                       
 
                         <ul class="nav">                                                
-                                <li><a href="<?php echo Router::url('admin/pages/index'); ?>">Pages</a></li>
-                                 <li><a href="<?php echo Router::url('admin/users/index'); ?>">Users</a></li>
-                                 <li><a href="<?php echo Router::url('admin/articles/index/resume');?>">Resumés</a></li>
-                                 <li><a href="<?php echo Router::url('admin/articles/index/deposed');?>">Articles</a></li>
-                                 <li><a href="<?php echo Router::url('admin/mailing/index');?>">Mailing</a></li>
-                                  <li><a href="<?php echo Router::url('/'); ?>">Voir le site</a></li>            
-                                <li><a href="<?php echo Router::url('admin/logout'); ?>">Deconnexion</a></li>
+                                <li><a href="<?php echo Router::url('admin/pages/index'); ?>"><i class="icon icon-th-large icon-white"></i> Pages</a></li>
+                                 <li><a href="<?php echo Router::url('admin/users/index'); ?>"><i class="icon  icon-user icon-white"></i> Users</a></li>
+                                 <li><a href="<?php echo Router::url('admin/articles/index/resume');?>"><i class="icon icon-th icon-white"></i> Resumés</a></li>
+                                 <li><a href="<?php echo Router::url('admin/articles/index/deposed');?>"><i class="icon icon-th-list icon-white"></i> Articles</a></li>
+                                 <li><a href="<?php echo Router::url('admin/mailing/index');?>"><i class="icon icon-envelope icon-white"></i> Mailing</a></li>            
                                 
                         </ul>
 

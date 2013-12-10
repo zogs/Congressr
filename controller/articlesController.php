@@ -302,7 +302,7 @@ class ArticlesController extends Controller {
 		else {
 			//on verifie que le depot de nouveau article est autorisé
 			if(!Conf::$resumeIsOpen){
-				Session::setFlash("<strong>Le dépot de nouveau résumé est clôt...</strong>","info");
+				Session::setFlash("<strong>Le dépot de nouveau résumé est clôt...</strong>","error");
 				$this->redirect(Session::user()->getRole().'/board');
 			}
 

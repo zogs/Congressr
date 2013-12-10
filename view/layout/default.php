@@ -40,13 +40,13 @@
 				<li><a href="<?php echo Router::url('admin/pages/index');?>">Administration</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='reviewer'):?>
-				<li><a href="<?php echo Router::url('redactor/board');?>">Mes articles</a></li>
-				<li><a href="<?php echo Router::url('articles/resume');?>">Déposer un resumé</a></li>
-				<li><a href="<?php echo Router::url('reviewer/board');?>">Evaluer les articles</a></li>
+				<li><a href="<?php echo Router::url('redactor/board');?>"><i class="icon icon-folder-open icon-white"></i> Mes résumés</a></li>
+				<li><a href="<?php echo Router::url('articles/resume');?>"><i class="icon icon-file icon-white"></i> Déposer un resumé</a></li>
+				<li><a href="<?php echo Router::url('reviewer/board');?>"><i class="icon icon-edit icon-white"></i> Evaluer les résumés</a></li>
 				<?php endif;
 				if(Session::user()->getRole()=='redactor'):?>
-				<li><a href="<?php echo Router::url('redactor/board');?>">Mes articles</a></li>
-				<li><a href="<?php echo Router::url('articles/resume');?>">Déposer un resumé</a></li>
+				<li><a href="<?php echo Router::url('redactor/board');?>"><i class="icon icon-folder-open icon-white"></i> Mes résumés</a></li>
+				<li><a href="<?php echo Router::url('articles/resume');?>"><i class="icon icon-file icon-white"></i> Déposer un resumé</a></li>
 				<?php endif;
 				
 				?>
