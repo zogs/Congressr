@@ -181,6 +181,7 @@ class MailingModel extends Model {
 		if($list=='reviewers') return $this->find(array('table'=>'users','conditions'=>array('role'=>'reviewer'),'fields'=>'user_id,login,prenom,nom,email,job'));
 		if($list=='redactors') return $this->find(array('table'=>'users','conditions'=>array('role'=>'redactor'),'fields'=>'user_id,login,prenom,nom,email,job'));
 
+		$articles = array();
 		if($list=='resume_oral') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'accepted','comm_type'=>'oral')));
 		if($list=='resume_poster') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'accepted','comm_type'=>'poster')));
 		if($list=='resume_refused') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'refused')));
