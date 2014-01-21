@@ -22,6 +22,7 @@
 					if($resume->status=='reviewed') echo 'info';
 					if($resume->status=='accepted') echo 'success';
 					if($resume->status=='refused') echo 'error';
+					if($resume->status=='canceled') echo 'canceled';
 				?>">
 					<td>
 						<a href="<?php echo Router::url('articles/resume/'.$resume->id);?>"><?php echo $resume->title; ?></a>

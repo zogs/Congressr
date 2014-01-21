@@ -74,3 +74,7 @@ th.headerSortUp:before{ display:none;}
 #control-deposed.control-error .controls {
 	background-color:#f2dede;
 }
+
+tr.canceled {
+	display:none;;
+}

@@ -47,13 +47,14 @@
 		<?php if($type=='resume'): ?>
 		<form class="form form-center " action="<?php echo Router::url('admin/articles/view/resume/'.$resume->id);?>" method="POST">
 			<div class="form-header">Resumé</div>
-			<?php echo $this->Form->input('id','hidden',array('value'=>$resume->id)) ;?>
+			
 			<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
 			<?php echo $this->Form->input('title','Titre du résumé',array('placeholder'=>'Titre du résumé','type'=>'textarea','rows'=>2,'value'=>$resume->title)) ;?>
 			<?php echo $this->Form->input('text','Contenu du résumé',array('placeholder'=>'Contenu du résumé','type'=>'textarea','rows'=>20,'value'=>$resume->text)) ;?>
 			<?php echo $this->Form->input('tags','Mots clefs',array('value'=>'','placeholder'=>'Ex: ','value'=>$resume->tags)) ;?>
 			<?php echo $this->Form->radio('prefer','Communication',array('poster'=>'Poster','oral'=>"Communication Orale"),array('default'=>$resume->getCommPrefered()) );?>
 			<?php echo $this->Form->input('status','Status',array('value'=>$resume->status)) ;?>
+			<?php echo $this->Form->input('id','ID',array('value'=>$resume->id)) ;?>
 			<?php echo $this->Form->input('user_id','User_id',array('value'=>$resume->user_id)) ;?>
 
 			<?php foreach ($authors as $k => $author): ?>
@@ -78,7 +79,7 @@
 		<form class="form form-center form-row" action="<?php echo Router::url('admin/articles/view/'.$type.'/'.$$type->resume_id);?>" method="POST">
 			<div class="form-header">Article reviewé</div>
 			<a href="<?php echo Router::url($$type->filepath);?>">
-			<img src="<?php echo Router::webroot('img/icon-ms-word.png');?>" alt="">
+			<img src="<?php echo Router::webroot('img/icon-ms-word.png');?>" alt="" width="100px">
 			Téléchargez le document
 			</a>
 			
@@ -145,7 +146,7 @@
 			</ul>
 		</div>
 
-		<?php echo $this->Form->select('decision','Choisir un statut',array('accepted'=>'accepted','refused'=>'refused','pending'=>'pending','reviewed'=>'reviewed'),array('style'=>'width:auto;padding-left:0;')); ?>
+		<?php echo $this->Form->select('decision','Choisir un statut',array('accepted'=>'accepted','refused'=>'refused','pending'=>'pending','reviewed'=>'reviewed','canceled'=>'canceled'),array('style'=>'width:auto;padding-left:0;')); ?>
 		<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 		<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>'btn btn-primary','value'=>'Sauvegarder','style'=>'margin:0')); ?>
 

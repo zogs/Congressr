@@ -39,6 +39,7 @@ class Router{
 				}
 			}
 		}
+
 		//Si l'url ne correspond pas a une regle on parse selon la regle de base /controller/action/params
 		//On separe l'url 
 		$params = explode('/',$url);
@@ -133,7 +134,7 @@ class Router{
 		//Boucle prefixes
 		foreach (self::$prefixes as $k => $v) {
 			if(strpos($url, $v) === 0){
-				$url = str_replace($v, $k, $url);
+				$url = preg_replace('/'.$v.'/',$k,$url,1);
 			}
 		}
 

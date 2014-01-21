@@ -1,7 +1,12 @@
 
 
 
-<h2><?php echo count($users);?> Utilisateurs <a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Créer un reviewer</a></h2>
+<h2>
+	<?php echo count($users);?> Utilisateurs 
+	<a class="btn btn-info" href="<?php echo Router::url('admin/reviewer/create');?>">Créer un reviewer</a>
+	<a class="btn btn-warning" href="<?php echo Router::url('admin/users/createUser/redactor');?>">Créer un auteur</a>
+	<a class="btn btn-danger" href="<?php echo Router::url('admin/users/createUser/admin');?>">Créer un admin</a>
+</h2>
 <form id="tsearch-form" action="" method="post"><input id="tsearch-query" type="text" /> <input type="submit" value="Search" /> <input id="tsearch-clear" type="button" value="Clear" /><span id="tsearch-results"></span></form>
 <table class="table table-striped table-hover tableSearch tableSort">
 	<thead>

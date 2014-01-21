@@ -39,6 +39,8 @@ class ArticlesModel extends Model {
 		);
 
 
+	
+
 	public function deleteArticle($type,$id){
 		if($type=='resume') $this->deleteResume($id);
 		if($type=='deposed') $this->deleteDeposed($id);
@@ -60,8 +62,28 @@ class ArticlesModel extends Model {
 		$this->query($sql,$val);
 	}
 
+	public function cancelArticle($type,$id){
+		if($type=='resume') $this->cancelResume($id);
+		if($type=='deposed') $this->cancelDeposed($id);
+	}
+
+
 	public function deleteAssignement($id){
 		$sql= "DELETE FROM assignment WHERE id= :id";
+		$val = array(':id'=>$id);
+		$this->query($sql,$val);
+	}
+
+	public function cancelResume($id){
+
+		$sql = "UPDATE resume SET status='canceled' WHERE id = :id";
+		$val = array(':id'=>$id);
+		$this->query($sql,$val);
+	}
+
+	public function cancelDeposed($id){
+
+		$sql= "UPDATE deposed SET status='canceled' WHERE id= :id";
 		$val = array(':id'=>$id);
 		$this->query($sql,$val);
 	}
@@ -261,6 +283,7 @@ class ArticlesModel extends Model {
 		else return false;
 	}
 
+	
 	public function findResumes( $options = array() ){
 
 		$params = array('table'=>'resume');

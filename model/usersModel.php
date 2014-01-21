@@ -144,29 +144,38 @@ class UsersModel extends Model{
 		//if new user , check unique value
 		if(!isset($user->user_id)){
 
-			//check if login already exist
+			//check if login already exist			
 			$check = $this->findFirst(array(
-											'fields'=>'user_id',
-											'conditions'=>array('login'=>$user->login)
-											));
+							'fields'=>'user_id',
+							'conditions'=>array('login'=>$user->login)
+							));
 			if(!empty($check)){
-				Session::setFlash("Sorry this login is in use.","error");
+				Session::setFlash("Ce nom d'utilisateur est déjà pris, veuillez en choisir un autre.","error");
 				return false;
 			}
 
 			//check if mail already in use
 			$checkmail = $this->findFirst(array(
-												'fields'=>'mail',
-												'conditions'=>array('mail'=>$user->mail)
-												));
+							'fields'=>'email',
+							'conditions'=>array('email'=>$user->email)
+							));
 			if(!empty($checkmail)){
 				Session::setFlash("Cet email est déjà pris... Vous êtes peut-être déjà inscrit ? Vous avez oublié vorte mot de passe ? Essayer de le <a href='".Router::url('users/recovery')."'>réinitialiser</a> !  ","error");
 				return false;
 			}
+
+			//initiate default value
+			$user->salt = String::random(10);
+			$user->hash = md5($user->salt.$user->password);
+			$user->codeactiv = String::random(25);
+			$user->date_signin = Date::MysqlNow();	
+			$user->date_lastlogin = $user->date_signin;
+			if(isset($user->password)) unset($user->password);
+			if(isset($user->confirm)) unset($user->confirm);
 		}		
 
-		if($this->save($user))
-			return true;
+		if($id = $this->save($user))
+			return $id;
 		else
 			return false;
 
@@ -341,6 +350,15 @@ class User {
 
 		if($this->account=='anonym') return 'anonym_'.$this->user_id;
 		else return $this->login;
+	}
+
+	public function getFullName(){
+
+		$str = '';
+		if(isset($this->prenom)) $str .= $this->prenom;
+		if(isset($this->nom)) $str .= ' '.$this->nom;
+
+		return $str;
 	}
 
 	public function getEmail(){

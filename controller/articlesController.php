@@ -130,7 +130,7 @@ class ArticlesController extends Controller {
 		$a = $this->Articles->findArticleTypeID($type,$id);
 		if($a->user_id!=Session::user()->getID()) $this->e404("Vous n'êtes pas l'auteur du résumé, vous ne pouvez le supprimer",'error');
 
-		$this->Articles->deleteArticle($type,$id);
+		$this->Articles->cancelArticle($type,$id);
 
 		$this->redirect(Session::user()->getRole().'/board');
 
@@ -179,17 +179,105 @@ class ArticlesController extends Controller {
 		$this->redirect('admin/articles/view/'.$type.'/'.$id);
 	}
 
-	public function deposit($resume_id = null){
+	public function admin_deposit(){
 
 		$this->loadModel('Articles');
 
+		debug($_POST);
+
+		if($data = $this->request->post()){
+
+			if($this->Articles->validates($data,'deposit')){
+
+				$resume = $this->Articles->findArticleTypeID('resume',$data->resume_id);
+				$resume = new Resume($resume);
+				$resume->authors = $this->Articles->findAuthors($data->resume_id, 'resume');
+
+				if($this->saveDeposit($data,$resume)){
+
+					$this->loadModel('Users');
+					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));							
+					Session::setFlash("L'article a été sauvegardé et attribué à ".ucfirst($user->login));
+				}
+				else {
+
+					Session::setFlash('Une erreur a eu lieu lors de la sauvegarde','error');	
+				}
+			}
+			else{
+				Session::setFlash('Veuillez revoir vos données','error');
+			}
+		}
+		else {
+			debug('No post data');
+		}		
+
+	}
+
+	public function saveDeposit($data,$resume){
+
+		$filename = strtoupper(String::slugify($resume->authors[0]->lastname)).'_'.substr(String::slugify($resume->title),0,50);
+
+		if($destination = $this->Articles->saveFile('deposed',$filename)){	
+
+			$s = new stdClass();
+			$s->table = 'deposed';
+			$s->resume_id = $resume->id;
+			$s->user_id = Session::user()->getID();
+			$s->title = $resume->title;
+			$s->status = 'pending';
+			$s->filename = $filename;
+			$s->filepath = str_replace('\\','/',$destination); //use / instead of \ because its will be used as URL
+
+
+			//UPDATE if already exist
+			$exist = $this->Articles->findFirst(array('table'=>'deposed','fields'=>'id','conditions'=>array('resume_id'=>$this->request->post('resume_id'))));
+			if(!empty($exist)){
+				//set id for update
+				$s->key = 'id';
+				$s->id = $exist->id;
+
+				//send a request directly to the reviewers
+				//find reviewers
+				$assigned = $this->Articles->findAssignmentByArticle($resume->id,'deposed');
+				$reviewers = $this->Articles->JOIN('users','login,email,lang',array('user_id'=>':user_id'),$assigned);
+				$sended = array();
+				$errors = array();
+				foreach ($reviewers as $r) {
+					
+					if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,'deposed')){
+						$sended[] = $r->login;
+					}
+					else{
+						$errors[] = $r->login;
+					}
+				}						
+				
+
+			}
+
+			if($id = $this->Articles->save($s)){
+
+				return $id;
+
+			}
+
+		return false;
+
+		}
+
+	}
+
+	public function deposit($resume_id = null){
+
+		$this->loadModel('Articles');
 
 		//security
 		if(!Session::user()->isLog()) {
 			Session::setFlash('<strong>Votre session a expiré. Veuillez vous <strong>reconnecter</strong>...');
 			$this->redirect('users/login');
 		}
-		if(!is_numeric($resume_id)) $this->e404("Cet article n'existe pas");
+		
 		if($resume_id){
 			$resume = $this->Articles->findArticleTypeID('resume',$resume_id);
 			if(!Session::user()->canSeeResume($resume->user_id)){
@@ -197,8 +285,6 @@ class ArticlesController extends Controller {
 				$this->redirect('articles/resume');
 			}
 		}
-		
-
 
 		if(!empty($resume_id)){
 			$resume = $this->Articles->findFirst(array('table'=>'resume','conditions'=>array('id'=>$resume_id)));
@@ -211,62 +297,27 @@ class ArticlesController extends Controller {
 			$resume = new Resume();	
 			$deposed = new Deposed();		
 		}
-		
 
 		if($data = $this->request->post()){
 
+
+
 			if($this->Articles->validates($data,'deposit')){
 				
-				$filename = strtoupper(String::slugify($resume->authors[0]->lastname)).'_'.substr(String::slugify($resume->title),0,50);
+				if($id = $this->saveDeposit($data,$resume)){
 
-				if($destination = $this->Articles->saveFile('deposed',$filename)){	
-
-					$s = new stdClass();
-					$s->table = 'deposed';
-					$s->resume_id = $resume->id;
-					$s->user_id = Session::user()->getID();
-					$s->title = $resume->title;
-					$s->status = 'pending';
-					$s->filename = $filename;
-					$s->filepath = str_replace('\\','/',$destination); //use / instead of \ because its will be used as URL
-
-					//update if exist
-					$exist = $this->Articles->findFirst(array('table'=>'deposed','fields'=>'id','conditions'=>array('resume_id'=>$this->request->post('resume_id'))));
-					if(!empty($exist)){
-						//set id for update
-						$s->key = 'id';
-						$s->id = $exist->id;
-
-						//send a request directly to the reviewers
-						//find reviewers
-						$assigned = $this->Articles->findAssignmentByArticle($resume->id,'deposed');
-						$reviewers = $this->Articles->JOIN('users','login,email,lang',array('user_id'=>':user_id'),$assigned);
-						$sended = array();
-						$errors = array();
-						foreach ($reviewers as $r) {
-							
-							if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,'deposed')){
-								$sended[] = $r->login;
-							}
-							else{
-								$errors[] = $r->login;
-							}
-						}						
-						
-
-					}
-
-					if($id = $this->Articles->save($s)){
-
-						$this->loadModel('Users');
-						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));		
-						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$data->title);
-						Session::setFlash("Votre document a été enregistré ! Vous recevrez un email quand il aura été évalué par le comité scientifique");
-		
-					}
-
+					$this->loadModel('Users');
+					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));		
+					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$data->title);
+					Session::setFlash("Votre document a été enregistré ! Vous recevrez un email quand il aura été évalué par le comité scientifique");
 				}
-			}else{
+				else {
+
+					Session::setFlash('Une erreur a eu lieu lors de la sauvegarde','error');	
+				}
+
+			}
+			else{
 				Session::setFlash('Veuillez revoir votre fichier','error');
 			}
 
@@ -276,6 +327,44 @@ class ArticlesController extends Controller {
 		$d['resume'] = $resume;
 		$d['deposed'] = $deposed;
 		$this->set($d);
+	}
+
+	public function admin_createresume(){
+
+		$this->loadModel('Articles');
+		$this->loadModel('Users');
+
+		$resume = new Resume();
+		$authors[] = new Author();		
+		
+		$this->set('resume',$resume);
+		$this->set('authors',$authors);
+
+		if($data = $this->request->post()){
+			
+			if($data = $this->Articles->validates($data,'resume')){
+
+				if($this->Articles->isNotAFirstAuthor($data)){
+
+					if($id = $this->Articles->saveResume($data)){
+
+						Session::setFlash("Le résumé a été sauvegardé ! ");
+
+						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
+						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
+						Session::setFlash("Un mail de confirmation a été envoyé à ".$user->getFullName()." ".$user->getEmail());
+
+						$this->redirect('admin/articles/index/resume');
+					}
+				}
+				else{
+					Session::setFlash("<strong>Attention</strong> le premier auteur est déjà <strong>premier auteur d'un autre article !</strong>",'error');
+				}
+			}
+			else{
+				Session::setFlash("Veuillez revoir les champs",'error');
+			}
+		}
 	}
 
 	public function resume( $id = null ){

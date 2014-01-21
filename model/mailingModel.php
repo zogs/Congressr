@@ -172,7 +172,7 @@ class MailingModel extends Model {
 
 	public function getEmailsByListID($lid){
 
-		return $this->find(array('table'=>'mailing_email','conditions'=>array('list_id'=>$lid)));
+		return $this->find(array('table'=>'mailing_email','conditions'=>array('list_id'=>$lid),'order'=>'email ASC'));
 	}
 
 	public function getEmailsByUserList($list){

@@ -103,7 +103,7 @@ class UsersController extends Controller{
 					//check if login exist
 					$check = $this->Users->findFirst(array('fields'=>'user_id','conditions'=>array('login'=>$data->login)));							
 					if(!empty($check)) {
-						Session::setFlash("Ce login est déjà pris? Veuillez essayer un autre...","error");
+						Session::setFlash("Ce login est déjà pris! Veuillez en choisir un autre...","error");
 						$this->request->data = $data;
 
 					} else {
@@ -115,14 +115,14 @@ class UsersController extends Controller{
 
 						} else {
 
-							if($user_id = $this->createUser($data)){
+							if($id = $this->Users->saveUser($data)){
 
-								$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$user_id)));
+								$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$id)));
 
 								if(isset($user->status) && $user->status!='group')
 									Session::setFlash("<strong>Welcome</strong>","success");
 
-								if($this->sendValidateMail(array('dest'=>$user->email,'user'=>$user->login,'codeactiv' =>$user->codeactiv,'user_id'=>$user_id)))
+								if($this->sendValidateMail(array('dest'=>$user->email,'user'=>$user->login,'codeactiv' =>$user->codeactiv,'user_id'=>$id)))
 								{
 									$d['Success'] = true;						
 									Session::setFlash("Un email <strong>a été envoyé</strong> à votre boite email. Pour confirmer votre incription, <strong>veuillez cliquer sur le lien</strong> présent dans cette email", "success");
@@ -154,28 +154,24 @@ class UsersController extends Controller{
 		$this->set($d);
 	}
 
-	protected function createUser( $data ){
+	public function admin_createUser( $role ){
 
 		$this->loadModel('Users');
-		//user object
-		$user = new stdClass();
-		$user = $data;
-		$user->salt = String::random(10);
-		$user->hash = md5($user->salt.$data->password);
-		$user->codeactiv = String::random(25);
-		unset($user->password);
-		unset($user->confirm);
-		$user->lang = $this->getLang();
-		$user->date_signin = Date::MysqlNow();	
-		$user->date_lastlogin = $user->date_signin;
 
-		if($id = $this->Users->save( $user )){
+		if($data = $this->request->post()){
 
-			return $id;
+			$data->valid = 1;
+
+			if($this->Users->saveUser($data)){
+				Session::setFlash("L'utilisateur a bien été enregistré.");
+			}
+			else {
+				Session::setFlash("Une erreur a empéché de sauvegarder l'utilisateur",'error');
+			}
 		}
-		else {
-			return false;
-		}		
+
+		$this->set('role',$role);
+	
 	}
 
 
