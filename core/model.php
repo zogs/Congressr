@@ -335,6 +335,8 @@
 
 				$file = $_FILES[$name];
 
+				
+
 				foreach ($this->validates as $validates_action) {
 					
 					if(isset($validates_action[$name])) $validates = $validates_action[$name];				
@@ -356,7 +358,7 @@
 					$destdir = String::directorySeparation($validates['params']['destination']);
 				}
 
-				$destination = $destdir.DIRECTORY_SEPARATOR.$destname;
+				$destination = WEBROOT.DIRECTORY_SEPARATOR.$destdir.DIRECTORY_SEPARATOR.$destname;
 
 				if(move_uploaded_file($file['tmp_name'], $destination)){
 
