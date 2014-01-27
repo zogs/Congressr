@@ -358,7 +358,7 @@
 					$destdir = String::directorySeparation($validates['params']['destination']);
 				}
 
-				$destination = WEBROOT.DIRECTORY_SEPARATOR.$destdir.DIRECTORY_SEPARATOR.$destname;
+				$destination = $destdir.DIRECTORY_SEPARATOR.$destname;
 
 				if(move_uploaded_file($file['tmp_name'], $destination)){
 

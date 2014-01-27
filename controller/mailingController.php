@@ -626,9 +626,10 @@ class MailingController extends Controller {
 		 ->setFrom(Conf::$congressContactEmail,Conf::$congressName)
 		 ->setBody($body, 'text/html', 'utf-8');
 
+	
 		 //attach pj
-		  if(!empty($mailing->pj)){
-		  	$pj = Swift_Attachment::FromPath($mailing->pj);
+		  if(!empty($mailing->path)){
+		  	$pj = Swift_Attachment::FromPath($mailing->path);
 		  	$message->attach($pj);
 		  }
 
