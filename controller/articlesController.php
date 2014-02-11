@@ -183,8 +183,6 @@ class ArticlesController extends Controller {
 
 		$this->loadModel('Articles');
 
-		debug($_POST);
-
 		if($data = $this->request->post()){
 
 			if($this->Articles->validates($data,'deposit')){
@@ -208,9 +206,7 @@ class ArticlesController extends Controller {
 				Session::setFlash('Veuillez revoir vos données','error');
 			}
 		}
-		else {
-			debug('No post data');
-		}		
+			
 
 	}
 

@@ -28,7 +28,7 @@ class ArticlesModel extends Model {
 					'rule'=>'file',
 					'params'=>array(
 						'destination'=>'media/deposed',
-						'extentions'=>array('doc'),
+						'extentions'=>array('doc','docx'),
 						'extentions_error'=>'Your document is not a .doc file',
 						'max_size'=>15000000,
 						'max_size_error'=>'Your document is too big',
