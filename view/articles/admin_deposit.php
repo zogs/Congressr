@@ -7,9 +7,7 @@
 	<p>&nbsp;</p>
 	
 	
-	
-	<?php echo $this->Form->input('resume_id','ID du résumé',array('placeholder'=>"Rentrer ici l'ID du résumé")); ?>
-	<?php echo $this->Form->input('user_id',"ID de l'auteur",array('placeholder'=>"Rentrer ici l'ID de l'utilisateur ")); ?>	
+	<?php echo $this->Form->select('resume_id','Résumé correspondant',$resumes_accepted,array('class'=>'select2')); ?>	
 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())); ?>
 
 

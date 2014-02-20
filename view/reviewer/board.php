@@ -1,5 +1,7 @@
 <?php echo Session::flash(); ?>
 
+
+<?php if(!empty($resumes)): ?>
 <h4>Liste des resumés à reviewer</h4>
 <table class="table table-striped table-condensed table-hover">
 	<?php if(count($resumes)==0): ?>
@@ -42,6 +44,7 @@
 		</tbody>
 	<?php endif; ?>
 </table>
+<?php endif; ?>
 
 <?php if(!empty($deposed)): ?>
 <h4>Liste des résumés étendus à reviewer</h4>

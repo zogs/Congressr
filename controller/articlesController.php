@@ -194,8 +194,8 @@ class ArticlesController extends Controller {
 				if($this->saveDeposit($data,$resume)){
 
 					$this->loadModel('Users');
-					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));							
-					Session::setFlash("L'article a été sauvegardé et attribué à ".ucfirst($user->login));
+					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$resume->user_id)));							
+					Session::setFlash("L'article a été sauvegardé et attribué à ".ucfirst($user->login)." (".$user->getFullName().")");
 				}
 				else {
 
@@ -206,6 +206,11 @@ class ArticlesController extends Controller {
 				Session::setFlash('Veuillez revoir vos données','error');
 			}
 		}
+
+		$this->set(array(
+			'resumes_accepted'=>$this->Articles->findResumesAccepted()
+			)
+		);
 			
 
 	}

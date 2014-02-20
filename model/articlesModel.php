@@ -299,6 +299,26 @@ class ArticlesModel extends Model {
 		return $a;
 	}
 
+	public function findResumesAccepted()
+	{
+		return $this->findResumes(array('conditions'=>array('status'=>'accepted')));
+	}
+
+	public function findResumesRefused()
+	{
+		return $this->findResumes(array('conditions'=>array('status'=>'refused')));
+	}
+
+	public function findResumesPending()
+	{
+		return $this->findResumes(array('conditions'=>array('status'=>'pending')));
+	}
+
+	public function findResumesCanceled()
+	{
+		return $this->findResumes(array('conditions'=>array('status'=>'canceled')));
+	}
+
 	public function findExtended($options = array()){
 
 		$params = array('table'=>'extended');
