@@ -104,8 +104,10 @@ class ArticlesController extends Controller {
 	
 				$user = $this->Users->findFirst(array('conditions'=>array('user_id'=>$data->reviewer)));
 				$article = $this->Articles->findArticleTypeID($type,$id);
+				$authors = $this->Articles->findAuthors($id,'resume');
+				$firstAuthor = $authors[0];
 
-				if($this->sendMailReviewRequest($user->login,$user->email,$user->lang,$id,$article->title,$type)){
+				if($this->sendMailReviewRequest($user->login,$user->email,$user->lang,$id,$article->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,$type)){
 
 					Session::setFlash("An request email have been sended to the reviewer");
 				}
@@ -238,6 +240,10 @@ class ArticlesController extends Controller {
 				$s->key = 'id';
 				$s->id = $exist->id;
 
+
+				$authors = $this->Articles->findAuthors($resume->id,'resume');
+				$firstAuthor = $authors[0];
+
 				//send a request directly to the reviewers
 				//find reviewers
 				$assigned = $this->Articles->findAssignmentByArticle($resume->id,'deposed');
@@ -246,7 +252,7 @@ class ArticlesController extends Controller {
 				$errors = array();
 				foreach ($reviewers as $r) {
 					
-					if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,'deposed')){
+					if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,'deposed')){
 						$sended[] = $r->login;
 					}
 					else{
@@ -481,7 +487,7 @@ class ArticlesController extends Controller {
 	}
 
 
-	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$type){
+	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$articleAuthor,$type){
 
 
 		$link = Conf::getSiteUrl().'/reviewer/review/'.$type.'/'.$articleId;
@@ -498,7 +504,7 @@ class ArticlesController extends Controller {
 
 		//Création du mail
 		$message = Swift_Message::newInstance()
-		  ->setSubject(Conf::$congressName)
+		  ->setSubject(Conf::$congressName." - Demande d'expertise : article de ".$articleAuthor)
 		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		  ->setTo($userEmail, $userLogin)
 		  ->setBody($body, 'text/html', 'utf-8');

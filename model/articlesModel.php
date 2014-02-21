@@ -395,7 +395,7 @@ class ArticlesModel extends Model {
 
 	public function findAuthors( $id, $type ){
 
-		$authors = $this->find(array('table'=>'authors','conditions'=>array('id_article'=>$id,'type'=>$type)));
+		$authors = $this->find(array('table'=>'authors','conditions'=>array('id_article'=>$id,'type'=>$type),'order'=>"no ASC"));
 		$authors = $this->JOIN('author','',array('id'=>':id_author'),$authors);
 		foreach ($authors as $key => $author) {
 			
@@ -444,7 +444,7 @@ class ArticlesModel extends Model {
 	public function saveAssignment($type,$id,$reviewer_id){
 
 		$check = $this->findFirst(array('table'=>'assignment','conditions'=>array('type'=>$type,'user_id'=>$reviewer_id,'article_id'=>$id)));
-		if(!empty($check)) return false;	
+		if(!empty($check)) return true;	
 
 
 		$n = new stdClass();
