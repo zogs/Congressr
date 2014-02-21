@@ -51,7 +51,7 @@
 <?php if($type=='deposed'): ?>
 
 <form class="form form-center w70pc fleft">
-	<h3>Veuillez noter le document suivant</h3>
+	<h3>Veuillez évaluer le document suivant :</h3>
 	
 	<p style="text-align:center">
 		<a href="<?php echo Router::webroot($$type->filepath);?>">
@@ -71,8 +71,7 @@
 		<strong>Envoyer une demande de modification à l'auteur de l'article. </strong>
 		<br>
 		<small>
-			L'auteur de l'article recevra un email avec votre demande. Il devra alors re-déposer une nouvelle version de son article, qui sera ré-évaluer par vos soins.
-			<br>L'auteur peut répondre à l'email, vous recevrez sa réponse directement dans votre boite mail, et pourrez alors engager une discussion concernant les modifications demandées
+			L'auteur de l'article recevra un email avec votre demande. Il devra alors re-déposer une nouvelle version de son article, qui sera ré-évalué par vos soins.			
 		</small>
 
 	</p>
@@ -89,9 +88,9 @@
 		Entrer ici votre décision ( accepté ou refusé ). ( Non-communiqué à l'auteur )
 	</p>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>
-	<?php // echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
+	<?php echo $this->Form->radio('prefer','Communication recommandé',array("class"=>"hide",'poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
 
-	<?php // echo $this->Form->SelectNumber('note','Note',5,0,array('default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
+	<?php echo $this->Form->SelectNumber('note','Note',5,0,array("class"=>"hide",'default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
 
 	<?php echo $this->Form->input('comment','Commentaires',array('type'=>'textarea','rows'=>5,'style'=>"width:100%;",'value'=>$$type->getCommentByReviewer(Session::user()->getID()))); ?>
 
