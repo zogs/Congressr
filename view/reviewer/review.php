@@ -88,7 +88,10 @@
 		Entrer ici votre décision ( accepté ou refusé ). ( Non-communiqué à l'auteur )
 	</p>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>
-	<?php echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array("class"=>"hide",'default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
+
+	<div class="hide">
+		<?php echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>		
+	</div>
 
 	<?php echo $this->Form->SelectNumber('note','Note',5,0,array("class"=>"hide",'default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
 
