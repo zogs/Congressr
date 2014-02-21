@@ -63,9 +63,12 @@
 
 <?php endif; ?>	
 
-<form class="form form-row w30pc fright label-left" name="review" action="<?php echo Router::url('reviewer/review/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
+<form class="form form-row w70pc fleft" name="review" action="<?php echo Router::url('reviewer/review/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 	
-	<h4>Evaluation</h4>
+	<h4>Decision finale</h4>
+	<p>
+		Entrer ici votre décision ( accepté ou refusé ). ( Non-communiqué à l'auteur )
+	</p>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>
 	<?php // echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
 
@@ -82,7 +85,7 @@
 <?php if($type=='deposed'): ?>
 <form class="form form-row w70pc fleft" name="request" action="<?php echo Router::url('reviewer/requestChange/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 
-	<h4>Demande de modification</h4>
+	<h4>Demande éventuelle de modification à l'auteur</h4>
 	<p>
 		<strong>Envoyer une demande de modification à l'auteur de l'article. </strong>
 		<br>
