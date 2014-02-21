@@ -484,7 +484,7 @@ class ArticlesController extends Controller {
 	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$type){
 
 
-		$link = Conf::getSiteUrl().'/reviewer/review/'.$type.'/'.$articleId.'?lang='.$userLang;
+		$link = Conf::getSiteUrl().'/reviewer/review/'.$type.'/'.$articleId;
 
 		//Création d'une instance de swift mailer
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());

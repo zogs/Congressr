@@ -67,9 +67,9 @@
 	
 	<h4>Evaluation</h4>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>
-	<?php echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
+	<?php // echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>
 
-	<?php echo $this->Form->SelectNumber('note','Note',5,0,array('default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
+	<?php // echo $this->Form->SelectNumber('note','Note',5,0,array('default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
 
 	<?php echo $this->Form->input('comment','Commentaires',array('type'=>'textarea','rows'=>5,'style'=>"width:100%;",'value'=>$$type->getCommentByReviewer(Session::user()->getID()))); ?>
 
