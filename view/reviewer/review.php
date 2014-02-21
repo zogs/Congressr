@@ -93,8 +93,10 @@
 		<?php echo $this->Form->radio('prefer','Communication recommandé',array('poster'=>'Poster','oral'=>"Orale"),array('default'=>$$type->getCommPreferedByReviewer(Session::user()->getID())) );?>		
 	</div>
 
+	<div class="hide">
 	<?php echo $this->Form->SelectNumber('note','Note',5,0,array("class"=>"hide",'default'=>$$type->getNoteByReviewer(Session::user()->getID()))); ?>
-
+	</div>
+	
 	<?php echo $this->Form->input('comment','Commentaires',array('type'=>'textarea','rows'=>5,'style'=>"width:100%;",'value'=>$$type->getCommentByReviewer(Session::user()->getID()))); ?>
 
 	<?php echo $this->Form->input('token','hidden',array('value'=>Session::token())) ;?>
