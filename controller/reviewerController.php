@@ -21,18 +21,14 @@ class ReviewerController extends usersController {
 		 	
 		 	$r = $this->Articles->findResumes(array('conditions'=>array('id'=>$v->article_id)));
 		 	if(!empty($r)) $resumes[$key] = $r[0]; //si le résumé existe bel et bien
-		 	else $this->Articles->deleteAssignement($v->id); //
+		 	//else $this->Articles->deleteAssignement($v->id); //
 		 } 
-		// foreach ($extended as $key => $a) {
-		 	
-		// 	$r = $this->Articles->findExtended(array('conditions'=>array('id'=>$a->article_id)));
-		// 	if(!empty($r)) $extended[$key] = $r[0];
-		 //} 
+		 
 		 foreach ($deposed as $key => $a) {
 		 	
-		 	$r = $this->Articles->findArticleTypeID('deposed',$a->article_id);
+		 	$r = $this->Articles->findDeposedByResumeId($a->article_id);
 		 	if(!empty($r)) $deposed[$key] = $r;
-		 	else $this->Articles->deleteAssignement($v->id);
+		 	//else $this->Articles->deleteAssignement($a->id);
 		 } 
 
 		 $resumes =  $this->Articles->joinReviews($resumes,'resume');

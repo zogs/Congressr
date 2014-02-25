@@ -260,6 +260,7 @@ class ArticlesModel extends Model {
 
 		return $r[0];
 	}
+
 	public function findReviewByArticle($article_id,$type){
 
 		return $this->find(array('table'=>'reviewed','conditions'=>array('article_id'=>$article_id,'article_type'=>$type)));
