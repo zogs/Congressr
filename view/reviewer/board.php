@@ -1,3 +1,6 @@
+<?php if(empty($resumes) && empty($deposed)) Session::setFlash("Vous n'avez pas encore d'article à reviewer"); ?>
+
+
 <?php echo Session::flash(); ?>
 
 
