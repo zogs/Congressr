@@ -8,11 +8,12 @@ class RedactorController extends usersController {
 
 		$this->loadModel('Articles');
 
-		$res = $this->Articles->findResumes(array('conditions'=>array('user_id'=>Session::user()->getID())));
+		$resumes = $this->Articles->findResumes(array('conditions'=>array('user_id'=>Session::user()->getID())));
+		$resumes = $this->Articles->joinArticleStatus($resumes);
 
-		if(empty($res)) Session::setFlash("Vous n'avez pas encore déposé de résumés... <a href='".Router::url('articles/resume')."'>Déposer un résumé</a>",'warning');
+		if(empty($resumes)) Session::setFlash("Vous n'avez pas encore déposé de résumés... <a href='".Router::url('articles/resume')."'>Déposer un résumé</a>",'warning');
 
-		$d['resumes'] = $res;
+		$d['resumes'] = $resumes;
 		$this->set($d);
 
 	}

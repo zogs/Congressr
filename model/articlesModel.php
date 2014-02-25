@@ -283,6 +283,25 @@ class ArticlesModel extends Model {
 		else return false;
 	}
 
+	public function findArticleStatus($resume_id)
+	{
+		$article = $this->findDeposedByResumeId($resume_id);
+
+		if(empty($article->status)) return '';
+
+		return $article->status;
+	}
+
+	public function joinArticleStatus($resumes)
+	{
+		foreach ($resumes as $resume) {
+						
+			$resume->article_status = $this->findArticleStatus($resume->id);
+		}
+
+		return $resumes;
+	}
+
 	
 	public function findResumes( $options = array() ){
 
