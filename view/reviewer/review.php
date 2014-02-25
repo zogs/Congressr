@@ -51,7 +51,7 @@
 <?php if($type=='deposed'): ?>
 
 <form class="form form-center w70pc fleft">
-	<h3>Veuillez évaluer le document suivant :</h3>
+	<h4>Veuillez évaluer le document suivant :</h4>
 	
 	<p style="text-align:center">
 		<a href="<?php echo Router::webroot($$type->filepath);?>">
@@ -66,13 +66,11 @@
 <?php if($type=='deposed'): ?>
 <form class="form form-row w70pc fleft" name="request" action="<?php echo Router::url('reviewer/requestChange/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 
-	<h4>Demande éventuelle de modification à l'auteur</h4>
+	<h2>Etape 1 : Demande éventuelle de modification à l'auteur</h2>
 	<p>
-		<strong>Envoyer une demande de modification à l'auteur de l'article. </strong>
-		<br>
-		<small>
-			L'auteur de l'article recevra un email avec votre demande. Il devra alors re-déposer une nouvelle version de son article, qui sera ré-évalué par vos soins.			
-		</small>
+		<strong>
+			L'auteur de l'article recevra un email avec votre demande. Vous serez alors prévenu quand il aura re-déposé la version corrigée de son article, qui sera ré-évaluée par vos soins.			
+		</strong>
 
 	</p>
 	<?php echo $this->Form->input('textEmail','Texte du mail',array('type'=>'textarea','rows'=>6,'style'=>"width:100%;",'placeholder'=>'Rédiger ici votre demande de modification'));?>
@@ -83,9 +81,9 @@
 
 <form class="form form-row w70pc fleft" name="review" action="<?php echo Router::url('reviewer/review/'.$type.'/'.((isset($$type->resume_id)? $$type->resume_id : $$type->id)));?>" method="POST">
 	
-	<h4>Decision finale</h4>
+	<h2>Etape 2 : Decision finale</h2>
 	<p>
-		Entrer ici votre décision ( accepté ou refusé ). ( Non-communiqué à l'auteur )
+		<strong>Entrez ici votre décision à destination des organisateurs (indiquez si accepté ou refusé). (Décision définitive, non-communiquée à l'auteur)</strong>
 	</p>
 	<?php echo $this->Form->input('prefer','hidden',array('value'=>'poster')); // default value for prefer ?>
 
