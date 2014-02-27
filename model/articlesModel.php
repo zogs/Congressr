@@ -374,11 +374,26 @@ class ArticlesModel extends Model {
 	public function joinAssignments($articles,$type = 'resume'){
 		
 		foreach ($articles as $key => $article) {			
-			$article->assigned = $this->findAssignment($article->id,$type);
-		}
-		
+			$article->assigned = $this->findAssignment($article->resume_id,$type);
+		}		
 		return $articles;
 
+	}
+
+	public function joinArticlesAssignments($articles){
+		
+		foreach ($articles as $key => $article) {			
+			$article->assigned = $this->findAssignment($article->resume_id,'deposed');
+		}		
+		return $articles;
+	}
+
+	public function joinResumesAssignments($resumes){
+		
+		foreach ($resumes as $key => $resume) {			
+			$resume->assigned = $this->findAssignment($resume->id,'resume');
+		}		
+		return $resumes;
 	}
 
 	public function findAssignment($article_id,$type){

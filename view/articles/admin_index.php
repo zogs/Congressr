@@ -58,7 +58,7 @@
 		 			if(isset($r->status) && $r->status=='reviewed') echo 'info';
 		 			if(isset($r->status) && $r->status=='accepted') echo 'success';
 		 			if(isset($r->status) && $r->status=='refused') echo 'important';
-		 			?>"><?php echo $r->status;?></span>
+		 			?>"><?php echo $r->status;?></span>		 			
 		 			<small><?php if($r->status=='pending' && count($r->assigned)!=0) echo '('.count($r->reviewed).'/'.count($r->assigned).')'; ?></small>
 		 		</td>			 								
 		 	</tr>
@@ -100,8 +100,11 @@
 	 			<td><?php echo $a->getCommPrefered(); ?></td>
 	 			<td><?php echo $a->getAverageNote();?></td>	 			
 		 		<td>
-		 			<?php echo $a->status;?>
-		 			<small><?php if($a->status=='pending' && count($a->assigned)!=0) echo '('.count($a->reviewed).'/'.count($a->assigned).')'; ?></small>
+		 			<?php if($a->status=='pending' && count($a->assigned)!=0) 
+		 					echo 'waiting for review ('.count($a->reviewed).'/'.count($a->assigned).')'; 
+		 				else 
+		 					echo $a->status; 
+		 			?>
 		 		</td>				
 					
 		 	</tr>
