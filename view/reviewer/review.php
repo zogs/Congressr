@@ -69,7 +69,8 @@
 	<h2>Etape 1 : Demande éventuelle de modification à l'auteur</h2>
 	<p>
 		<strong>
-			L'auteur de l'article recevra un email avec votre demande. Vous serez alors prévenu quand il aura re-déposé la version corrigée de son article, qui sera ré-évaluée par vos soins.			
+			L'auteur de l'article recevra un email avec votre demande. Vous serez alors prévenu quand il aura re-déposé la version corrigée de son article, qui sera ré-évaluée par vos soins.	
+			<br/>Pensez que la décision finale doit être rendu avant le <strong>15 Février 2014</strong> (indiquez à l'auteur une date limite de retour de l'article corrigé si nécessaire)		
 		</strong>
 
 	</p>
