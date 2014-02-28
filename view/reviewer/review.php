@@ -70,7 +70,7 @@
 	<p>
 		<strong>
 			L'auteur de l'article recevra un email avec votre demande. Vous serez alors prévenu quand il aura re-déposé la version corrigée de son article, qui sera ré-évaluée par vos soins.	
-			<br/>Pensez que la décision finale doit être rendu avant le <strong>15 Février 2014</strong> (indiquez à l'auteur une date limite de retour de l'article corrigé si nécessaire)		
+			<br/>Pensez que la décision finale doit être rendu avant le <strong>28 mars 2014</strong> (indiquez à l'auteur une date limite de retour de l'article corrigé si nécessaire)		
 		</strong>
 
 	</p>
