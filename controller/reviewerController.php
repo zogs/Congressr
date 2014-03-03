@@ -53,9 +53,10 @@ class ReviewerController extends usersController {
 			Session::setFlash('Veuillez vous connecter pour pouvoir reviewer un article !');
 			$this->redirect('users/login');
 		}
+		
 		if(!Session::user()->canReview()) $this->e404('You can not review an article');
 		if(!is_numeric($id)) throw new zException("Resume id is not numeric", 1);
-		//if(!$this->Articles->ifReviewerIsAssign($id,Session::user()->getID(),$type )) $this->e404('You are not assign to this article');
+		if(!$this->Articles->ifReviewerIsAssign($id,Session::user()->getID(),$type )) $this->e404('Vous ne pouvez pas reviewer cet article');
 		
 		//find article
 		$article = $this->Articles->findArticleTypeID($type,$id);
