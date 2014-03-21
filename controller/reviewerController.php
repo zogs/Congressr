@@ -206,7 +206,7 @@ class ReviewerController extends usersController {
 
 				if($this->mail_request_change($subject,$content,$author->email,$author->prenom.' '.$author->nom,$reviewer->email,$article->resume_id)){
 
-					Session::setFlash("La demande de modification a été envoyé à l'auteur ! Vous serez averti par email quand une nouvelle version de l'article sera disponible");
+					Session::setFlash("La demande de modification a été envoyée à l'auteur ! Vous serez averti par email quand une nouvelle version de l'article sera disponible");
 
 					$this->Articles->updateArticleStatus($article->id,'deposed','pending');
 				}

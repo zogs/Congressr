@@ -299,6 +299,17 @@ class ArticlesController extends Controller {
 			$resume->authors = $this->Articles->findAuthors( $resume_id, 'resume');
 			$deposed = $this->Articles->findDeposedByResumeId($resume->id);
 
+			if($deposed->status=='refused'){
+				Session::setFlash("Cet article a été refusé...",'error');
+				$this->redirect(Session::user()->getRole().'/board');
+			}
+
+			if($deposed->status=='accepted'){
+				Session::setFlash("Cet article a été accepté en l'état. Si vous voulez apportez des changements, merci de nous contacter à contact@aic2014.com",'info');
+				$this->redirect(Session::user()->getRole().'/board');
+			}
+
+
 		}
 		else {
 			$resume = new Resume();	
