@@ -252,9 +252,6 @@ class ArticlesModel extends Model {
 			$r = $this->findResumes(array('conditions'=>array('id'=>$id)));
 		}
 
-		if($type=='extended')
-			$r = $this->findExtended(array('conditions'=>array('id'=>$id)));	
-
 		if($type=='deposed')
 			$r = $this->findDeposed(array('conditions'=>array('resume_id'=>$id)));		
 

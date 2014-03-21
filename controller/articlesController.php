@@ -325,8 +325,9 @@ class ArticlesController extends Controller {
 				if($id = $this->saveDeposit($data,$resume)){
 
 					$this->loadModel('Users');
-					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));		
-					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$data->title);
+					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));	
+					$article = $this->Articles->findArticleTypeID('deposed',$resume->id);	
+					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$article->title,$article->date);
 					Session::setFlash("Votre document a été enregistré ! Vous recevrez un email quand il aura été évalué par le comité scientifique");
 				}
 				else {
@@ -368,8 +369,9 @@ class ArticlesController extends Controller {
 
 						Session::setFlash("Le résumé a été sauvegardé ! ");
 
-						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
-						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
+						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));	
+						$resume = $this->Articles->findArticleTypeID('resume',$id);				
+						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$resume->title,$resume->date);
 						Session::setFlash("Un mail de confirmation a été envoyé à ".$user->getFullName()." ".$user->getEmail());
 
 						$this->redirect('admin/articles/index/resume');
@@ -429,8 +431,9 @@ class ArticlesController extends Controller {
 
 						Session::setFlash("Merci, votre résumé <strong>a bien été enregistré !</strong> Vous serez averti par email dès qu'il aura été accepté ou refusé","success");
 
-						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));					
-						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$data->title);
+						$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));	
+						$resume = $this->Articles->findArticleTypeID('resume',$id);				
+						$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'resume',$id,$resume->title,$resume->date);
 
 						$this->redirect('articles/resume/'.$id);
 					}
@@ -460,7 +463,7 @@ class ArticlesController extends Controller {
 	}
 
 
-	private function sendMailArticleSuccefullyDeposed($userLogin,$userEmail,$articleType,$articleId,$articleTitle){
+	private function sendMailArticleSuccefullyDeposed($userLogin,$userEmail,$articleType,$articleId,$articleTitle,$articleDate){
 
 		
 		$subject = 'Votre résumé a été déposé !';
@@ -481,6 +484,7 @@ class ArticlesController extends Controller {
 		$body = preg_replace("~{userLogin}~i", $userLogin, $body);
 		$body = preg_replace("~{link}~i", $link, $body);
 		$body = preg_replace("~{website}~i", Conf::getsiteUrl(), $body);
+		$body = preg_replace("~{date}~i", $articleDate, $body);
 
 
 		$message = Swift_Message::newInstance()

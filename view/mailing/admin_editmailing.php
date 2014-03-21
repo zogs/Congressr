@@ -16,12 +16,14 @@
 										'resume_poster'=>'Liste des auteurs dont le résumé est accepté en poster',
 										'resume_refused'=>"Liste des auteurs dont le résumé est refusé",
 										'resume_pending'=>"Liste des auteurs dont le résumé est en attente",
+										'resume_reviewed'=>"Liste des auteurs dont le résumé a été reviewé",
 										'reviewers'=>"Liste de tous les reviewers",
 										'redactors'=>"Liste de tous les auteurs",
 										'article_oral'=>"Liste des auteurs dont l'article est confirmé à l'oral",
 										'article_poster'=>"Liste des auteurs dont l'article est confirmé en poster",
 										'article_refused'=>"Liste des auteurs dont l'article est refusé",
 										'article_pending'=>"Liste des auteurs dont l'article est en attente",
+										'article_reviewed'=>"Liste des auteurs dont l'article a été reviewé",
 										),array('placeholder'=>"Sélectionnez une liste d'utilisateur")) ;?>
 
 			<?php echo $this->Form->select('list_id','et/ou Selectionnez une mailing-list',$mailingLists,array('default'=>$mailing->getMailingListId(),'helper'=>'<a href="'.Router::url("admin/mailing/editlist/").'">Créez une nouvelle liste</a>','placeholder'=>"Sélectionnez une mailing list")); ?>

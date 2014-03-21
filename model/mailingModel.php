@@ -186,10 +186,12 @@ class MailingModel extends Model {
 		if($list=='resume_poster') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'accepted','comm_type'=>'poster')));
 		if($list=='resume_refused') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'refused')));
 		if($list=='resume_pending') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'pending')));
+		if($list=='resume_reviewed') $articles = $this->find(array('table'=>'resume','conditions'=>array('status'=>'reviewed')));
 		if($list=='article_oral') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'accepted','comm_type'=>'oral')));
 		if($list=='article_poster') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'accepted','comm_type'=>'poster')));
 		if($list=='article_refused') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'refused')));
 		if($list=='article_pending') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'pending')));
+		if($list=='article_reviewed') $articles = $this->find(array('table'=>'deposed','conditions'=>array('status'=>'reviewed')));
 
 		$articles = $this->JOIN('users','user_id,prenom,nom,email,job',array('user_id'=>':user_id'),$articles);
 		return $articles;		
