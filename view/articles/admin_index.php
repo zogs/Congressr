@@ -82,7 +82,7 @@
 		<th>Title</th>
 		<th>1st Author</th>
 		<th>Comm. wanted</th>
-		<th>Average Note</th>
+		<th>Date</th>
 		<th>Current status</th>
 	</thead>
 	<tbody>
@@ -98,7 +98,7 @@
 	 			<td><a href="<?php echo Router::url('admin/articles/view/deposed/'.$a->resume_id);?>"><?php echo $a->title; ?></a></td>
 	 			<td><span  style="text-transform:uppercase"><?php echo $a->authors[0]->lastname;?></span>&nbsp;<?php echo $a->authors[0]->firstname;?></td>
 	 			<td><?php echo $a->getCommPrefered(); ?></td>
-	 			<td><?php echo $a->getAverageNote();?></td>	 			
+	 			<td><?php echo $a->date; ?></td>	 			
 		 		<td>
 		 			<?php if($a->status=='pending' && count($a->assigned)!=0) 
 		 					echo 'waiting for review ('.count($a->reviewed).'/'.count($a->assigned).')'; 
