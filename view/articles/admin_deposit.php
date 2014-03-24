@@ -12,6 +12,7 @@
 
 
 	<?php echo $this->Form->input('deposed','<img src="'.Router::webroot('img/icon-ms-word.png').'" alt="">',array('type'=>'file','class'=>'input-file')); ?>
+
 	
 	<?php echo $this->Form->input('submit','',array('type'=>'submit','class'=>"btn btn-large btn-primary",'value'=>"Envoyer le fichier")); ?>
 

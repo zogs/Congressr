@@ -198,6 +198,7 @@ class ArticlesController extends Controller {
 					$this->loadModel('Users');
 					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$resume->user_id)));							
 					Session::setFlash("L'article a été sauvegardé et attribué à ".ucfirst($user->login)." (".$user->getFullName().")");
+					Session::setFlash("Une demande de reviewing a été envoyé aux reviewers",'info');
 				}
 				else {
 
@@ -231,36 +232,19 @@ class ArticlesController extends Controller {
 			$s->status = 'pending';
 			$s->filename = $filename;
 			$s->filepath = str_replace('\\','/',$destination); //use / instead of \ because its will be used as URL
+			$s->date = Date::MysqlNow();
 
 
 			//UPDATE if already exist
 			$exist = $this->Articles->findFirst(array('table'=>'deposed','fields'=>'id','conditions'=>array('resume_id'=>$this->request->post('resume_id'))));
 			if(!empty($exist)){
+
 				//set id for update
 				$s->key = 'id';
 				$s->id = $exist->id;
 
-
-				$authors = $this->Articles->findAuthors($resume->id,'resume');
-				$firstAuthor = $authors[0];
-
-				//send a request directly to the reviewers
-				//find reviewers
-				$assigned = $this->Articles->findAssignmentByArticle($resume->id,'deposed');
-				$reviewers = $this->Articles->JOIN('users','login,email,lang',array('user_id'=>':user_id'),$assigned);
-				$sended = array();
-				$errors = array();
-				foreach ($reviewers as $r) {
-					
-					if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,'deposed')){
-						$sended[] = $r->login;
-					}
-					else{
-						$errors[] = $r->login;
-					}
-				}						
-				
-
+				//send review request to all reviewers
+				$this->sendReviewRequestToAllReviewers($resume);
 			}
 
 			if($id = $this->Articles->save($s)){
@@ -269,9 +253,38 @@ class ArticlesController extends Controller {
 
 			}
 
-		return false;
+			return false;
 
 		}
+
+	}
+
+	private function sendReviewRequestToAllReviewers($resume)
+	{
+		//find first author
+		$authors = $this->Articles->findAuthors($resume->id,'resume');
+		$firstAuthor = $authors[0];
+
+		//find reviewers
+		$assigned = $this->Articles->findAssignmentByArticle($resume->id,'deposed');
+		$reviewers = $this->Articles->JOIN('users','login,email,lang',array('user_id'=>':user_id'),$assigned);
+
+		//send each a mail
+		$sended = array();
+		$errors = array();
+		foreach ($reviewers as $r) {
+			
+			if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,'deposed')){
+				$sended[] = $r->login;
+			}
+			else{
+				$errors[] = $r->login;
+			}
+		}	
+
+		if(!empty($errors)) return $errors;
+
+		return true;					
 
 	}
 
@@ -318,17 +331,16 @@ class ArticlesController extends Controller {
 
 		if($data = $this->request->post()){
 
-
-
 			if($this->Articles->validates($data,'deposit')){
 				
 				if($id = $this->saveDeposit($data,$resume)){
 
 					$this->loadModel('Users');
 					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$data->user_id)));	
-					$article = $this->Articles->findArticleTypeID('deposed',$resume->id);	
-					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$article->title,$article->date);
+					$deposed = $this->Articles->findArticleTypeID('deposed',$resume->id);	
+					$this->sendMailArticleSuccefullyDeposed($user->getLogin(),$user->getEmail(),'deposed',$id,$deposed->title,$deposed->date);
 					Session::setFlash("Votre document a été enregistré ! Vous recevrez un email quand il aura été évalué par le comité scientifique");
+					
 				}
 				else {
 
