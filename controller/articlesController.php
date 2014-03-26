@@ -274,7 +274,7 @@ class ArticlesController extends Controller {
 		$errors = array();
 		foreach ($reviewers as $r) {
 			
-			if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,'deposed')){
+			if($this->sendMailReviewRequest($r->login,$r->email,$r->lang,$resume->id,$resume->title,$firstAuthor->firstname.' '.$firstAuthor->lastname,'deposed',true)){
 				$sended[] = $r->login;
 			}
 			else{
@@ -514,10 +514,13 @@ class ArticlesController extends Controller {
 	}
 
 
-	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$articleAuthor,$type){
+	private function sendMailReviewRequest($userLogin,$userEmail,$userLang,$articleId,$articleTitle,$articleAuthor,$type,$redeposed = 'false'){
 
 
 		$link = Conf::getSiteUrl().'/reviewer/review/'.$type.'/'.$articleId;
+
+		$subject = Conf::$congressName." - Demande d'expertise : article de ".$articleAuthor;
+		if($redeposed == true) $subject = Conf::$congressName." - Nouvelle expertise demandé : article de ".$articleAuthor;
 
 		//Création d'une instance de swift mailer
 		$mailer = Swift_Mailer::newInstance(Conf::getTransportSwiftMailer());
@@ -531,9 +534,9 @@ class ArticlesController extends Controller {
 
 		//Création du mail
 		$message = Swift_Message::newInstance()
-		  ->setSubject(Conf::$congressName." - Demande d'expertise : article de ".$articleAuthor)
+		  ->setSubject($subject)
 		 ->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
-		  ->setTo($userEmail, $userLogin)
+		  ->setTo($userEmail, $userLogin)		  
 		  ->setBody($body, 'text/html', 'utf-8');
 
 		//Envoi du message et affichage des erreurs éventuelles

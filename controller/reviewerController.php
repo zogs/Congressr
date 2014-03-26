@@ -240,6 +240,7 @@ class ReviewerController extends usersController {
 		->setSubject($subject)
 		->setFrom('contact@aic2014.com', 'http://www.aic2014.com')
 		->setTo($authorEmail)
+		->setCc(Conf::$congressContactEmail)
 		->setBody($body,'text/html','utf-8');
 
 		if(!$mailer->send($message,$failures)){
