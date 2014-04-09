@@ -198,7 +198,15 @@ class ArticlesController extends Controller {
 					$this->loadModel('Users');
 					$user = $this->Users->findFirstUser(array('conditions'=>array('user_id'=>$resume->user_id)));							
 					Session::setFlash("L'article a été sauvegardé et attribué à ".ucfirst($user->login)." (".$user->getFullName().")");
-					Session::setFlash("Une demande de reviewing a été envoyé aux reviewers",'info');
+					
+					//send review request to all reviewers
+					if(isset($data->review_request) && $data->review_request == 1){
+						$this->sendReviewRequestToAllReviewers($resume);
+						Session::setFlash("Une demande de reviewing a été envoyé aux reviewers",'success');						
+					}
+					else {
+						Session::setFlash("Les reviewers ne sont pas prévenus de cette modification",'warning');
+					}
 				}
 				else {
 
@@ -234,29 +242,20 @@ class ArticlesController extends Controller {
 			$s->filepath = str_replace('\\','/',$destination); //use / instead of \ because its will be used as URL
 			$s->date = Date::MysqlNow();
 
-
 			//UPDATE if already exist
 			$exist = $this->Articles->findFirst(array('table'=>'deposed','fields'=>'id','conditions'=>array('resume_id'=>$this->request->post('resume_id'))));
 			if(!empty($exist)){
 
 				//set id for update
 				$s->key = 'id';
-				$s->id = $exist->id;
-
-				//send review request to all reviewers
-				$this->sendReviewRequestToAllReviewers($resume);
+				$s->id = $exist->id;			
 			}
 
 			if($id = $this->Articles->save($s)){
-
 				return $id;
-
 			}
-
 			return false;
-
 		}
-
 	}
 
 	private function sendReviewRequestToAllReviewers($resume)
