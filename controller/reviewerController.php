@@ -61,6 +61,17 @@ class ReviewerController extends usersController {
 		//find article
 		$article = $this->Articles->findArticleTypeID($type,$id);
 		
+		if($article->status == 'accepted'){
+			Session::setFlash('Vous ne pouvez accéder à cette page','info');
+			Session::setFlash("L'article a été accepté.",'success');
+			$this->redirect('reviewer/board');
+		}
+		if($article->status == 'refused'){
+			Session::setFlash('Vous ne pouvez accéder à cette page','info');
+			Session::setFlash("L'article a été refusé.",'error');
+			$this->redirect('reviewer/board');
+		}
+		
 		//save review
 		if($this->request->post('review')){
 

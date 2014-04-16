@@ -58,7 +58,7 @@
 		<thead>
 			<th>Title</th>
 			<th>Status</th>
-			<th>Note</th>	
+			<th>Decision</th>	
 			<th>Action</th>
 		</thead>
 		<tbody>
@@ -76,7 +76,13 @@
 			 	<tr class="<?php echo (true==$reviewed)? 'info' : 'warning';?>">
 		 			<td><a href="<?php echo Router::url('reviewer/review/deposed/'.$a->resume_id);?>"><?php echo $a->title; ?></a></td>
 			 		<td><?php echo (true==$reviewed)? '<span class="label label-info">reviewed</span>' : '<span class="label">En attente</span>';?></td>			
-					<td><?php echo (true==$reviewed)? $reviewed->note : '---'; ?></td>	 			
+					<td>
+					<?php
+						if($a->status == 'accepted') echo '<span class="label label-success">accepté</span>'; 
+						elseif($a->status == 'refused') echo '<span class="label label-warning">refusé</span>'; 
+						else echo '<span class="label">En attente</span>'; 
+					?> 	
+					</td>		 			
 					<td>
 						<a href="<?php echo Router::url('reviewer/review/deposed/'.$a->resume_id);?>"><?php echo (true==$reviewed)? 'View' : 'Review';?></a>
 					</td>	 		
