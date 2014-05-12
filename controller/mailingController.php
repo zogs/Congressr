@@ -610,9 +610,6 @@ class MailingController extends Controller {
 
 		//get emails
 		$emails = $this->getEmailsForMailing($mailing);
-		debug($mailing);
-		debug($emails);
-		exit();
 
 		//get signature
 		$sign = $this->Mailing->getSignatureById($mailing->signature_id);
@@ -689,7 +686,7 @@ class MailingController extends Controller {
 
 
 	private function getEmailsForMailing($mailing){
-		
+
 		//get emails	
 		$emails = array_merge(
 			$this->Mailing->getEmailsByListID($mailing->getMailingListId()),
