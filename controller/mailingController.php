@@ -226,6 +226,7 @@ class MailingController extends Controller {
 
 		$emails = $this->getEmailsForMailing($mailing);
 
+		debug($mailing);
 		debug($emails);
 		exit();
 
