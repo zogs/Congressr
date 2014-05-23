@@ -42,7 +42,7 @@
 		 			<td><?php echo $m->total_count;?></td>
 		 			<td><?php echo $m->duration;?>s</td>
 			 		<td>
-			 			<a href="<?php echo Router::url('admin/mailing/test/'.$a->list_id);?>">Test</a>
+			 			<a href="<?php echo Router::url('admin/mailing/test/'.$m->id);?>">Test</a>
 			 			<a href="<?php echo Router::url('admin/mailing/editmailing/'.$m->id);?>">Editer</a>			 			
 			 			<a href="<?php echo Router::url('admin/mailing/deletemailing/'.$m->id);?>">Supprimer</a>
 			 		</td>				
