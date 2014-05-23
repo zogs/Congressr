@@ -218,6 +218,18 @@ class MailingController extends Controller {
 		$this->set('signatures',$s);
 	}
 
+	public function admin_test($mid)
+	{
+		$this->loadModel('Mailing');
+		$mailing = $this->Mailing->getMailingById($mid);
+		if(!$mailing->exist()) $this->e404('Ce mailing n\'existe pas');
+
+		$emails = $this->getEmailsForMailing($mailing);
+
+		debug($emails);
+		exit();
+
+	}
 
 	public function admin_launchmailing($mid){
 
