@@ -125,7 +125,7 @@ class Conf {
 
 			$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 587,'tls')
 			->setUsername('si3804gu')
-			->setPassword('f4tb0ysl/m');
+			->setPassword('f4tb0ysl1M');
 		}
 
 		if($host=='localhost'){
@@ -133,7 +133,7 @@ class Conf {
 			//Local SMTP Config
 		    	$transport = Swift_SmtpTransport::newInstance('smtp.u-bourgogne.fr', 25)
 			->setUsername('si3804gu')
-			->setPassword('f4tb0ysl/m');
+			->setPassword('f4tb0ysl1M');
 		}
 
 		//PHP mail() function
